@@ -46,7 +46,6 @@ router.post('/', function(req, res, next) {
   let password = req.body.haslo;
   if (username && password) {
     var sql = "SELECT * FROM uzytkownicy WHERE login = \'" + username + "\' and haslo = \'" + password + "\'";
-    console.log(sql);
     con.query(sql, function (err, result) {
       if (result.length > 0) {
         req.session.user = username;

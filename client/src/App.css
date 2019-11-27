@@ -140,6 +140,19 @@
   padding-top: 50px;
   text-align: left;
 }
+.duze{
+  text-align: center;
+  font-size: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+
+.arbuzy-logo{
+  cursor: pointer; 
+}
 /*
 @keyframes switchRight {
   0%   {background-color:red; left:0px;}

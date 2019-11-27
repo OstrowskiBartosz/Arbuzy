@@ -6,27 +6,65 @@ import Cookies from 'js-cookie'
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.getLoggedUser = this.getLoggedUser.bind(this);
+    this.getLoginClick = this.getLoginClick.bind(this);
+    this.getMainClick = this.getMainClick.bind(this);
     this.state = ({
-      isLogged: true,
-      apiResponse: "Api is NOT working properly",
+      isLogged: false,
+      showLoginSignup: false,
+      showMainPage: true,
     });
   }
-  callAPI() {
-    fetch("http://localhost:9000/testAPI")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }))
-      .catch(err => err);
+
+  getLoggedUser(loggedData){
+    this.setState({
+      isLogged: loggedData,
+    });
   }
-  componentDidMount() {
-    this.callAPI();
+
+  getLoginClick(clickData){
+    this.setState({
+      showLoginSignup: clickData,
+      showMainPage: !clickData,
+    });
   }
+
+  getMainClick(clickData){
+    this.setState({
+      showMainPage: clickData,
+      showLoginSignup: !clickData,
+    });
+  }
+
   render(){
     return (
       <div className="App">
-        <Navbar isLogged={this.state.isLogged} />
-        <Login_signup />
+        <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendLoginClick={this.getLoginClick} sendMainClick={this.getMainClick} />
+        <MainPage showComponent={this.state.showMainPage} isLogged={this.state.isLogged} sendMainClick={this.getMainClick} />
+        <Login_signup showComponent={this.state.showLoginSignup} sendLoggedUser={this.getLoggedUser} sendMainClick={this.getMainClick} />
       </div>
     );
+  }
+}
+
+class MainPage extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = ({
+    });
+  }
+  render(){
+    if (!this.props.showComponent) {
+      return null;
+    }else{
+      return(
+        <div>
+          <div>
+            <div className = "duze">STRONA GŁÓWNA</div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
@@ -35,6 +73,15 @@ class Navbar extends React.Component{
     super(props);
     this.state = {};
   }
+
+  handleMainClick(event){
+    this.props.sendMainClick(true);
+  }
+
+  handleLoginClick(){
+    this.props.sendLoginClick(true);
+  }
+
   handleLogout(event){
     event.preventDefault();
     let url = "http://localhost:9000/logout";
@@ -45,6 +92,7 @@ class Navbar extends React.Component{
     .then(response=>response.text())
     .then(response => { 
       console.log(response);
+      this.props.sendLoggedUser(false);
     })
     .catch(err => err);
   }
@@ -52,7 +100,7 @@ class Navbar extends React.Component{
   render(){
     return(
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand arbuzy-logo" onClick={() => this.handleMainClick()}>
           <div className='arbuzy3'>
             <i className="fab fa-adn"></i>
           </div>
@@ -89,7 +137,7 @@ class Navbar extends React.Component{
           <div>
           </div>
             <button className={'btn btn-outline-danger my-2 my-sm-0 acceptbtn ' + (this.props.isLogged ? '' : 'hidden')} type='submit' onClick={(event) => this.handleLogout(event)}>Wyloguj</button>
-            <button className={'btn btn-outline-success my-2 my-sm-0 acceptbtn ' + (this.props.isLogged ? 'hidden' : '')} type='submit'>Zaloguj lub zarejestruj</button>
+            <button className={'btn btn-outline-success my-2 my-sm-0 acceptbtn ' + (this.props.isLogged ? 'hidden' : '')} type='submit' onClick={() => this.handleLoginClick()}>Zaloguj lub zarejestruj</button>
         </div>
       </nav>
     );
@@ -112,6 +160,11 @@ class Login_signup extends React.Component{
       errorMessageSignup: "",
     })
   };
+
+  handleMainClick(event){
+    event.preventDefault();
+    this.props.sendMainClick(true);
+  }
 
   handleSignupSubmit(event){
     event.preventDefault();
@@ -158,9 +211,15 @@ class Login_signup extends React.Component{
       if(response !== "logged"){
         this.setState({ 
           errorLogin: true, 
-          errorMessageLogin: response, })
+          errorMessageLogin: response, 
+        });
       }else{
         console.log(response);
+        this.setState({ 
+          logged: true,
+        });
+        this.props.sendLoggedUser(this.state.logged);
+        this.props.sendMainClick(true);
       }
     })
     .catch(err => err);
@@ -191,8 +250,11 @@ class Login_signup extends React.Component{
   }
 
   render(){
-    return(
-      <div>
+    if (!this.props.showComponent) {
+      return null;
+    }else{
+      return(
+        <div>
         <div className='row'>
           <div className='col-4'>
           </div>
@@ -291,11 +353,12 @@ class Login_signup extends React.Component{
         </div>
         <div className ="row">
           <div className ="col-4"></div>
-          <div className ="col-4 cofnij"><button className="btn btn-outline-danger"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</button></div>
+          <div className ="col-4 cofnij"><button className="btn btn-outline-danger" onClick={(event) => this.handleMainClick(event)}> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</button></div>
           <div className ="col-4"></div>
         </div>
       </div>
-    );
+      );
+    }
   }
 }
 
