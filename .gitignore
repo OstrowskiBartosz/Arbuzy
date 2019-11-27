@@ -1,0 +1,6 @@
+# dependencies
+client/node_modules
+
+# dependencies
+api/node_modules
+api/bin
