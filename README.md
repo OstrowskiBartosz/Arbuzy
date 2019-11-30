@@ -38,6 +38,9 @@
 
 - Instalacja MariaDB z `https://mariadb.com/downloads/`
 - Utworzenie bazy mozliwe z pliku `sql.txt`
+- Aby wyłączyć bazę w celu podmiany plików wpisujemy w MySclClient
+  - `SHUTDOWN;`
+- Aby włączyć bazę wpisujemy w terminalu z uprawnieniami administratora -`net start mysql`
 
 ### Praca z projektem
 
