@@ -1,7 +1,7 @@
 ### Przygotowanie programów
 - instalacja Visual Studio Code
-- Instalacja Node.js (zaznaczamy przy instalacji żeby używać Visual Studio Code)
-- Instalacja Git
+- instalacja Node.js (zaznaczamy przy instalacji żeby używać Visual Studio Code)
+- instalacja Git
 
 ### Przygotowanie edytora
 - utworzenie folderu na projekt np. Arbuzy
@@ -27,6 +27,10 @@
 - zaciągamy projekt
     - `git pull origin master`
 - w api tworzymy folder `bin` i wklejamy tom plik `www`, który musimy sobie od kogoś załatwić
+
+### Uruchomienie strony
+- stronę uruchamiamy odpalając w osobnych konsolach w folderach obu projektów
+    - `npm start`
 
 ### Przygotowanie bazy
 - Instalacja MariaDB z `https://mariadb.com/downloads/`
