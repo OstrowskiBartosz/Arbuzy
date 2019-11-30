@@ -5,7 +5,7 @@ CREATE TABLE uzytkownicy(
     imie VARCHAR(20) NOT NULL,
     nazwisko VARCHAR(30) NOT NULL,
     login VARCHAR(30) NOT NULL,
-    haslo VARCHAR(40) NOT NULL,
+    haslo VARCHAR(60) NOT NULL,
     miasto_zamieszkania VARCHAR(50) NOT NULL,
     ulica_zamieszkania VARCHAR(50) NOT NULL,
     kod_pocztowy VARCHAR(6) NOT NULL,
