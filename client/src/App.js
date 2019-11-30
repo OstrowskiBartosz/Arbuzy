@@ -47,6 +47,36 @@ class App extends React.Component {
   }
 }
 
+class CategoryBar extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = ({});
+  }
+  render(){
+    return(
+      <div>
+        <div>
+            <div className = "categoryBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
+              <div className ="categoryHeader">Kategorie</div>
+              <ul>
+                <li className = "categoryLink">Komputery</li>
+                <li className = "categoryLink">Laptopy</li>
+                <li className = "categoryLink">Karty Graficzne</li>
+                <li className = "categoryLink">Procesory</li>
+                <li className = "categoryLink">Dyski SSD/HDD</li>
+                <li className = "categoryLink">pamięć RAM</li>
+                <li className = "categoryLink">Płyty główne</li>
+                <li className = "categoryLink">Obudowy komputerowe</li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    );
+  }
+
+
+}
+
 class MainPage extends React.Component{
   constructor(props){
     super(props);
@@ -60,8 +90,88 @@ class MainPage extends React.Component{
       return(
         <div>
           <div>
-            <div className = "duze">STRONA GŁÓWNA</div>
+            <div className = "row">
+              <div className ="col-1"></div>
+              <div className ="col-2">
+                <CategoryBar />
+              </div>
+              <div className ="col-8 MainPageBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
+                <div className = "testheader">
+                  STRONA GŁÓWNA
+                </div>
+                <div>
+                super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                </div>
+              </div>
+              <div className ="col-1">
+              </div>
+            </div>
+            <div className = "row">
+              <div className ="col-1"></div>
+              <div className ="col-10 polecaneProduktyBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
+                <div className = "testheader">
+                  POLECANE PRODUKTY
+                </div>
+                <div>
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                </div>
+              </div>
+              <div className ="col-1">
+              </div>
+            </div>
+
+            <div className = "row">
+              <div className ="col-1"></div>
+              <div className ="col-10 megaPromocjeBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
+                <div className = "testheader">
+                  MEGA PROMOCJE
+                </div>
+                <div>
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                </div>
+              </div>
+              <div className ="col-1">
+              </div>
+            </div>
+
           </div>
+          <PageFooter />
         </div>
       );
     }
@@ -99,45 +209,75 @@ class Navbar extends React.Component{
 
   render(){
     return(
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand arbuzy-logo" onClick={() => this.handleMainClick()}>
-          <div className='arbuzy3'>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border sticky-top">
+        <a className="navbar-brand" onClick={() => this.handleMainClick()}>
+          <div className='NavbarLogoPart3 center-Element'>
             <i className="fab fa-adn"></i>
           </div>
-          <div className='arbuzy1'>A</div>
-          <div className='arbuzy2'>rbuzy.co</div>
-          <div className='arbuzy1'>m</div>
+          <div className='NavbarLogoPart1'>A</div>
+          <div className='NavbarLogoPart2'>rbuzy.co</div>
+          <div className='NavbarLogoPart1'>m</div>
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto center">
-            <li>
-              <form className="form-inline my-5 my-lg-0">
-                <input className="form-control col-l-4 input-lg" type="search" placeholder="Wyszukaj produkt" aria-label="Search"></input>
-                <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Wszystkie działy
-                  </a>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a className="dropdown-item" href="#">Komputery</a>
-                    <a className="dropdown-item" href="#">Laptopy</a>
-                    <a className="dropdown-item" href="#">Karty Graficzne</a>
-                    <a className="dropdown-item" href="#">Procesory</a>
-                    <a className="dropdown-item" href="#">Dyski SSD/HDD</a>
-                    <a className="dropdown-item" href="#">pamięć RAM</a>
-                    <a className="dropdown-item" href="#">Płyty główne</a>
-                    <a className="dropdown-item" href="#">Obudowy komputerowe</a>
-                  </div>
-                </li>
-              </form>
-            </li>
-          </ul>
-          <div>
+        <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+          <div className="center-Element">
+            <form className="form-inline" id="searchBar">
+              <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar"></input>
+              <li className="nav-item dropdown" id="searchBarDropdown">
+                <a className="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Wszędzie <i className="fas fa-chevron-down"></i>
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a className="dropdown-item">Wszędzie</a>
+                  <a className="dropdown-item">Komputery</a>
+                  <a className="dropdown-item">Laptopy</a>
+                  <a className="dropdown-item">Karty Graficzne</a>
+                  <a className="dropdown-item">Procesory</a>
+                  <a className="dropdown-item">Dyski SSD/HDD</a>
+                  <a className="dropdown-item">pamięć RAM</a>
+                  <a className="dropdown-item">Płyty główne</a>
+                  <a className="dropdown-item">Obudowy komputerowe</a>
+                </div>
+              </li>
+              <button type="submit">Wyszukaj <i className="fa fa-search"></i></button>
+            </form>
           </div>
-            <button className={'btn btn-outline-danger my-2 my-sm-0 acceptbtn ' + (this.props.isLogged ? '' : 'hidden')} type='submit' onClick={(event) => this.handleLogout(event)}>Wyloguj</button>
-            <button className={'btn btn-outline-success my-2 my-sm-0 acceptbtn ' + (this.props.isLogged ? 'hidden' : '')} type='submit' onClick={() => this.handleLoginClick()}>Zaloguj lub zarejestruj</button>
+          <div className = "float-right">
+            <ul className='navbar-nav mr-auto'>
+              <li className={'nav-item pr-3 ' + (this.props.isLogged ? 'hidden' : '')}>
+                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={() => this.handleLoginClick()}>
+                  <span className = "pr-2">Profil</span>
+                  <i className='bigicon fas fa-user'></i>
+                </a>
+              </li>
+              <li className={'nav-item pr-3 '  + (this.props.isLogged ? '' : 'hidden')}>
+                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer'>
+                  <span className = "pr-2">Profil</span>
+                  <i className='bigicon fas fa-user'></i>
+                </a>
+              </li>
+              <li className='nav-item pr-3'>
+                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer'>
+                <span className = "pr-1">Koszyk</span>
+                  <i className='bigicon fas fa-shopping-cart'></i>
+                </a>
+              </li>
+              <li className={'nav-item ' + (this.props.isLogged ? 'hidden' : '')}>
+                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={() => this.handleLoginClick()}>
+                <span className = "pr-2">Zaloguj</span>
+                  <i className='bigicon fas fa-sign-in-alt'></i>
+                </a>
+              </li>
+              <li className={'nav-item ' + (this.props.isLogged ? '' : 'hidden')}>
+                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={(event) => this.handleLogout(event)}>
+                  <span className = "pr-2">Wyloguj</span>
+                  <i className='bigicon fas fa-sign-out-alt'></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     );
@@ -255,10 +395,10 @@ class Login_signup extends React.Component{
     }else{
       return(
         <div>
-        <div className='row'>
+        <div className='row '>
           <div className='col-4'>
           </div>
-          <div className='col-4 pad'>
+          <div className='col-4 m-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
             <div className = "card-body">
               <div id="Signuptab" className = {"outlinetab col-6 " + (this.state.activeSignup ? " active" : "")} onClick={(event) => this.handleSLChange(event)}>
                 Rejestracja
@@ -269,7 +409,7 @@ class Login_signup extends React.Component{
 
             </div>
             <div className= {"card-body " + (this.state.activeSignup ? "" : "hidden")}>
-              <div className="outline left">
+              <div className="p-3 text-left">
                 <h5 className="card-title bigfont">Rejestracja użytkownika/firmy</h5>
                 <form id="SignupForm" onSubmit={(event) => this.handleSignupSubmit(event)}>
                   <div>Dane logowania</div>
@@ -290,11 +430,10 @@ class Login_signup extends React.Component{
 
                   <div className='row'>
                     <div className='col-6 signupinput'><input type='text' name="telefon_o" className="form-control" placeholder= "telefon osobisty" required></input></div>
-                    {/*<div className={'col-6 signupinput ' + (this.state.czyfirma ? "" : "hidden")}><input type='text' name="telefon_f" className="form-control" placeholder= "telefon firmowy" required></input></div>*/}
                   </div>
 
-                  <div className="signupcheckbox">
-                    Czy zakładane jest konto firmy?  <input type='checkbox' className="pad" placeholder= "Nazwisko" onChange={(event) => this.handleFirmaChange(event)}></input>
+                  <div className="SignupCompanyCheckbox">
+                    Czy zakładane jest konto firmy?  <input type='checkbox' placeholder= "Nazwisko" onChange={(event) => this.handleFirmaChange(event)}></input>
                   </div>
 
                   <div className = {'' + (this.state.czyfirma ? "" : "hidden")}>Dane firmy</div>
@@ -321,15 +460,15 @@ class Login_signup extends React.Component{
                         <div className = "errorMessage">{this.state.errorMessageSignup}</div>
                       </div>
                     </div>
-                  <div className="acceptbtns">
-                    <input type="submit" value="utwórz konto" className="btn btn-outline-primary acceptbtn"></input>
+                  <div className="loginSignupSubmitButton">
+                    <input type="submit" value="utwórz konto" className="btn btn-outline-primary"></input>
                   </div>
                 </form>
               </div>
             </div>
             
             <div className= {"card-body " + (this.state.activeLogin ? "" : "hidden")}>
-              <div className="outline left">
+              <div className="p-3 text-left">
                 <h5 className="card-title bigfont">Logowanie użytkownika/firmy</h5>
                 <form id="loginForm" onSubmit={(event) => this.handleLoginSubmit(event)}>
                   <div>Dane logowania</div>
@@ -341,8 +480,8 @@ class Login_signup extends React.Component{
                         <div className = "errorMessage">{this.state.errorMessageLogin}</div>
                       </div>
                     </div>
-                  <div className="acceptbtns">
-                    <input type="submit" value="Zaloguj" className="btn btn-outline-primary acceptbtn"></input>
+                  <div className="loginSignupSubmitButton">
+                    <input type="submit" value="Zaloguj" className="btn btn-outline-primary"></input>
                   </div>
                 </form>
               </div>
@@ -353,7 +492,7 @@ class Login_signup extends React.Component{
         </div>
         <div className ="row">
           <div className ="col-4"></div>
-          <div className ="col-4 cofnij"><button className="btn btn-outline-danger" onClick={(event) => this.handleMainClick(event)}> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</button></div>
+          <div className ="col-4 text-left"><button className="btn btn-outline-danger" onClick={(event) => this.handleMainClick(event)}> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</button></div>
           <div className ="col-4"></div>
         </div>
       </div>
@@ -362,4 +501,16 @@ class Login_signup extends React.Component{
   }
 }
 
+class PageFooter extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return(
+      <div className = "Footer">
+        FOOTER
+      </div>
+    );
+  }
+}
 export default App;
