@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+const bcrypt = require('bcrypt');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json())
@@ -44,20 +45,24 @@ router.use(session({
 router.post('/', function(req, res, next) {
   let username = req.body.login;
   let password = req.body.haslo;
+  
   if (username && password) {
-    var sql = "SELECT * FROM uzytkownicy WHERE login = \'" + username + "\' and haslo = \'" + password + "\'";
+    var sql = "SELECT * FROM uzytkownicy WHERE login = \'" + username + "\';";
     con.query(sql, function (err, result) {
       if (result.length > 0) {
-        req.session.user = username;
-        req.session.save();
-        res.send('logged');
+        if(bcrypt.compareSync(password, result[0].haslo)){
+          req.session.user = username;
+          req.session.save();
+          res.send('logged');
+        }else{
+        }
       } else {
         res.send('Niepoprawny użytkownik i/lub hasło!');
       }			
       res.end();
     });
   } else {
-    res.send('Please enter Username and Password!');
+    res.send('Wprowadz poprawna nazwe uzytkownika i haslo!');
     res.end();
   }
 });
