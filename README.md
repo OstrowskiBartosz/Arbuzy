@@ -16,6 +16,7 @@
     - `npm install mysql`
     - `npm install express-session`
     - `npm install express-mysql-session --save`
+    - `npm install cors`
 - usunięcie z obu projektów folderów: `public`, `src` i plików: `package-lock.json`, `package.json`
 - w folderze np. Arbuzy utworzyć git
     - `git init`
