@@ -17,7 +17,7 @@
     - `npm install express-session`
     - `npm install express-mysql-session --save`
     - `npm install cors`
-- usunięcie z obu projektów folderów: `public`, `src` i plików: `package-lock.json`, `package.json` i innych (ogólnie usunięcie plików, które będą zaraz pobrane z gita)
+- usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
     - `git init`
 - dodajemy repozytorium
@@ -26,7 +26,6 @@
     - `git remote -v`
 - zaciągamy projekt
     - `git pull origin master`
-- w api tworzymy folder `bin` i wklejamy tom plik `www`, który musimy sobie od kogoś załatwić
 
 ### Uruchomienie strony
 - stronę uruchamiamy odpalając w osobnych konsolach w folderach obu projektów
