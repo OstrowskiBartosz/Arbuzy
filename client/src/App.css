@@ -173,7 +173,7 @@
   font-size: 25px;
   cursor: pointer;
 }
-/* LOGIN I SIGNUP*/
+/* AKTYWNA ZAKŁADKA LOGIN I SIGNUP*/
 .active{
   border-bottom: red 4px solid;
   animation-duration: 2s;
@@ -195,7 +195,7 @@
 .errorMessage{
   display: inline-block;
 }
-
+/* STRONA GŁÓWNA */
 .categoryBar{
   padding: 15px;
   text-align: left;
