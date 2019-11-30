@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-router.use(express.json())
+router.use(express.json());
 
 var mysql = require('mysql')
 var con = mysql.createConnection({
@@ -9,7 +9,7 @@ var con = mysql.createConnection({
   password: 'lolo',
   database: "mydb",
   charset : 'utf8_unicode_ci',
-})
+});
 
 con.connect(function(err) {
   if (err) throw err;
@@ -35,7 +35,7 @@ con.connect(function(err) {
         }
         sql = sql + "\'0\');";
         con.query(sql, function (err, result) {
-          console.log("dodano;")
+          console.log("dodano;");
           res.send('signedup');
           if (err) throw err;
         });
