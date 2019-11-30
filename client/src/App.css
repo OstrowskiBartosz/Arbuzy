@@ -1,11 +1,10 @@
 .App {
   text-align: center;
+  overflow-x: hidden;
 }
-
 .App-logo {
   height: 40vmin;
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -16,53 +15,127 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 .App-link {
   color: #09d3ac;
 }
 
+/* GŁÓWNY KOLOR KOMPONENTÓW */
+.componentBackgroundColor{
+  background-color: white;
+}
 
-.arbuzy1{
+/* NAVBAR */
+.Navbar-border{
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(255,0,0,1) 30%, rgba(255,0,0,1) 50%, rgba(255,0,0,1) 70%, rgba(0,255,0,1) 100%);
+  border-image-slice: 1;
+}
+
+.NavbarLogoPart1{
   font-size:30px;
   color:green;
-  display:inline-block
+  display:inline-block;
+  cursor: pointer;
+  font-weight: bold;
 }
-.arbuzy2{
+.NavbarLogoPart2{
   font-size:30px;
   color: red;
-  display:inline-block
+  display:inline-block;
+  cursor: pointer;
+  font-weight: bold;
 }
-.arbuzy3{
+.NavbarLogoPart3{
   font-size:30px;
   color:red;
   display:inline-block;
   padding-right: 10px;
+  cursor: pointer; 
 }
-.center{
+
+#searchBar input {
+  padding: 10px;
+  font-size: 18px;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
+  border-right: 0px;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  font-weight: bold;
+  width: 450px;
+}
+
+#searchBar #searchBarDropdown{
+  padding: 2px;
+  font-size: 18px;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  font-weight: bold;
+  background: white;
+  cursor: pointer;
+  list-style-type: none;
+  color: grey;
+}
+
+#searchBar button {
+  padding: 10px;
+  background: grey;
+  color: white;
+  font-size: 18px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+  font-weight: bold;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+#searchBarDropdown:before{
+  top: 20%;
+  bottom: 20%;
+  left: -1px;
+  border-left: 1px solid grey;
+  padding: 9px;
+  position: absolute;
+  content: " ";
+  z-index: 999;
+  cursor: pointer;
+}
+.navbar-Font-Size{
+  font-size: 20px;
+}
+
+@media (max-width: 1423px) {
+  #searchBar #searchBarDropdown{
+    display: none;
+  }
+}
+@media (max-width: 1271px) {
+  #searchBar input { font-size: 15px; width: 350px; font-size: 15px; }
+  #searchBar button { font-size: 15px; width: 107px; height: 45px;}
+  .navbar-Font-Size{ font-size: 15px; }
+}
+@media (max-width: 1071px) {
+  #searchBar input { width: 250px; }
+  #searchBar button { width: 107px;}
+}
+@media (max-width: 991px) {
+  #searchBar input { width: 180px; height: 40px;}
+  #searchBar button { width: 107px; height: 40px;}
+  #NavbarLeftBar{display: block;}
+}
+
+.center-Element{
   margin-left: auto;
   margin-right: auto;
 }
-
-.pad{
-  padding-top: 50px;
-}
-
-.left{
-  text-align: left;
-}
-
-.outline{
-  border: 1px solid lightgrey;
-  padding: 15px;
-}
-
-.acceptbtns{
+/* LOGIN I SIGNUP*/
+.loginSignupSubmitButton{
   text-align: right;
-  padding-top: 50px;
+  padding-top: 10px;
 }
-.acceptbtn{
-  margin-right: 20px;
-}
+
 .card-title{
   text-align: center;
   margin-bottom: 40px;
@@ -72,17 +145,11 @@
   padding-bottom: 15px;
   padding-top: 10px;
 }
-.signupcheckbox{
-  padding-bottom: 10px;
-}
 
 .hidden{
   display: none;
 }
 
-.signupinputhidden{
-  padding-bottom: 15px;
-}
 
 .log-sign-card{
   border: solid 1px lightgrey;
@@ -99,27 +166,20 @@
 }
 
 .outlinetab{
-  border-top: 1px solid lightgrey;
-  border-left: 1px solid lightgrey;
-  border-right: 1px solid lightgrey;
+
   padding: 15px;
   display: inline-block;
   font-weight: bold;
   font-size: 25px;
   cursor: pointer;
 }
-.unactive-signup{
-  height: 4px;
-  width: 50%;
-  display: inline-block;
-  
-  animation-name: switchRight;
-  animation-duration: 1s;
-}
+/* LOGIN I SIGNUP*/
 .active{
   border-bottom: red 4px solid;
   animation-duration: 2s;
 }
+
+/* ERRORY W LOGIN I SIGNUP*/
 
 .error{
   background-color: #FFCCCB;
@@ -136,40 +196,50 @@
   display: inline-block;
 }
 
-.cofnij{
-  padding-top: 50px;
+.categoryBar{
+  padding: 15px;
+  text-align: left;
+  margin-top: 40px;
+}
+.categoryHeader{
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  padding-bottom: 10px;
+}
+.categoryBar .categoryLink {
+  list-style-type: none;
+  padding-bottom: 5px;
+}
+.categoryBar .categoryLink:hover {
+  color: green;
+  cursor: pointer;
+}
+.MainPageBar{
+  text-align: left;
+  margin-top: 40px;
+}
+.polecaneProduktyBar{
   text-align: left;
 }
-.duze{
+
+.megaPromocjeBar{
+  text-align: left;
+}
+
+.testheader{
   text-align: center;
-  font-size: 40px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
+  font-weight: bold;
+  font-size: 25px;
+  padding-bottom: 10px;
 }
 
-.arbuzy-logo{
-  cursor: pointer; 
-}
-/*
-@keyframes switchRight {
-  0%   {background-color:red; left:0px;}
-  100% {background-color:red; left:50%;}
+.Footer{
+  margin-top: 100px;
+  background: green;
+  height: 300px;
 }
 
-.unactive-login{
-  height: 4px;
-  width: 50%;
-  left: 0;
-  display: inline-block;
-  background-color:red;
-  animation-name: switchLeft;
-  animation-duration: 2s;
+.cursor-pointer{
+  cursor: pointer;
 }
-@keyframes switchLeft {
-  0%   {background-color:red; left:0px; }
-  100% {background-color:red; left:-50%; }
-}
-*/
