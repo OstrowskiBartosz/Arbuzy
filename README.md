@@ -19,6 +19,7 @@
   - `npm install express-session`
   - `npm install express-mysql-session --save`
   - `npm install cors`
+  - `npm install bcrypt` <- z uprawnieniami admina
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
   - `git init`
