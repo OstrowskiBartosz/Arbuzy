@@ -9,6 +9,13 @@
     - `npx create-react-app client`
 - utworzenie programu `api` w folderze np. Arbuzy
     - `npx create-react-app api`
+- instalacja express
+    - `npx express-generator api`
+- instalacja w folderze `api` kolejno
+    - `npm install`
+    - `npm install mysql`
+    - `npm install express-session`
+    - `npm install express-mysql-session --save`
 - usunięcie z obu projektów folderów: `public`, `src` i plików: `package-lock.json`, `package.json`
 - w folderze np. Arbuzy utworzyć git
     - `git init`
@@ -18,6 +25,10 @@
     - `git remote -v`
 - zaciągamy projekt
     - `git pull origin master`
+- w api tworzymy folder `bin` i wklejamy tom plik `www`, który musimy sobie od kogoś załatwić
+
+### Przygotowanie bazy
+- Instalacja MariaDB z `https://mariadb.com/downloads/`
 
 ### Praca z projektem
 - przed rozpoczęciem czegokolwiek zawsze dajemy
