@@ -1,16 +1,12 @@
 var express = require('express');
 var router = express.Router();
-<<<<<<< HEAD
 var mysql = require('mysql');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-=======
->>>>>>> da18daa82b1a28492211c3ca5d9b6e52af947861
 router.use(express.json());
 
-var mysql = require('mysql')
 var con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
