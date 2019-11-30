@@ -5,10 +5,10 @@
 
 ### Przygotowanie edytora
 - utworzenie folderu na projekt np. Arbuzy
-- utworzenie programu 'client' w folderze np. Arbuzy
-'npx create-react-app client'
-- utworzenie programu 'api' w folderze np. Arbuzy
-'npx create-react-app api'
+- utworzenie programu `client` w folderze np. Arbuzy
+`npx create-react-app client`
+- utworzenie programu `api` w folderze np. Arbuzy
+`npx create-react-app api`
 - usunięcie z obu projektów folderów: 'public', 'src' i plików: 'package-lock.json', 'package.json'
 - w folderze np. Arbuzy utworzyć git
 'git init'
