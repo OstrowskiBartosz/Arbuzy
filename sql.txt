@@ -32,6 +32,7 @@ CREATE TABLE uzytkownicy(
       id_produktu MEDIUMINT NOT NULL,
       atrybut VARCHAR(80) NOT NULL,
       wartosc VARCHAR(80) NOT NULL,
+      typ VARCHAR(10) NOT NULL,
       FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
   );
 
