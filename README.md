@@ -20,7 +20,8 @@
   - `npm install express-mysql-session --save`
   - `npm install cors`
   - `npm install bcrypt` <- z uprawnieniami admina
-  - `npm install react-router-dom`
+  - `npm install --global --production windows-build-tools` <- z uprawnieniami admina
+  - `npm install react-router-dom` <- z uprawnieniami admina
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
   - `git init`
