@@ -1,17 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 const bcrypt = require('bcrypt');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json())
-router.use(bodyParser.urlencoded({extended : true}));
-router.use(bodyParser.json());
-router.use(cookieParser());
 
 var con = mysql.createConnection({
   host: 'localhost',
@@ -23,7 +18,6 @@ var con = mysql.createConnection({
 
 var Storeoptions = {
   host: 'localhost',
-  //port: 9000,
   user: 'root',
   password: 'lolo',
   database: 'mydb'
@@ -55,6 +49,7 @@ router.post('/', function(req, res, next) {
           req.session.save();
           res.send('logged');
         }else{
+          res.send('Niepoprawny użytkownik i/lub hasło!');
         }
       } else {
         res.send('Niepoprawny użytkownik i/lub hasło!');

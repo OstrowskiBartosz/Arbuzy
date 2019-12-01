@@ -53,6 +53,14 @@
   cursor: pointer; 
 }
 
+.navbarCartStyle{
+  font-size: 10px;
+  z-index: 5;
+  position: absolute; 
+  left:92px;
+  bottom: 7px;
+}
+
 #searchBar input {
   padding: 10px;
   font-size: 18px;

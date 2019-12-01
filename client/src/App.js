@@ -1,50 +1,57 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  Redirect, 
+} from 'react-router-dom';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.getLoggedUser = this.getLoggedUser.bind(this);
-    this.getLoginClick = this.getLoginClick.bind(this);
-    this.getMainClick = this.getMainClick.bind(this);
+    this.getSearchValue = this.getSearchValue.bind(this);
     this.state = ({
       isLogged: false,
-      showLoginSignup: false,
-      showMainPage: true,
+      showSearchResult: false,
+      SearchValue: "",
     });
   }
-
   getLoggedUser(loggedData){
     this.setState({
       isLogged: loggedData,
     });
   }
 
-  getLoginClick(clickData){
+  getSearchValue(SearchValue){
+    console.log(SearchValue);
     this.setState({
-      showLoginSignup: clickData,
-      showMainPage: !clickData,
-    });
-  }
-
-  getMainClick(clickData){
-    this.setState({
-      showMainPage: clickData,
-      showLoginSignup: !clickData,
+      SearchValue: SearchValue,
     });
   }
 
   render(){
     return (
-      <div className="App">
-        <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendLoginClick={this.getLoginClick} sendMainClick={this.getMainClick} />
-        <MainPage showComponent={this.state.showMainPage} isLogged={this.state.isLogged} sendMainClick={this.getMainClick} />
-        <Login_signup showComponent={this.state.showLoginSignup} sendLoggedUser={this.getLoggedUser} sendMainClick={this.getMainClick} />
-      </div>
+        <div className="App">
+          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser}  sendSearchValue={this.getSearchValue} />
+
+        </div>
     );
   }
 }
+/* 
+          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendLoginClick={this.getLoginClick} sendMainClick={this.getMainClick} sendSearchValue={this.getSearchValue} />
+          <MainPage showComponent={this.state.showMainPage} isLogged={this.state.isLogged} sendMainClick={this.getMainClick} />
+          <Login_signup showComponent={this.state.showLoginSignup} sendLoggedUser={this.getLoggedUser} sendMainClick={this.getMainClick} />
+
+          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser}  sendSearchValue={this.getSearchValue} />
+          <MainPage isLogged={this.state.isLogged} />
+          <Login_signup  sendLoggedUser={this.getLoggedUser}  />
+*/
 
 class CategoryBar extends React.Component{
   constructor(props){
@@ -83,9 +90,6 @@ class MainPage extends React.Component{
     });
   }
   render(){
-    if (!this.props.showComponent) {
-      return null;
-    }else{
       return(
         <div>
           <div>
@@ -175,110 +179,122 @@ class MainPage extends React.Component{
       );
     }
   }
-}
 
 class Navbar extends React.Component{
   constructor(props){
     super(props);
-    this.state = {};
+    this.getLoggedUser = this.getLoggedUser.bind(this);
+    this.state = {
+      isLogged: false,
+      searchValue: "",
+      CartItems: 0,
+    };
   }
 
-  handleMainClick(event){
-    this.props.sendMainClick(true);
+  getLoggedUser(loggedData){
+    this.setState({
+      isLogged: loggedData,
+    });
   }
 
-  handleLoginClick(){
-    this.props.sendLoginClick(true);
-  }
-
-  handleLogout(event){
+  handleSearchClick(event){
     event.preventDefault();
-    let url = "http://localhost:9000/logout";
-    fetch(url, {
-        method: 'get',
-        credentials: 'include',      
-    })
-    .then(response=>response.text())
-    .then(response => { 
-      console.log(response);
-      this.props.sendLoggedUser(false);
-    })
-    .catch(err => err);
+    this.props.sendSearchValue(this.state.searchValue);
+  }
+
+  handleSearchChange(event){
+    this.setState({
+      searchValue: event.target.value,
+    });
   }
 
   render(){
     return(
-      <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border sticky-top">
-        <a className="navbar-brand" onClick={() => this.handleMainClick()}>
-          <div className='NavbarLogoPart3 center-Element'>
-            <i className="fab fa-adn"></i>
+      <Router>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border sticky-top">
+          <Link className="navbar-brand" to="/">
+            <div className='NavbarLogoPart3 center-Element'>
+              <i className="fab fa-adn"></i>
+            </div>
+            <div className='NavbarLogoPart1'>A</div>
+            <div className='NavbarLogoPart2'>rbuzy.co</div>
+            <div className='NavbarLogoPart1'>m</div>
+          </Link>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <div className="center-Element">
+              <form className="form-inline" id="searchBar">
+                <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar" value={this.state.searchValue} onChange= {(event) => this.handleSearchChange(event)}></input>
+                <li className="nav-item dropdown" id="searchBarDropdown">
+                  <a className="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Wszędzie <i className="fas fa-chevron-down"></i>
+                  </a>
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a className="dropdown-item">Wszędzie</a>
+                    <a className="dropdown-item">Komputery</a>
+                    <a className="dropdown-item">Laptopy</a>
+                    <a className="dropdown-item">Karty Graficzne</a>
+                    <a className="dropdown-item">Procesory</a>
+                    <a className="dropdown-item">Dyski SSD/HDD</a>
+                    <a className="dropdown-item">pamięć RAM</a>
+                    <a className="dropdown-item">Płyty główne</a>
+                    <a className="dropdown-item">Obudowy komputerowe</a>
+                  </div>
+                </li>
+                <button type="submit">Wyszukaj <i className="fa fa-search" onClick={(event) => this.handleSearchClick(event)}></i></button>
+              </form>
+            </div>
+            <div className = "float-right">
+              <ul className='navbar-nav mr-auto'>
+                <li className={'nav-item pr-3 ' + (this.state.isLogged ? 'hidden' : '')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' to="/zaloguj">
+                    <span className = "pr-2">Profil</span>
+                    <i className='bigicon fas fa-user'></i>
+                  </Link>
+                </li>
+                <li className={'nav-item pr-3 '  + (this.state.isLogged ? '' : 'hidden')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' to="/profil">
+                    <span className = "pr-2">Profil</span>
+                    <i className='bigicon fas fa-user'></i>
+                  </Link>
+                </li>
+                <li className='nav-item pr-3'>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer position-relative' to="/koszyk">
+                    <span className = "pr-1">Koszyk</span>
+                    <i className='bigicon fas fa-shopping-cart'></i><span class="badge badge-dark navbarCartStyle position-absolute">{this.state.CartItems}</span>
+                  </Link>
+                </li>
+                <li className={'nav-item ' + (this.state.isLogged ? 'hidden' : '')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' to="/zaloguj" >
+                    <span className = "pr-2">Zaloguj</span>
+                    <i className='bigicon fas fa-sign-in-alt'></i>
+                  </Link>
+                </li>
+                <li className={'nav-item ' + (this.state.isLogged ? '' : 'hidden')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' to="/wyloguj">
+                    <span className = "pr-2">Wyloguj</span>
+                    <i className='bigicon fas fa-sign-out-alt'></i>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className='NavbarLogoPart1'>A</div>
-          <div className='NavbarLogoPart2'>rbuzy.co</div>
-          <div className='NavbarLogoPart1'>m</div>
-        </a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-          <div className="center-Element">
-            <form className="form-inline" id="searchBar">
-              <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar"></input>
-              <li className="nav-item dropdown" id="searchBarDropdown">
-                <a className="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Wszędzie <i className="fas fa-chevron-down"></i>
-                </a>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a className="dropdown-item">Wszędzie</a>
-                  <a className="dropdown-item">Komputery</a>
-                  <a className="dropdown-item">Laptopy</a>
-                  <a className="dropdown-item">Karty Graficzne</a>
-                  <a className="dropdown-item">Procesory</a>
-                  <a className="dropdown-item">Dyski SSD/HDD</a>
-                  <a className="dropdown-item">pamięć RAM</a>
-                  <a className="dropdown-item">Płyty główne</a>
-                  <a className="dropdown-item">Obudowy komputerowe</a>
-                </div>
-              </li>
-              <button type="submit">Wyszukaj <i className="fa fa-search"></i></button>
-            </form>
-          </div>
-          <div className = "float-right">
-            <ul className='navbar-nav mr-auto'>
-              <li className={'nav-item pr-3 ' + (this.props.isLogged ? 'hidden' : '')}>
-                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={() => this.handleLoginClick()}>
-                  <span className = "pr-2">Profil</span>
-                  <i className='bigicon fas fa-user'></i>
-                </a>
-              </li>
-              <li className={'nav-item pr-3 '  + (this.props.isLogged ? '' : 'hidden')}>
-                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer'>
-                  <span className = "pr-2">Profil</span>
-                  <i className='bigicon fas fa-user'></i>
-                </a>
-              </li>
-              <li className='nav-item pr-3'>
-                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer'>
-                <span className = "pr-1">Koszyk</span>
-                  <i className='bigicon fas fa-shopping-cart'></i>
-                </a>
-              </li>
-              <li className={'nav-item ' + (this.props.isLogged ? 'hidden' : '')}>
-                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={() => this.handleLoginClick()}>
-                <span className = "pr-2">Zaloguj</span>
-                  <i className='bigicon fas fa-sign-in-alt'></i>
-                </a>
-              </li>
-              <li className={'nav-item ' + (this.props.isLogged ? '' : 'hidden')}>
-                <a className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' onClick={(event) => this.handleLogout(event)}>
-                  <span className = "pr-2">Wyloguj</span>
-                  <i className='bigicon fas fa-sign-out-alt'></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+        </nav>
+
+        <Switch>
+          <Route exact path="/" >
+            <MainPage />
+          </Route>
+          <Route path="/zaloguj">
+            <Login_signup  sendLoggedUser={this.getLoggedUser}  />
+          </Route>
+          <Route path="/wyloguj">
+            <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
@@ -288,25 +304,22 @@ class Login_signup extends React.Component{
     super(props);
     this.state = ({
       czyfirma: false,
-      apiCreateUser: "",
       activeLogin: true,
       activeSignup: false,
       logged: false,
-      waitngLogin: false,
       errorLogin: false,
       errorMessageLogin: "",
       errorSignup: false,
       errorMessageSignup: "",
-    })
-  };
+    });
 
-  handleMainClick(event){
-    event.preventDefault();
-    this.props.sendMainClick(true);
-  }
+  };
 
   handleSignupSubmit(event){
     event.preventDefault();
+    this.setState({ 
+      errorSignup: false, 
+      errorMessageSignup: "", });
     let myForm = document.getElementById('SignupForm');
     let formData = new FormData(myForm);
     var object = {};
@@ -314,16 +327,22 @@ class Login_signup extends React.Component{
     let url = "http://localhost:9000/users";
     fetch(url, {
         method: 'post',
+        credentials: 'include',
         body: JSON.stringify(object),
         headers: new Headers({'content-type': 'application/json'})
     })
     .then(response=>response.text())
     .then(response=>{ 
-      console.log(response);
       if(response !== "signedup"){
         this.setState({ 
           errorSignup: true, 
           errorMessageSignup: response, })
+      }else{
+        console.log(response);
+        this.setState({ 
+          logged: true,
+        });
+        this.props.sendLoggedUser(this.state.logged);
       }
     })
     .catch(err => err);
@@ -358,7 +377,6 @@ class Login_signup extends React.Component{
           logged: true,
         });
         this.props.sendLoggedUser(this.state.logged);
-        this.props.sendMainClick(true);
       }
     })
     .catch(err => err);
@@ -389,9 +407,9 @@ class Login_signup extends React.Component{
   }
 
   render(){
-    if (!this.props.showComponent) {
-      return null;
-    }else{
+      if (this.state.logged === true) {
+        return <Redirect to='/' />
+      }
       return(
         <div>
         <div className='row '>
@@ -491,12 +509,64 @@ class Login_signup extends React.Component{
         </div>
         <div className ="row">
           <div className ="col-4"></div>
-          <div className ="col-4 text-left"><button className="btn btn-outline-danger" onClick={(event) => this.handleMainClick(event)}> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</button></div>
+          <div className ="col-4 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
           <div className ="col-4"></div>
         </div>
       </div>
+
       );
     }
+  }
+
+class Logout extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = ({
+      isLogged: this.props.isLogged,
+    });
+  };
+  
+  handleLogout(event){
+    event.preventDefault();
+    let url = "http://localhost:9000/logout";
+    fetch(url, {
+        method: 'get',
+        credentials: 'include',      
+    })
+    .then(response=>response.text())
+    .then(response => { 
+      console.log(response);
+      this.setState({
+        isLogged: false,
+      });
+      this.props.sendLoggedUser(this.state.isLogged);
+    })
+    .catch(err => err);
+  }
+  
+  render(){
+    if (this.state.isLogged === false) {
+      return <Redirect to='/' />
+    }else{
+      return(
+        <div>
+          <div className='row '>
+            <div className='col-4'>
+            </div>
+            <div className='col-4 m-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
+              <div className= "card-body ">
+                <div className="p-3 text-left">
+                  <h5 className="card-title bigfont">Czy na pewno chcesz się wylogować?</h5>
+                  <div className="loginSignupSubmitButton">
+                    <div className ="d-inline pr-5"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+                    <button  className="btn btn-outline-success" onClick = {(event) => this.handleLogout(event)}>Wyloguj</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    )};
   }
 }
 
@@ -512,4 +582,5 @@ class PageFooter extends React.Component{
     );
   }
 }
+
 export default App;

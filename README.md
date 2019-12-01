@@ -20,6 +20,7 @@
   - `npm install express-mysql-session --save`
   - `npm install cors`
   - `npm install bcrypt` <- z uprawnieniami admina
+  - `npm install react-router-dom` 
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
   - `git init`
@@ -49,4 +50,5 @@
   - `git pull origin master`
 - po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter)
 - następnie w konsoli wpisujemy
+  - `git commit -m "Your comment"`
   - `git push origin master`

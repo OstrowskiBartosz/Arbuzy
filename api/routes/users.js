@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-router.use(express.json());
+
+router.use(express.json())
 
 var con = mysql.createConnection({
   host: 'localhost',
@@ -13,9 +16,27 @@ var con = mysql.createConnection({
   charset : 'utf8_unicode_ci',
 });
 
+var Storeoptions = {
+  host: 'localhost',
+  user: 'root',
+  password: 'lolo',
+  database: 'mydb'
+};
+var sessionStore = new MySQLStore(Storeoptions);
+router.use(session({
+  key: 'user_sid',
+  secret: 'idealpancake',
+  store: sessionStore,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 2,
+    httpOnly: false,
+  },
+}));
+
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected to database!");
   router.post('/', function (req, res, next) {
     let username = req.body.login;
     let email = req.body.email;
@@ -40,9 +61,9 @@ con.connect(function(err) {
           bcrypt.hash(req.body['haslo'], salt, function(err, hash) {
             sql = sql + "\'" + hash + "\');";
             con.query(sql, function (err, result) {
-              console.log("dodano;");
+              req.session.user = username;
+              req.session.save();
               res.send('signedup');
-              res.end();
               if (err) throw err;
             });
           });
