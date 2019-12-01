@@ -13,7 +13,6 @@ import {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.getLoggedUser = this.getLoggedUser.bind(this);
     this.getSearchValue = this.getSearchValue.bind(this);
     this.state = ({
       isLogged: false,
@@ -21,6 +20,29 @@ class App extends React.Component {
       SearchValue: "",
     });
   }
+
+  componentDidMount() {
+    this.fetchLoggedUser();
+  }
+
+  fetchLoggedUser(){
+    let url = "http://localhost:9000/session";
+    fetch(url, {
+        method: 'get',
+        credentials: 'include',
+        headers: new Headers({'content-type': 'application/json'}),        
+    })
+    .then(response=>response.text())
+    .then(response => { 
+      if(response === "logged"){
+        this.setState({ 
+          isLogged: true,
+        });
+      }
+    })
+    .catch(err => err);
+  }
+
   getLoggedUser(loggedData){
     this.setState({
       isLogged: loggedData,
@@ -37,21 +59,12 @@ class App extends React.Component {
   render(){
     return (
         <div className="App">
-          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser}  sendSearchValue={this.getSearchValue} />
+          <Navbar isLogged={this.state.isLogged} sendSearchValue={this.getSearchValue} />
 
         </div>
     );
   }
 }
-/* 
-          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendLoginClick={this.getLoginClick} sendMainClick={this.getMainClick} sendSearchValue={this.getSearchValue} />
-          <MainPage showComponent={this.state.showMainPage} isLogged={this.state.isLogged} sendMainClick={this.getMainClick} />
-          <Login_signup showComponent={this.state.showLoginSignup} sendLoggedUser={this.getLoggedUser} sendMainClick={this.getMainClick} />
-
-          <Navbar isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser}  sendSearchValue={this.getSearchValue} />
-          <MainPage isLogged={this.state.isLogged} />
-          <Login_signup  sendLoggedUser={this.getLoggedUser}  />
-*/
 
 class CategoryBar extends React.Component{
   constructor(props){
@@ -189,12 +202,21 @@ class Navbar extends React.Component{
       searchValue: "",
       CartItems: 0,
     };
+    console.log("state:" + this.state.isLogged);
+  }
+  componentDidUpdate(prevState) {
+    if(this.props.isLogged!==prevState.isLogged){
+      this.setState({ 
+        isLogged: this.props.isLogged, 
+      });
+    }
   }
 
   getLoggedUser(loggedData){
-    this.setState({
-      isLogged: loggedData,
-    });
+    this.setState({ isLogged: loggedData, }, () => {
+    }); 
+
+    
   }
 
   handleSearchClick(event){
@@ -263,7 +285,7 @@ class Navbar extends React.Component{
                 <li className='nav-item pr-3'>
                   <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer position-relative' to="/koszyk">
                     <span className = "pr-1">Koszyk</span>
-                    <i className='bigicon fas fa-shopping-cart'></i><span class="badge badge-dark navbarCartStyle position-absolute">{this.state.CartItems}</span>
+                    <i className='bigicon fas fa-shopping-cart'></i><span className="badge badge-dark navbarCartStyle position-absolute">{this.state.CartItems}</span>
                   </Link>
                 </li>
                 <li className={'nav-item ' + (this.state.isLogged ? 'hidden' : '')}>
