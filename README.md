@@ -19,8 +19,12 @@
   - `npm install express-session`
   - `npm install express-mysql-session --save`
   - `npm install cors`
+  - `npm install --global --production windows-build-tools` <- z uprawnieniami admina
+  - `npm install --global node-gyp@latest` <- z uprawnieniami admina
+  - `for /f "delims=" %P in ('npm prefix -g') do npm config set node_gyp "%P\node_modules\node-gyp\bin\node-gyp.js"` <- z uprawnieniami admina
   - `npm install bcrypt` <- z uprawnieniami admina
-  - `npm install react-router-dom` 
+- instalacja w folderze `client` kolejno
+  - `npm install react-router-dom` <- z uprawnieniami admina
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
   - `git init`
@@ -48,7 +52,6 @@
 
 - przed rozpoczęciem czegokolwiek zawsze dajemy
   - `git pull origin master`
-- po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter)
+- po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter) lub alternatywnie w konsoli wpisujemy `git commit -m "Your comment"`
 - następnie w konsoli wpisujemy
-  - `git commit -m "Your comment"`
   - `git push origin master`
