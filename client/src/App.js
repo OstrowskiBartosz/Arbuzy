@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {
@@ -6,7 +6,8 @@ import {
   Route,
   Switch,
   Link,
-  Redirect, 
+  Redirect,
+  useLocation,
 } from 'react-router-dom';
 
 
@@ -17,7 +18,8 @@ class App extends React.Component {
     this.state = ({
       isLogged: false,
       showSearchResult: false,
-      SearchValue: "",
+      searchValue: "",
+      searchCategory: "",
     });
   }
 
@@ -43,24 +45,18 @@ class App extends React.Component {
     .catch(err => err);
   }
 
-  getLoggedUser(loggedData){
+  getSearchValue(searchValue, searchCategory){
     this.setState({
-      isLogged: loggedData,
+      searchValue: searchValue,
+      searchCategory: searchCategory,
     });
-  }
 
-  getSearchValue(SearchValue){
-    console.log(SearchValue);
-    this.setState({
-      SearchValue: SearchValue,
-    });
   }
 
   render(){
     return (
         <div className="App">
           <Navbar isLogged={this.state.isLogged} sendSearchValue={this.getSearchValue} />
-
         </div>
     );
   }
@@ -192,18 +188,31 @@ class MainPage extends React.Component{
       );
     }
   }
-
+  
 class Navbar extends React.Component{
+  
   constructor(props){
     super(props);
     this.getLoggedUser = this.getLoggedUser.bind(this);
+    const params = new URLSearchParams(window.location.search);
+    let q = "";
+    let w = "Wszędzie";
+    if(params.has('q')){
+      q = params.get('q');
+    }
+    if(params.has('w')){
+      w = params.get('w');
+    }
+
     this.state = {
       isLogged: false,
-      searchValue: "",
+      searchValue: q,
       CartItems: 0,
+      searchCategory: w,
     };
-    console.log("state:" + this.state.isLogged);
+    
   }
+
   componentDidUpdate(prevState) {
     if(this.props.isLogged!==prevState.isLogged){
       this.setState({ 
@@ -213,15 +222,20 @@ class Navbar extends React.Component{
   }
 
   getLoggedUser(loggedData){
-    this.setState({ isLogged: loggedData, }, () => {
+    this.setState({
+       isLogged: loggedData, 
     }); 
-
-    
   }
 
-  handleSearchClick(event){
+  handleSearchClick(){
+    this.props.sendSearchValue(this.state.searchValue, this.state.searchCategory);
+  }
+
+  handleCategoryChange(event){
     event.preventDefault();
-    this.props.sendSearchValue(this.state.searchValue);
+    this.setState({
+      searchCategory: event.target.id
+    })
   }
 
   handleSearchChange(event){
@@ -248,24 +262,28 @@ class Navbar extends React.Component{
           <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <div className="center-Element">
               <form className="form-inline" id="searchBar">
-                <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar" value={this.state.searchValue} onChange= {(event) => this.handleSearchChange(event)}></input>
+                <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar" value={this.state.searchValue} onChange= {(event) => this.handleSearchChange(event)} required></input>
                 <li className="nav-item dropdown" id="searchBarDropdown">
-                  <a className="nav-link" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Wszędzie <i className="fas fa-chevron-down"></i>
+                  <a className="nav-link" id="navbarCategory" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {this.state.searchCategory} <i className="fas fa-chevron-down"></i>
                   </a>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a className="dropdown-item">Wszędzie</a>
-                    <a className="dropdown-item">Komputery</a>
-                    <a className="dropdown-item">Laptopy</a>
-                    <a className="dropdown-item">Karty Graficzne</a>
-                    <a className="dropdown-item">Procesory</a>
-                    <a className="dropdown-item">Dyski SSD/HDD</a>
-                    <a className="dropdown-item">pamięć RAM</a>
-                    <a className="dropdown-item">Płyty główne</a>
-                    <a className="dropdown-item">Obudowy komputerowe</a>
+                  <div className="dropdown-menu" aria-labelledby="navbarCategory">
+                    <a className="dropdown-item" id="Wszędzie" onClick={(event) => this.handleCategoryChange(event)}>Wszędzie</a>
+                    <div className="dropdown-divider"></div>
+                    <a className="dropdown-item" id="Komputery" onClick={(event) => this.handleCategoryChange(event)}>Komputery</a>
+                    <a className="dropdown-item" id="Laptopy" onClick={(event) => this.handleCategoryChange(event)}>Laptopy</a>
+                    <a className="dropdown-item" id="Karty Graficzne" onClick={(event) => this.handleCategoryChange(event)}>Karty Graficzne</a>
+                    <a className="dropdown-item" id="Procesory" onClick={(event) => this.handleCategoryChange(event)}>Procesory</a>
+                    <a className="dropdown-item" id="Dyski SSD" onClick={(event) => this.handleCategoryChange(event)}>Dyski SSD</a>
+                    <a className="dropdown-item" id="Dyski HDD" onClick={(event) => this.handleCategoryChange(event)}>Dyski HDD</a>
+                    <a className="dropdown-item" id="pamięć RAM" onClick={(event) => this.handleCategoryChange(event)}>pamięć RAM</a>
+                    <a className="dropdown-item" id="Płyty główne" onClick={(event) => this.handleCategoryChange(event)}>Płyty główne</a>
+                    <a className="dropdown-item" id="Obudowy" onClick={(event) => this.handleCategoryChange(event)}>Obudowy</a>
                   </div>
                 </li>
-                <button type="submit">Wyszukaj <i className="fa fa-search" onClick={(event) => this.handleSearchClick(event)}></i></button>
+                <Link to={`/wyszukaj?q=${this.state.searchValue}&w=${this.state.searchCategory}`}>
+                  <button type="submit"  onClick={(event) => this.handleSearchClick(event)}>Wyszukaj <i className="fa fa-search"></i></button>
+                </Link>
               </form>
             </div>
             <div className = "float-right">
@@ -314,6 +332,9 @@ class Navbar extends React.Component{
           </Route>
           <Route path="/wyloguj">
             <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
+          </Route>
+          <Route path="/wyszukaj">
+            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValue} searchCategory={this.state.searchCategory} />
           </Route>
         </Switch>
       </Router>
@@ -600,6 +621,98 @@ class PageFooter extends React.Component{
     return(
       <div className = "Footer">
         FOOTER
+      </div>
+    );
+  }
+}
+
+
+class SearchResults extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = ({
+      searchValue: this.props.searchValue,
+      searchCategory: this.props.searchCategory,
+    });
+  }
+  render(){
+    return(
+      <div>
+        <div className="row">
+          <div className="col-1"></div>
+          <div className="col-2">
+            <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+            </div>
+          </div>
+          <div className="col-7">
+            <div className="row">
+              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+              </div>
+            </div>
+          </div>
+          <div className="col-2"></div>
+        </div>
+
       </div>
     );
   }
