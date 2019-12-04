@@ -182,7 +182,7 @@
   cursor: pointer;
 }
 /* AKTYWNA ZAKŁADKA LOGIN I SIGNUP*/
-.active{
+.activeTab{
   border-bottom: red 4px solid;
   animation-duration: 2s;
 }

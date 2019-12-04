@@ -35,14 +35,21 @@ router.use(session({
   },
 }));
 
-function pobierzAtrybuty(produkt, callback){
+function pobierzAtrybuty(sql, callback) {
+  con.query(sql, function (err, resultAtrybuty) {
+    if(err) return callback(err);
+    callback(null, resultAtrybuty);
+  });
+}
+
+function czyPobranoAtrybuty(produkt, callback){
   var wynikiAtrybuty = [];
   var sql = `
   SELECT a.atrybut, a.wartosc, a.typ
   FROM produkty p
   INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
   WHERE nazwa_produktu like \'%` + produkt + `%\'`;
-  getWord(sql, function (err, resultAtrybuty) {
+  pobierzAtrybuty(sql, function (err, resultAtrybuty) {
     if (resultAtrybuty.length > 0) {
       for(var rowAtrybuty in resultAtrybuty){
         wynikiAtrybuty.push({atrybut: resultAtrybuty[rowAtrybuty].atrybut, wartosc: resultAtrybuty[rowAtrybuty].wartosc, typ: resultAtrybuty[rowAtrybuty].typ});
@@ -52,23 +59,17 @@ function pobierzAtrybuty(produkt, callback){
   });
 }
 
-function getWord(sql, callback) {
-  con.query(sql, function (err, resultAtrybuty) {
-    if(err) return callback(err);
-    callback(null, resultAtrybuty);
-  });
-}
-
 function czyPobraneDane(result, callback) {
-  wyniki = [];
+  wyniki = new Object();
+  var wynikiParametry= [];
   async.forEachOf(result, (value, key, callback) => {
-    var wynikiProdukty = [];
-    pobierzAtrybuty(value.nazwa_produktu, function(err, resultAtrybuty){
+
+    czyPobranoAtrybuty(value.nazwa_produktu, function(err, resultAtrybuty){
     wynikiAtrybuty = resultAtrybuty;
-    wynikiProdukty.push({nazwa_produktu: value.nazwa_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, atrybuty: wynikiAtrybuty});
-    wyniki.push({produkt: wynikiProdukty});
-    callback();
+    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, atrybuty: wynikiAtrybuty});
    });
+   wyniki.produkty = wynikiParametry;
+   callback();
   }, err => {
     if (err) console.error(err.message);
     callback(null, wyniki)
@@ -82,10 +83,10 @@ function pobierzLiczbeProduktow(sql, callback){
   });
 }
 
-function czyPobraneDaneLiczbaProduktow(zapytania, wyniki,  callback) {
+function czyPobranoLiczbeProduktow(zapytania, wyniki,  callback) {
   async.forEachOf(zapytania, (value, key, callback) => {
     pobierzLiczbeProduktow(value, function(err, result){
-    wyniki.push({liczba_przedmiotow: result[0].liczba_przedmiotow});
+    wyniki.liczba_przedmiotow = result[0].liczba_przedmiotow;
     callback(null, wyniki)
   });
   }, err => {
@@ -93,37 +94,48 @@ function czyPobraneDaneLiczbaProduktow(zapytania, wyniki,  callback) {
   });
 }
 
-function pobierzSortowania(sql, callback){
+function pobierzFiltry(sql, callback){
   con.query(sql, function(err, result){
     if(err) return callback(err);
     callback(null, result);
   });
 }
 
-function czyPobraneDaneSortowania(zapytania, wyniki,  callback) {
+function czyPobranoFiltry(zapytania, wyniki,  callback) {
   async.forEachOf(zapytania, (value, key, callback) => {
     var atrybuty = [];
-    var grupySortowania = [];
+    var grupyFiltrowania = [];
     var ostatniAtrybut = null;
-    var licznik = 0;
-    pobierzSortowania(value, function(err, result){
+    var licznik = 0, suma = 0;
+    var AtrybutyObiekt = new Object();
+    pobierzFiltry(value, function(err, result){
       for(var row in result){
         if(result[row].atrybut != ostatniAtrybut && licznik !== 0 && ostatniAtrybut != null){
-          grupySortowania.push({[ostatniAtrybut]: atrybuty});
-          atrybuty = [];
-          licznik = 0;
-          atrybuty.push([result[row].wartosc])
+          AtrybutyObiekt.atrybut = ostatniAtrybut;
+          AtrybutyObiekt.wartosci = atrybuty;
+          AtrybutyObiekt.liczba_produktow = suma;
+          grupyFiltrowania.push(AtrybutyObiekt);
+          AtrybutyObiekt = new Object();
+          suma = 0; atrybuty = [];
+          atrybuty.push({"wartosc": result[row].wartosc, "id": result[row].id_atrybutu, "liczba_produktow": result[row].liczba});
+          suma = suma + result[row].liczba;
           ostatniAtrybut = result[row].atrybut;
+          licznik = 1;
         }else{
-          atrybuty.push([result[row].wartosc])
+          atrybuty.push({"wartosc": result[row].wartosc, "id": result[row].id_atrybutu, "liczba_produktow": result[row].liczba});
+          suma = suma + result[row].liczba;
           ostatniAtrybut = result[row].atrybut;
           licznik++;
         }
         if(row==result.length-1){
-          grupySortowania.push({[ostatniAtrybut]: atrybuty});
+          AtrybutyObiekt.wartosci = atrybuty;
+          AtrybutyObiekt.liczba_produktow = suma;
+          AtrybutyObiekt.atrybut = ostatniAtrybut;
+          grupyFiltrowania.push(AtrybutyObiekt);
+          console.log(grupyFiltrowania);
         }
       }
-      wyniki.push({grupySortowania});
+      wyniki.filtry = grupyFiltrowania;
       callback(null, wyniki);
     });
 
@@ -132,24 +144,51 @@ function czyPobraneDaneSortowania(zapytania, wyniki,  callback) {
   });
 }
 
-// LIMIT (pageNo - 1) * PageSize, PageSize
+function pobierzKategoriee(sql, callback){
+  con.query(sql, function(err, result){
+    if(err) return callback(err);
+    callback(null, result);
+  });
+}
+
+function czyPobranoKategorie(zapytania, wyniki,  callback) {
+  async.forEachOf(zapytania, (value, key, callback) => {
+    var kategorie = [];
+    var grupyKategorii = [];
+    var ostatniAtrybut = null;
+    var KategorieObiekt = new Object();
+    pobierzKategoriee(value, function(err, result){
+      for(var row in result){
+        KategorieObiekt.nazwa_kategorii = result[row].nazwa_kategorii;
+        KategorieObiekt.id_kategorii = result[row].id_kategorii;
+        KategorieObiekt.liczba_produktow = result[row].liczba;
+        grupyKategorii.push(KategorieObiekt);
+        KategorieObiekt = new Object();
+      }
+      wyniki.kategorie = grupyKategorii;
+      callback(null, wyniki);
+    });
+
+  }, err => {
+    if (err) console.error(err.message); callback(null, wyniki);
+  });
+}
+
 router.post('/', function(req, res, next) {
   let nazwa_produktu = req.body.nazwa_produktu;
-  if (nazwa_produktu) {
+  let strona = req.body.strona;
+  let limit = req.body.limit;
+  if (nazwa_produktu && strona && limit) {
+    let offset = (limit*strona)-limit;
     var zapytania = [];
-    zapytania[0]= `
-      SELECT count(p.nazwa_produktu) as liczba_przedmiotow
-      FROM produkty p
-      INNER JOIN ceny c ON p.id_produktu=c.id_produktu
-      INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-      WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\';
-    `;
     var sql = `
-    SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu, count(p.nazwa_produktu) as liczba_przedmiotow
+    SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu
     FROM produkty p
     INNER JOIN ceny c ON p.id_produktu=c.id_produktu
     INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-    WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'`;
+    WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+    LIMIT ` + limit + ` OFFSET ` + offset + `;`
+    console.log(sql);
     con.query(sql, (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
         zapytania[0]= `
@@ -157,37 +196,34 @@ router.post('/', function(req, res, next) {
         FROM produkty p
         INNER JOIN ceny c ON p.id_produktu=c.id_produktu
         INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-        WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\';
-      `;
-        czyPobraneDaneLiczbaProduktow(zapytania, wyniki, function (err, wyniki) {
+        WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\';`;
+        czyPobranoLiczbeProduktow(zapytania, wyniki, function (err, wyniki) {
           zapytania[0] = `
-          SELECT a.atrybut, a.wartosc, a.typ
+          SELECT a.id_atrybutu, a.atrybut, a.wartosc, a.typ, count(a.wartosc) as liczba
           FROM produkty p
           INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-          WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
-          ORDER BY A.atrybut;
-        `;
-          czyPobraneDaneSortowania(zapytania, wyniki, function (err, wyniki) {
-            res.send(JSON.stringify(wyniki, null, 1));
+          WHERE nazwa_produktu like '%geforce%' and a.typ != 2 and a.typ != 3 
+          GROUP BY a.wartosc
+          ORDER BY a.atrybut;`;
+          czyPobranoFiltry(zapytania, wyniki, function (err, wyniki) {
+            zapytania[0] = `
+            SELECT k.id_kategorii, k.nazwa_kategorii, count(p.nazwa_produktu) as liczba
+            FROM produkty p
+            INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+            WHERE nazwa_produktu like '%geforce%'
+            GROUP BY nazwa_kategorii;`;
+            console.log(zapytania[0]);
+            czyPobranoKategorie(zapytania, wyniki, function (err, wyniki) {
+              res.send(JSON.stringify(wyniki, null, 3));
+              res.end();
+            });
           });
         });
       });
     });
+  }else{
+    res.send("wyslij poprawne dane.");
+    res.end();
   }
 });
 module.exports = router;
-
-
-/*
-    SELECT count(p.nazwa_produktu) as liczba_przedmiotow
-    FROM produkty p
-    INNER JOIN ceny c ON p.id_produktu=c.id_produktu
-    INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-    WHERE nazwa_produktu like '%geforce%';
-
-  SELECT a.atrybut, a.wartosc, a.typ
-  FROM produkty p
-  INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-  WHERE nazwa_produktu like '%geforce%'
-  ORDER BY A.atrybut;
-*/

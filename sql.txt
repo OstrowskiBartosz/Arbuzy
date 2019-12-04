@@ -78,6 +78,7 @@ insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1660 GAMING OC", "Ch
 insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1080", "Chcąc sięgać po ");
 insert into produkty values (2, 3, 4, "Gigabyte GeForce RTX 2080", "Super karta");
 insert into produkty values (3, 3, 4, "Gigabyte GeForce RTX 2060TI", "Mega Kartra do wszystkiego ");
+insert into produkty values (4, 2, 2, "Super laptop GeForce", "praktycznie do wszystkiego ");
 
 insert into atrybuty values (1, 1, "pamieć RAM", "6 GB", 1);
 insert into atrybuty values (2, 1, "typ chłodzenia", "Wentylator", 1);
@@ -85,9 +86,18 @@ insert into atrybuty values (3, 1, "Rodzaj chipsetu", "GeForce GTX 1660", 1);
 insert into atrybuty values (4, 2, "pamieć RAM", "8 GB", 1);
 insert into atrybuty values (5, 2, "typ chłodzenia", "Wodne", 1);
 insert into atrybuty values (6, 2, "Rodzaj chipsetu", "GeForce GTX 2080", 1);
+insert into atrybuty values (7, 3, "pamieć RAM", "12 GB", 1);
+insert into atrybuty values (8, 3, "typ chłodzenia", "Wentylator", 1);
+insert into atrybuty values (9, 3, "Rodzaj chipsetu", "GeForce RTX 2060", 1);
+
+insert into atrybuty values (10, 4, "pamieć RAM", "12 GB", 1);
+insert into atrybuty values (11, 4, "Karta Graficzna", "Gigabyte GeForce RTX 2080", 1);
+insert into atrybuty values (12, 4, "Procesor ", "Intel i7 9900K", 1);
 
 insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
+insert into ceny values (3, 3, 1400, 1786.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
+insert into ceny values (4, 4, 7453, 9876.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 
 SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu
 FROM produkty p

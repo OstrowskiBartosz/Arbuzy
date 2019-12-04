@@ -459,10 +459,10 @@ class Login_signup extends React.Component{
           </div>
           <div className='col-4 m-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
             <div className = "card-body">
-              <div id="Signuptab" className = {"outlinetab col-6 " + (this.state.activeSignup ? " active" : "")} onClick={(event) => this.handleSLChange(event)}>
+              <div id="Signuptab" className = {"outlinetab col-6 " + (this.state.activeSignup ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
                 Rejestracja
               </div>
-              <div id="Logintab" className = {"outlinetab col-6 " + (this.state.activeLogin ? " active" : "")} onClick={(event) => this.handleSLChange(event)}>
+              <div id="Logintab" className = {"outlinetab col-6 " + (this.state.activeLogin ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
                 Logowanie
               </div>
 
@@ -632,7 +632,13 @@ class SearchResults extends React.Component{
     this.state = ({
       searchValue: this.props.searchValue,
       searchCategory: this.props.searchCategory,
-      itemCount: 0,
+      prevPage: false,
+      nextPage: true,
+      page: 1,
+      searchLimit: 10,
+
+      resItemWord: "produktów",
+      resItemCount: 0,
     });
   }
 
@@ -644,6 +650,8 @@ class SearchResults extends React.Component{
     const data = {
       nazwa_produktu: this.state.searchValue,
       kategoria: this.state.searchCategory,
+      strona: this.state.page,
+      limit: this.state.searchLimit,
     }
     fetch('http://localhost:9000/search', {
         method: 'post',
@@ -656,10 +664,22 @@ class SearchResults extends React.Component{
     .then(response=>response.text())
     .then(response => { 
       console.log(response);
-      var searchResults = response;
-      //this.renderResults(searchResults);
+      var resObj = JSON.parse(response);
+      console.log(resObj.liczba_przedmiotow);
+
+      let produkt = "";
+      if(resObj.liczba_przedmiotow == 0 || resObj.liczba_przedmiotow > 4){ produkt = "produktów";
+      } else if(resObj.liczba_przedmiotow > 1 && resObj.liczba_przedmiotow < 5){produkt = "produkty";
+      }else{produkt = "produkt";}
+      console.log(resObj.produkty[0].nazwa_produktu);
+      console.log(resObj.produkty[0].atrybuty[1].atrybut);
+      console.log(resObj.sortowania[0].atrybut);
+      console.log(resObj.sortowania[0].wartosci[0].wartosc);
+      console.log(resObj.sortowania[0].wartosci[0].liczba_produktow);
+      console.log(resObj.sortowania[0].liczba_produktow);
       this.setState({
-        //isLogged: false,
+        resItemCount: resObj.liczba_przedmiotow,
+        resItemWord: produkt,
       });
     })
     .catch(err => err);
@@ -672,41 +692,70 @@ class SearchResults extends React.Component{
     }
   }
 
+  handlePageChange(event){
+    console.log(event.target.id);
+    this.setState({
+      Page: event.target.id,
+    })
+    const data = {
+      nazwa_produktu: this.state.searchValue,
+      kategoria: this.state.searchCategory,
+      strona: this.state.page,
+      limit: this.state.limit,
+    }
+    // fetch('http://localhost:9000/search', {
+    //     method: 'post',
+    //     body: JSON.stringify(data),
+    //     credentials: 'include',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }     
+    // })
+    // .then(response=>response.text())
+    // .then(response => { 
+    // })
+    // .catch(err => err);
+  }
+
   render(){
     return(
       <div>
         <div className="row">
           <div className="col-1"></div>
           <div className="col-10 pt-5 text-left">
-            <div><h4>Znaleziono <span className="font-weight-bold">{this.state.itemCount}</span> produktów dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
+            <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
           </div>
         </div>
         <div className="row">
           <div className="col-1"></div>
           <div className="col-2">
             <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
+                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
             </div>
           </div>
           <div className="col-7">
             <div className="row">
-              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded"> 
+              <div className="col-8"></div>
+              <div className="col-4 componentBackgroundColor mt-1 shadow-sm p-3 bg-white rounded">
+                <div className="text-right">
+                  <div className="d-inline pr2">wyników na strone: </div> 
+                  <div className="font-weight-bold d-inline pr2">10 </div> 
+                  <div className="d-inline pr2">20 </div>
+                  <div className="d-inline pr2">30 </div>
+                </div>
               </div>
             </div>
             <div className="row">
-              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded"> 
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 componentBackgroundColor mt-3 pt-5 shadow-sm p-3 bg-white rounded">
               super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
@@ -723,7 +772,7 @@ class SearchResults extends React.Component{
               </div>
             </div>
             <div className="row">
-              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+              <div className="col-12 componentBackgroundColor mt-3 pt-5 shadow-sm p-3 bg-white rounded">
               super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
@@ -737,6 +786,18 @@ class SearchResults extends React.Component{
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-8"></div>
+              <div className="col-4 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                <nav aria-label="Page navigation example">
+                  <ul className="pagination justify-content-end">
+                    <li className={"page-item " + ((this.state.prevPage) ? "" : "disabled")}><a className="page-link" >Previous</a></li>
+                    <li className="page-item active"><a className="page-link" id="1" onClick={(event) => this.handlePageChange(event)}>1</a></li>
+                    <li className={"page-item " + ((this.state.nextPage) ? "" : "disabled")}><a className="page-link" >Next</a></li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
