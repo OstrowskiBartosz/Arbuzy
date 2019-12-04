@@ -23,6 +23,7 @@
   - `npm install --global node-gyp@latest` <- z uprawnieniami admina
   - `for /f "delims=" %P in ('npm prefix -g') do npm config set node_gyp "%P\node_modules\node-gyp\bin\node-gyp.js"` <- z uprawnieniami admina
   - `npm install bcrypt` <- z uprawnieniami admina
+  - `npm install async`
 - instalacja w folderze `client` kolejno
   - `npm install react-router-dom` <- z uprawnieniami admina
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`

@@ -56,6 +56,12 @@ CREATE TABLE ceny(
   do DATETIME NOT NULL,
   FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
 );
+ _________________________________________________________________________________________________________________
+|                                     ŻEBY PRZYJMOWAŁO POLSKIE ZNAKI                                              |
+|                                                                                                                 |
+|                ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
+|                ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
+|_________________________________________________________________________________________________________________|
 
 insert into producenci values (1, 'MSI');
 insert into producenci values (2, 'Razer');
@@ -69,15 +75,23 @@ insert into kategorie values (3, 'karta graficzna');
 
 insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1660 GAMING OC", "Chcąc sięgać po najnowsze produkcje gamingowe, warto dysponować układem graficznym tego pokroju. Karta NVIDIA GTX 1660 bazuje na nowoczesnej architekturze Turing, co zapewnia jej wyższą wydajność w grach, projektowaniu grafiki i podczas użytkowania i obróbki multimediów. Karta GTX 1660 to rozwiązanie dedykowane dla graczy, streamerów oraz dla osób zajmujących się obróbką multimediów. Jednostka korzysta z pamięci GDDR5, oferuje wysoki zakres taktowania oraz doskonałe parametry użytkowe. GTX 1660 to karta graficzna stworzona z myślą o najbardziej wymagających użytkownikach.")
 
+insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1080", "Chcąc sięgać po ");
+insert into produkty values (2, 3, 4, "Gigabyte GeForce RTX 2080", "Super karta");
+insert into produkty values (3, 3, 4, "Gigabyte GeForce RTX 2060TI", "Mega Kartra do wszystkiego ");
+
 insert into atrybuty values (1, 1, "pamieć RAM", "6 GB", 1);
 insert into atrybuty values (2, 1, "typ chłodzenia", "Wentylator", 1);
 insert into atrybuty values (3, 1, "Rodzaj chipsetu", "GeForce GTX 1660", 1);
+insert into atrybuty values (4, 2, "pamieć RAM", "8 GB", 1);
+insert into atrybuty values (5, 2, "typ chłodzenia", "Wodne", 1);
+insert into atrybuty values (6, 2, "Rodzaj chipsetu", "GeForce GTX 2080", 1);
 
 insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
+insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 
-                                  ŻEBY PRZYJMOWAŁO POLSKIE ZNAKI
- _________________________________________________________________________________________________________________
-|                                                                                                                 |
-|  ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                                    |  
-|  ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                                    |  
-|_________________________________________________________________________________________________________________|
+SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu
+FROM produkty p
+INNER JOIN ceny c ON p.id_produktu=c.id_produktu
+INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+WHERE nazwa_produktu like "%geforce%";                              
+"%geforce%";

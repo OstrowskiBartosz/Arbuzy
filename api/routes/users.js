@@ -23,6 +23,7 @@ var Storeoptions = {
   database: 'mydb'
 };
 var sessionStore = new MySQLStore(Storeoptions);
+
 router.use(session({
   key: 'user_sid',
   secret: 'idealpancake',

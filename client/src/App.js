@@ -7,7 +7,6 @@ import {
   Switch,
   Link,
   Redirect,
-  useLocation,
 } from 'react-router-dom';
 
 
@@ -633,15 +632,59 @@ class SearchResults extends React.Component{
     this.state = ({
       searchValue: this.props.searchValue,
       searchCategory: this.props.searchCategory,
+      itemCount: 0,
     });
   }
+
+  componentDidMount(){
+    this.fetchDataFromServer();
+  }
+
+  fetchDataFromServer(){
+    const data = {
+      nazwa_produktu: this.state.searchValue,
+      kategoria: this.state.searchCategory,
+    }
+    fetch('http://localhost:9000/search', {
+        method: 'post',
+        body: JSON.stringify(data),
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }     
+    })
+    .then(response=>response.text())
+    .then(response => { 
+      console.log(response);
+      var searchResults = response;
+      //this.renderResults(searchResults);
+      this.setState({
+        //isLogged: false,
+      });
+    })
+    .catch(err => err);
+  }
+
+  renderResults(searchResults){
+    for(var row in searchResults){
+      if (!searchResults.hasOwnProperty(row)) continue;
+      console.log(row);
+    }
+  }
+
   render(){
     return(
       <div>
         <div className="row">
           <div className="col-1"></div>
+          <div className="col-10 pt-5 text-left">
+            <div><h4>Znaleziono <span className="font-weight-bold">{this.state.itemCount}</span> produktów dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-1"></div>
           <div className="col-2">
-            <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
+            <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
                   super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
@@ -659,20 +702,7 @@ class SearchResults extends React.Component{
           </div>
           <div className="col-7">
             <div className="row">
-              <div className="col-12 componentBackgroundColor mt-5 pt-5 shadow-sm p-3 mb-1 bg-white rounded">
-              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
+              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded"> 
               </div>
             </div>
             <div className="row">
