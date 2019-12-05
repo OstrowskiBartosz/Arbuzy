@@ -48,7 +48,7 @@ function czyPobranoAtrybuty(produkt, callback){
   SELECT a.atrybut, a.wartosc, a.typ
   FROM produkty p
   INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-  WHERE nazwa_produktu like \'%` + produkt + `%\'`;
+  WHERE nazwa_produktu like \'%` + produkt + `%\' and a.typ != 2 and a.typ != 3`;
   pobierzAtrybuty(sql, function (err, resultAtrybuty) {
     if (resultAtrybuty.length > 0) {
       for(var rowAtrybuty in resultAtrybuty){
@@ -63,10 +63,9 @@ function czyPobraneDane(result, callback) {
   wyniki = new Object();
   var wynikiParametry= [];
   async.forEachOf(result, (value, key, callback) => {
-
     czyPobranoAtrybuty(value.nazwa_produktu, function(err, resultAtrybuty){
     wynikiAtrybuty = resultAtrybuty;
-    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, atrybuty: wynikiAtrybuty});
+    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, zdjecie: value.wartosc, atrybuty: wynikiAtrybuty});
    });
    wyniki.produkty = wynikiParametry;
    callback();
@@ -128,11 +127,10 @@ function czyPobranoFiltry(zapytania, wyniki,  callback) {
           licznik++;
         }
         if(row==result.length-1){
+          AtrybutyObiekt.atrybut = ostatniAtrybut;
           AtrybutyObiekt.wartosci = atrybuty;
           AtrybutyObiekt.liczba_produktow = suma;
-          AtrybutyObiekt.atrybut = ostatniAtrybut;
           grupyFiltrowania.push(AtrybutyObiekt);
-          console.log(grupyFiltrowania);
         }
       }
       wyniki.filtry = grupyFiltrowania;
@@ -181,15 +179,16 @@ router.post('/', function(req, res, next) {
   if (nazwa_produktu && strona && limit) {
     let offset = (limit*strona)-limit;
     var zapytania = [];
-    var sql = `
-    SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu
+    zapytania[0] = `
+    SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu, a.wartosc
     FROM produkty p
     INNER JOIN ceny c ON p.id_produktu=c.id_produktu
     INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+    INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
     WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+    and a.typ = 2
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
-    console.log(sql);
-    con.query(sql, (err, result) => {
+    con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
         zapytania[0]= `
         SELECT count(p.nazwa_produktu) as liczba_przedmiotow
@@ -202,9 +201,10 @@ router.post('/', function(req, res, next) {
           SELECT a.id_atrybutu, a.atrybut, a.wartosc, a.typ, count(a.wartosc) as liczba
           FROM produkty p
           INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-          WHERE nazwa_produktu like '%geforce%' and a.typ != 2 and a.typ != 3 
+          WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\' and a.typ != 2 and a.typ != 3 
           GROUP BY a.wartosc
           ORDER BY a.atrybut;`;
+          console.log(zapytania[0] );
           czyPobranoFiltry(zapytania, wyniki, function (err, wyniki) {
             zapytania[0] = `
             SELECT k.id_kategorii, k.nazwa_kategorii, count(p.nazwa_produktu) as liczba
@@ -212,7 +212,6 @@ router.post('/', function(req, res, next) {
             INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
             WHERE nazwa_produktu like '%geforce%'
             GROUP BY nazwa_kategorii;`;
-            console.log(zapytania[0]);
             czyPobranoKategorie(zapytania, wyniki, function (err, wyniki) {
               res.send(JSON.stringify(wyniki, null, 3));
               res.end();

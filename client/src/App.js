@@ -380,7 +380,7 @@ class Login_signup extends React.Component{
           errorSignup: true, 
           errorMessageSignup: response, })
       }else{
-        console.log(response);
+        //console.log(response);
         this.setState({ 
           logged: true,
         });
@@ -632,26 +632,32 @@ class SearchResults extends React.Component{
     this.state = ({
       searchValue: this.props.searchValue,
       searchCategory: this.props.searchCategory,
-      prevPage: false,
-      nextPage: true,
+      prevPageAvailable: false,
+      nextPageAvailable: false,
       page: 1,
-      searchLimit: 10,
+      activePage: 1,
+      
+      activeSearchLimit: 10,
+      searchLimit10: true,
+      searchLimit20: false,
+      searchLimit30: false,
 
+      activeSearchSorting: "domyślne",
+
+      isLoading: true,
+      ApiResponse: [],
+      numberOfPages: 0,
       resItemWord: "produktów",
       resItemCount: 0,
     });
   }
 
   componentDidMount(){
-    this.fetchDataFromServer();
-  }
-
-  fetchDataFromServer(){
     const data = {
       nazwa_produktu: this.state.searchValue,
       kategoria: this.state.searchCategory,
       strona: this.state.page,
-      limit: this.state.searchLimit,
+      limit: this.state.activeSearchLimit,
     }
     fetch('http://localhost:9000/search', {
         method: 'post',
@@ -663,33 +669,28 @@ class SearchResults extends React.Component{
     })
     .then(response=>response.text())
     .then(response => { 
-      console.log(response);
-      var resObj = JSON.parse(response);
-      console.log(resObj.liczba_przedmiotow);
+      var responseobject = JSON.parse(response);
 
       let produkt = "";
-      if(resObj.liczba_przedmiotow == 0 || resObj.liczba_przedmiotow > 4){ produkt = "produktów";
-      } else if(resObj.liczba_przedmiotow > 1 && resObj.liczba_przedmiotow < 5){produkt = "produkty";
+      if(responseobject.liczba_przedmiotow === 0 || responseobject.liczba_przedmiotow > 4){ produkt = "produktów";
+      } else if(responseobject.liczba_przedmiotow > 1 && responseobject.liczba_przedmiotow < 5){produkt = "produkty";
       }else{produkt = "produkt";}
-      console.log(resObj.produkty[0].nazwa_produktu);
-      console.log(resObj.produkty[0].atrybuty[1].atrybut);
-      console.log(resObj.sortowania[0].atrybut);
-      console.log(resObj.sortowania[0].wartosci[0].wartosc);
-      console.log(resObj.sortowania[0].wartosci[0].liczba_produktow);
-      console.log(resObj.sortowania[0].liczba_produktow);
+
+      var nextPageAvailable, prevPageAvailable;
+      if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.activePage){ nextPageAvailable = false; }
+      if(this.state.activePage > 1){ prevPageAvailable = true; }
+
       this.setState({
-        resItemCount: resObj.liczba_przedmiotow,
+        ApiResponse: response,
+        isLoading:  false,
+        resItemCount: responseobject.liczba_przedmiotow,
+        numberOfPages: Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
         resItemWord: produkt,
+        nextPageAvailable: nextPageAvailable,
+        prevPageAvailable: prevPageAvailable,
       });
     })
     .catch(err => err);
-  }
-
-  renderResults(searchResults){
-    for(var row in searchResults){
-      if (!searchResults.hasOwnProperty(row)) continue;
-      console.log(row);
-    }
   }
 
   handlePageChange(event){
@@ -717,96 +718,239 @@ class SearchResults extends React.Component{
     // .catch(err => err);
   }
 
+  handleSortChange(event){
+    event.preventDefault();
+    this.setState({
+      activeSearchSorting: event.target.id
+    })
+  }
+
+  handleLimitChange(event){
+    var searchLimit = event.target.id;
+    searchLimit = searchLimit.substring(1, (event.target.id.length-2));
+    this.setState({
+      searchLimit10: false,
+      searchLimit20: false,
+      searchLimit30: false,
+      ["searchLimit" + searchLimit]: "true",
+      activeSearchLimit: searchLimit
+    });
+  }
+
   render(){
-    return(
-      <div>
-        <div className="row">
-          <div className="col-1"></div>
-          <div className="col-10 pt-5 text-left">
-            <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-1"></div>
-          <div className="col-2">
-            <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
-                  super filtry super filtry super filtry super filtry super filtry super filtry super filtry super filtry 
+    if (this.state.isLoading) {
+      return (<div>Loading...</div>);
+    }else{
+      let ApiResponse = JSON.parse(this.state.ApiResponse);
+      const pages = []
+      for (let i = 0; i < this.state.numberOfPages; i++) {
+        pages.push(<li className="page-item active"><a className="page-link" id={i+1} key={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
+      }
+
+      return(
+        <div>
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-10 pt-5 text-left">
+              <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
             </div>
           </div>
-          <div className="col-7">
-            <div className="row">
-              <div className="col-8"></div>
-              <div className="col-4 componentBackgroundColor mt-1 shadow-sm p-3 bg-white rounded">
-                <div className="text-right">
-                  <div className="d-inline pr2">wyników na strone: </div> 
-                  <div className="font-weight-bold d-inline pr2">10 </div> 
-                  <div className="d-inline pr2">20 </div>
-                  <div className="d-inline pr2">30 </div>
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-2">
+              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
+                <div className="text-left pb-4 font-weight-bold"> 
+                  Wyszukiwanie: "{this.state.searchValue}" 
+                </div>
+                <div className="text-left font-weight-bold">aktywne filtry:</div>
+                <div className="text-left mb-3">brak</div>
+                <div>
+                  <div className="text-left pb-3"><h5>Kategorie</h5>
+                    {ApiResponse.kategorie.map(api => (
+                      <div className=" text-left mb-2">
+                        <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
+                          <input type="checkbox" />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-left pb-5"><h5>Filtry</h5>
+                    {ApiResponse.filtry.map(filtry => (
+                      <div className=" text-left mb-4">
+                        <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
+                          <input type="checkbox" />
+                          <span className="checkmark"></span>
+                        </label>
+                        <div className="ml-3 mt-2">
+                          {filtry.wartosci.map( wartosci => (
+                            <div className="mb-2">
+                              <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
+                                <input type="checkbox" />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="dropdown-divider mt-4 mb-4"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>
+              </div>
+            </div>
+            <div className="col-7">
+              <div className="row">
+                <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                  <div className="row">
+                    <div className="col-4">
+                      <div className="float-left">
+                        <ul className="pagination float-right">
+                          <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-1" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
+                          <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-1" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
+                          <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-1" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
+                        </ul>
+                        <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
+                      </div>
+                    </div>
+                    <div className="col-4 ">
+                      <div className="center-Element d-inline">
+                        <div className="btn btn-secondary">sortowanie </div>
+                        <div className="dropdown d-inline">
+                          <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {this.state.activeSearchSorting}
+                          </button>
+                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                            <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                            <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <nav aria-label="Page navigation">
+                        <ul className="pagination float-right">
+                          <div className=" float-right btn btn-secondary d-inline">strona </div>
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i> poprzednia</a></li>
+                          {pages}
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link">następna <i className="fas fa-chevron-right"></i></a></li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {ApiResponse.produkty.map(produkt => (
+                <div className="row">
+                  <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
+                    <div className="row">
+                      <div className ="col-3 mb-5"><img src={produkt.zdjecie}></img></div>
+                      <div className ="col-6">
+                        <div className="font-weight-bold">
+                          <h4>{produkt.nazwa_produktu}</h4>
+                        </div>
+                        <div className="row d-inline text-left">
+                          <ul>
+                            {produkt.atrybuty.map(atrybut => (
+                              <div className ="d-block">
+                                <li>
+                                  <span className ="d-inline">{atrybut.atrybut}:</span>
+                                  <span className ="font-weight-bold pl-2">{atrybut.wartosc}</span>
+                                </li>
+                              </div>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className ="col-3 mb-5">
+                        <div className="font-weight-bold"><h3>{produkt.cena_brutto + " zł"}</h3></div>
+                        <div className="placement-bottom"></div>
+                        <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="row">
+                <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                  <div className="row">
+                    <div className="col-4">
+                      <div className="float-left">
+                        <ul className="pagination float-right">
+                          <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-2" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
+                          <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-2" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
+                          <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-2" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
+                        </ul>
+                        <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
+                      </div>
+                    </div>
+                    <div className="col-4 ">
+                      <div className="center-Element d-inline">
+                        <div className="btn btn-secondary">sortowanie </div>
+                        <div className="dropdown d-inline">
+                          <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {this.state.activeSearchSorting}
+                          </button>
+                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                            <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                            <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <nav aria-label="Page navigation">
+                        <ul className="pagination float-right">
+                          <div className=" float-right btn btn-secondary d-inline">strona </div>
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i> poprzednia</a></li>
+                          {pages}
+                          <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" >następna <i className="fas fa-chevron-right"></i></a></li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded"> 
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 componentBackgroundColor mt-3 pt-5 shadow-sm p-3 bg-white rounded">
-              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 componentBackgroundColor mt-3 pt-5 shadow-sm p-3 bg-white rounded">
-              super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-                  super promocja super promocja super promocja super promocja super promocja super promocja super promocja 
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-8"></div>
-              <div className="col-4 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
-                <nav aria-label="Page navigation example">
-                  <ul className="pagination justify-content-end">
-                    <li className={"page-item " + ((this.state.prevPage) ? "" : "disabled")}><a className="page-link" >Previous</a></li>
-                    <li className="page-item active"><a className="page-link" id="1" onClick={(event) => this.handlePageChange(event)}>1</a></li>
-                    <li className={"page-item " + ((this.state.nextPage) ? "" : "disabled")}><a className="page-link" >Next</a></li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
+            <div className="col-2"></div>
           </div>
-          <div className="col-2"></div>
-        </div>
 
-      </div>
-    );
+        </div>
+      );
+    }
   }
 }
 
 export default App;
+
+/* 
+                <div>
+                  <div className="text-left pb-3"><h5>Kategorie</h5>
+                    {ApiResponse.kategorie.map(api => (
+                      <div className=" text-left mb-2">
+                        <input type="checkbox" /><span className="ml-2">{api.nazwa_kategorii}</span>
+                        <span className="text-right">{" (" + api.liczba_produktow})</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-left pb-5"><h5>Filtry</h5>
+                    {ApiResponse.filtry.map(filtry => (
+                      <div className=" text-left mb-4">
+                        <input type="checkbox" /><span className="ml-2">{filtry.atrybut}</span>
+                        <span className="text-right">{" (" + filtry.liczba_produktow})</span>
+                        <div className="ml-3 mt-2">
+                          {filtry.wartosci.map( wartosci => (
+                            <div className="mb-2">
+                              <input type="checkbox" /><span className="ml-2">{wartosci.wartosc}</span>
+                              <span className="text-right">{" (" + wartosci.liczba_produktow})</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+*/
