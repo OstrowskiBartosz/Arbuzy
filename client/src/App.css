@@ -255,13 +255,18 @@
 
 /* WYNIKI WYSZUKIWANIA */
 
-.placement-bottom {
+.placement-bottomAddToCart {
   display: inline-block;
-  height: 80%;
+  height: 70%;
   vertical-align: bottom;
   width: 0px;
 }
-
+.placement-bottomAtributes {
+  display: inline-block;
+  height: 30%;
+  vertical-align: bottom;
+  width: 0px;
+}
 /* */
 /* Customize the label (the container) */
 .container {
@@ -329,4 +334,12 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.disabled{
+  cursor: not-allowed;
+}
+.idProduktu{
+  font-size: 13px;
+  color: grey;
 }

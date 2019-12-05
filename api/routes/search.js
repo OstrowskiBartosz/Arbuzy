@@ -65,7 +65,7 @@ function czyPobraneDane(result, callback) {
   async.forEachOf(result, (value, key, callback) => {
     czyPobranoAtrybuty(value.nazwa_produktu, function(err, resultAtrybuty){
     wynikiAtrybuty = resultAtrybuty;
-    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, zdjecie: value.wartosc, atrybuty: wynikiAtrybuty});
+    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, id_produktu: value.id_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, zdjecie: value.wartosc, atrybuty: wynikiAtrybuty});
    });
    wyniki.produkty = wynikiParametry;
    callback();
@@ -151,9 +151,7 @@ function pobierzKategoriee(sql, callback){
 
 function czyPobranoKategorie(zapytania, wyniki,  callback) {
   async.forEachOf(zapytania, (value, key, callback) => {
-    var kategorie = [];
     var grupyKategorii = [];
-    var ostatniAtrybut = null;
     var KategorieObiekt = new Object();
     pobierzKategoriee(value, function(err, result){
       for(var row in result){
@@ -172,6 +170,33 @@ function czyPobranoKategorie(zapytania, wyniki,  callback) {
   });
 }
 
+function pobierzProducentow(sql, callback){
+  con.query(sql, function(err, result){
+    if(err) return callback(err);
+    callback(null, result);
+  });
+}
+
+function czyPobranoProducentow(zapytania, wyniki,  callback) {
+  async.forEachOf(zapytania, (value, key, callback) => {
+    var grupyproducentow = [];
+    var ProducenciObiekt = new Object();
+    pobierzProducentow(value, function(err, result){
+      for(var row in result){
+        ProducenciObiekt.nazwa_producenta= result[row].nazwa_producenta;
+        ProducenciObiekt.id_producenta = result[row].id_producenta;
+        ProducenciObiekt.liczba_produktow = result[row].liczba;
+        grupyproducentow.push(ProducenciObiekt);
+        ProducenciObiekt = new Object();
+      }
+      wyniki.producenci = grupyproducentow;
+      callback(null, wyniki);
+    });
+  }, err => {
+    if (err) console.error(err.message); callback(null, wyniki);
+  });
+}
+
 router.post('/', function(req, res, next) {
   let nazwa_produktu = req.body.nazwa_produktu;
   let strona = req.body.strona;
@@ -180,7 +205,7 @@ router.post('/', function(req, res, next) {
     let offset = (limit*strona)-limit;
     var zapytania = [];
     zapytania[0] = `
-    SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu, a.wartosc
+    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu, a.wartosc 
     FROM produkty p
     INNER JOIN ceny c ON p.id_produktu=c.id_produktu
     INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
@@ -204,7 +229,6 @@ router.post('/', function(req, res, next) {
           WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\' and a.typ != 2 and a.typ != 3 
           GROUP BY a.wartosc
           ORDER BY a.atrybut;`;
-          console.log(zapytania[0] );
           czyPobranoFiltry(zapytania, wyniki, function (err, wyniki) {
             zapytania[0] = `
             SELECT k.id_kategorii, k.nazwa_kategorii, count(p.nazwa_produktu) as liczba
@@ -213,8 +237,17 @@ router.post('/', function(req, res, next) {
             WHERE nazwa_produktu like '%geforce%'
             GROUP BY nazwa_kategorii;`;
             czyPobranoKategorie(zapytania, wyniki, function (err, wyniki) {
-              res.send(JSON.stringify(wyniki, null, 3));
-              res.end();
+              zapytania[0] = `
+              SELECT pp.id_producenta, pp.nazwa_producenta, count(p.nazwa_produktu) as liczba
+              FROM produkty p
+              INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
+              WHERE nazwa_produktu like '%geforce%'
+              GROUP BY nazwa_producenta;`;
+              console.log(zapytania[0]);
+              czyPobranoProducentow(zapytania, wyniki, function (err, wyniki) {
+                res.send(JSON.stringify(wyniki, null, 3));
+                res.end();
+              });
             });
           });
         });

@@ -679,7 +679,7 @@ class SearchResults extends React.Component{
       var nextPageAvailable, prevPageAvailable;
       if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.activePage){ nextPageAvailable = false; }
       if(this.state.activePage > 1){ prevPageAvailable = true; }
-
+      console.log(response);
       this.setState({
         ApiResponse: response,
         isLoading:  false,
@@ -743,8 +743,8 @@ class SearchResults extends React.Component{
     }else{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
-      for (let i = 0; i < this.state.numberOfPages; i++) {
-        pages.push(<li className="page-item active"><a className="page-link" id={i+1} key={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
+      for (let i = 0; i < 5; i++) {
+        pages.push(<li className="page-item"><a className="page-link" id={i+1} key={"p"+(i+1)} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
 
       return(
@@ -763,9 +763,9 @@ class SearchResults extends React.Component{
                   Wyszukiwanie: "{this.state.searchValue}" 
                 </div>
                 <div className="text-left font-weight-bold">aktywne filtry:</div>
-                <div className="text-left mb-3">brak</div>
+                <div className="text-left mb-5">brak</div>
                 <div>
-                  <div className="text-left pb-3"><h5>Kategorie</h5>
+                  <div className="text-left pb-2"><h5>Kategorie</h5>
                     {ApiResponse.kategorie.map(api => (
                       <div className=" text-left mb-2">
                         <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
@@ -774,8 +774,9 @@ class SearchResults extends React.Component{
                         </label>
                       </div>
                     ))}
+                    <div className="dropdown-divider mt-4 mb-4"></div>
                   </div>
-                  <div className="text-left pb-5"><h5>Filtry</h5>
+                  <div className="text-left pb-2"><h5>Filtry</h5>
                     {ApiResponse.filtry.map(filtry => (
                       <div className=" text-left mb-4">
                         <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
@@ -795,6 +796,17 @@ class SearchResults extends React.Component{
                         <div className="dropdown-divider mt-4 mb-4"></div>
                       </div>
                     ))}
+                  </div>
+                  <div className="text-left pb-2"><h5>Producenci</h5>
+                    {ApiResponse.producenci.map(api => (
+                      <div className=" text-left mb-2">
+                        <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
+                          <input type="checkbox" />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                    ))}
+                    <div className="dropdown-divider mt-4 mb-4"></div>
                   </div>
                 </div>
                 <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>
@@ -833,9 +845,9 @@ class SearchResults extends React.Component{
                       <nav aria-label="Page navigation">
                         <ul className="pagination float-right">
                           <div className=" float-right btn btn-secondary d-inline">strona </div>
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i> poprzednia</a></li>
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
                           {pages}
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link">następna <i className="fas fa-chevron-right"></i></a></li>
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
                         </ul>
                       </nav>
                     </div>
@@ -846,12 +858,14 @@ class SearchResults extends React.Component{
                 <div className="row">
                   <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                     <div className="row">
-                      <div className ="col-3 mb-5"><img src={produkt.zdjecie}></img></div>
+                      <div className ="col-3 mb-5"><img height="140px" width="auto" src={produkt.zdjecie}></img></div>
                       <div className ="col-6">
-                        <div className="font-weight-bold">
+                        <div className="font-weight-bold text-left">
                           <h4>{produkt.nazwa_produktu}</h4>
                         </div>
+                        <div className="idProduktu text-left"><span>id produktu: </span>{produkt.id_produktu}</div>
                         <div className="row d-inline text-left">
+                        <div className="placement-bottomAtributes"></div>
                           <ul>
                             {produkt.atrybuty.map(atrybut => (
                               <div className ="d-block">
@@ -865,9 +879,10 @@ class SearchResults extends React.Component{
                         </div>
                       </div>
                       <div className ="col-3 mb-5">
-                        <div className="font-weight-bold"><h3>{produkt.cena_brutto + " zł"}</h3></div>
-                        <div className="placement-bottom"></div>
-                        <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
+                        <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
+                        <div className="placement-bottomAddToCart"></div>
+                        <button type="button" className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
+                                              disabled = {(this.props.isLogged ? "" : "disabled")}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
                       </div>
                     </div>
                   </div>
@@ -905,9 +920,9 @@ class SearchResults extends React.Component{
                       <nav aria-label="Page navigation">
                         <ul className="pagination float-right">
                           <div className=" float-right btn btn-secondary d-inline">strona </div>
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i> poprzednia</a></li>
+                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i></a></li>
                           {pages}
-                          <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" >następna <i className="fas fa-chevron-right"></i></a></li>
+                          <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" > <i className="fas fa-chevron-right"></i></a></li>
                         </ul>
                       </nav>
                     </div>
