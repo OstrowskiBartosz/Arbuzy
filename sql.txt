@@ -89,10 +89,10 @@ insert into atrybuty values (6, 2, "Rodzaj chipsetu", "GeForce GTX 2080", 1);
 insert into atrybuty values (7, 3, "pamieć RAM", "12 GB", 1);
 insert into atrybuty values (8, 3, "typ chłodzenia", "Wentylator", 1);
 insert into atrybuty values (9, 3, "Rodzaj chipsetu", "GeForce RTX 2060", 1);
-
 insert into atrybuty values (10, 4, "pamieć RAM", "12 GB", 1);
 insert into atrybuty values (11, 4, "Karta Graficzna", "Gigabyte GeForce RTX 2080", 1);
 insert into atrybuty values (12, 4, "Procesor ", "Intel i7 9900K", 1);
+insert into atrybuty values (16, 4, "Zdjecie główne", "https://images.morele.net/i256/6314046_0_i256.jpg", 2);
 
 insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
