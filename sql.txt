@@ -101,10 +101,3 @@ insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00',
 insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (3, 3, 1400, 1786.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (4, 4, 7453, 9876.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
-
-SELECT p.nazwa_produktu, k.nazwa_kategorii, c.cena_brutto, p.opis_produktu
-FROM produkty p
-INNER JOIN ceny c ON p.id_produktu=c.id_produktu
-INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-WHERE nazwa_produktu like "%geforce%";                              
-"%geforce%";
