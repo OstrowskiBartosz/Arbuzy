@@ -63,15 +63,42 @@ CREATE TABLE ceny(
 |                ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
 |_________________________________________________________________________________________________________________|
 
-insert into producenci values (1, 'MSI');
-insert into producenci values (2, 'Razer');
-insert into producenci values (3, 'SteelSeries');
-insert into producenci values (4, 'Gigabyte');
-insert into producenci values (5, 'NVIDIA');
+insert into producenci values (1, 'Western Digital');
+insert into producenci values (2, 'Toshiba');
+insert into producenci values (3, 'Seagate');
+insert into producenci values (4, 'Intel');
+insert into producenci values (5, 'Transcend');
+insert into producenci values (6, 'Samsung');
+insert into producenci values (7, 'Kingston');
+insert into producenci values (8, 'ADATA');
+insert into producenci values (9, 'Asus');
+insert into producenci values (10, 'Gigabyte');
+insert into producenci values (11, 'MSI');
+insert into producenci values (12, 'Palit');
+insert into producenci values (13, 'Zotac');
+insert into producenci values (14, 'LG');
+insert into producenci values (15, 'Lite-On');
+insert into producenci values (16, 'Thermaltake');
+insert into producenci values (17, 'Cooler Master');
+insert into producenci values (18, 'Corsair');
+insert into producenci values (19, 'Chieftec');
+insert into producenci values (20, 'SilentiumPC');
+insert into producenci values (21, 'G.Skill');
+insert into producenci values (22, 'HyperX');
+insert into producenci values (23, 'Ballistix');
+insert into producenci values (24, 'Patriot');
+insert into producenci values (25, 'ASRock');
+insert into producenci values (26, 'AMD');
 
-insert into kategorie values (1, 'komputer');
-insert into kategorie values (2, 'laptop');
-insert into kategorie values (3, 'karta graficzna');
+insert into kategorie values (1, 'Dyski HDD');
+insert into kategorie values (2, 'Dyski SSD');
+insert into kategorie values (3, 'Karty graficzne');
+insert into kategorie values (4, 'Napędy optyczne');
+insert into kategorie values (5, 'Obudowy');
+insert into kategorie values (6, 'Pamięci RAM');
+insert into kategorie values (7, 'Płyty główne');
+insert into kategorie values (8, 'Procesory');
+insert into kategorie values (9, 'Zasilacze');
 
 insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1660 GAMING OC", "Chcąc sięgać po najnowsze produkcje gamingowe, warto dysponować układem graficznym tego pokroju. Karta NVIDIA GTX 1660 bazuje na nowoczesnej architekturze Turing, co zapewnia jej wyższą wydajność w grach, projektowaniu grafiki i podczas użytkowania i obróbki multimediów. Karta GTX 1660 to rozwiązanie dedykowane dla graczy, streamerów oraz dla osób zajmujących się obróbką multimediów. Jednostka korzysta z pamięci GDDR5, oferuje wysoki zakres taktowania oraz doskonałe parametry użytkowe. GTX 1660 to karta graficzna stworzona z myślą o najbardziej wymagających użytkownikach.")
 
