@@ -128,3 +128,22 @@ insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00',
 insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (3, 3, 1400, 1786.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
 insert into ceny values (4, 4, 7453, 9876.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
+
+// nowe inserty
+INSERT INTO produkty VALUES(1, 1, 3, "Barracuda 1 TB 3.5" SATA III (ST1000DM010)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością na poziomie 7200 obr./min, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu.|https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png");
+INSERT INTO atrybuty VALUES(1, 1, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(2, 1, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(3, 1, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(4, 1, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(5, 1, "Zdjęcie", "https://images.morele.net/i1064/1042371_4_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(6, 1, "Zdjęcie", "https://images.morele.net/i1064/1042371_0_i1064.jpg", 3);
+INSERT INTO ceny VALUES (1, 1, 131.60, 161.87, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(2, 1, 2, "P300 2 TB 3.5" SATA III (HDWD120UZSVA)", "3,5-calowy wewnętrzny dysk twardy Toshiba P300 to gwarancja wysokiej wydajności dla profesjonalistów. Dzięki technologii dwuetapowego ruchu głowicy można liczyć na płynne, szybkie reakcje urządzenia. Poza tym dane i multimedia są chronione przez technologię parkowania głowicy, zapobiegającą uszkodzeniom w czasie przenoszenia, a także czujnik wstrząsów. Dysk P300 jest dostępny w wersjach o pojemności do 3 TB.|https://images.morele.net/d/1441178224362392bd4874c73f62fa0eb12be9e0ebba1fa75fb93b.jpg|P300 to idealne rozwiązanie dla projektantów graficznych i kreatywnych profesjonalistów poszukujących wysokiej wydajności. Cechuje się pojemnością sięgającą 3 TB, szybkim odczytem i zapisem oraz bezpieczną konstrukcją.|https://images.morele.net/d/144117822457042533dc47806d7b58fa38e324657134f8975c00a3.jpg|Konstrukcja dysku P300 obejmuje wewnętrzny czujnik wstrząsów, co zapobiega utracie danych. Ponadto technologia parkowania głowicy sprawia, że podczas transportu dysku twardego lub komputera stacjonarnego głowica nie styka się z powierzchnią dysku, co zapobiega zadrapaniom i utracie danych.");
+INSERT INTO atrybuty VALUES(7, 2, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(8, 2, "Pojemność dysku [GB]", "2000", 1);
+INSERT INTO atrybuty VALUES(9, 2, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(10, 2, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(11, 2, "Pamięć podręczna", "64", 0);
+INSERT INTO atrybuty VALUES(12, 2, "Zdjęcie", "https://images.morele.net/i1064/860922_0_i1064.jpeg", 2);
+INSERT INTO ceny VALUES (2, 2, 209.75, 257.99, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
