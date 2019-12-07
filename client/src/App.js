@@ -189,10 +189,11 @@ class MainPage extends React.Component{
   }
   
 class Navbar extends React.Component{
-  
   constructor(props){
     super(props);
     this.getLoggedUser = this.getLoggedUser.bind(this);
+    this.getUpdatedCartItems = this.getUpdatedCartItems.bind(this);
+
     const params = new URLSearchParams(window.location.search);
     let q = "";
     let w = "Wszędzie";
@@ -206,10 +207,9 @@ class Navbar extends React.Component{
     this.state = {
       isLogged: false,
       searchValue: q,
-      CartItems: 0,
       searchCategory: w,
+      CartItems: 0,
     };
-    
   }
 
   componentDidUpdate(prevState) {
@@ -217,13 +217,45 @@ class Navbar extends React.Component{
       this.setState({ 
         isLogged: this.props.isLogged, 
       });
+      if(this.props.isLogged == true){
+        this.fetchCartData();
+      }
+    }
+  }
+
+  fetchCartData(){
+    let url = "http://localhost:9000/users";
+    fetch(url, {
+        method: 'get',
+        credentials: 'include',
+        headers: new Headers({'content-type': 'application/json'})
+    })
+    .then(response=>response.text())
+    .then(response=>{ 
+      this.setState({ 
+        CartItems: response, 
+      });
+    })
+    .catch(err => err);
+  }
+
+  getUpdatedCartItems(updateCartData){
+    if(updateCartData == true){
+     this.fetchCartData();
     }
   }
 
   getLoggedUser(loggedData){
+    if(loggedData == true){
+     this.fetchCartData();
+    }else if(loggedData == false){
+      this.setState({
+        CartItems: 0, 
+     });
+    }
     this.setState({
        isLogged: loggedData, 
-    }); 
+    });
   }
 
   handleSearchClick(){
@@ -321,19 +353,21 @@ class Navbar extends React.Component{
             </div>
           </div>
         </nav>
-
         <Switch>
           <Route exact path="/" >
             <MainPage />
           </Route>
           <Route path="/zaloguj">
-            <Login_signup  sendLoggedUser={this.getLoggedUser}  />
+            <Login_signup redirect={window.location.pathname  + window.location.search} sendLoggedUser={this.getLoggedUser}  />
           </Route>
           <Route path="/wyloguj">
             <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
           </Route>
           <Route path="/wyszukaj">
-            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValue} searchCategory={this.state.searchCategory} />
+            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValue} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} />
+          </Route>
+          <Route path="/koszyk">
+            <ShoppingCart />
           </Route>
         </Switch>
       </Router>
@@ -354,7 +388,6 @@ class Login_signup extends React.Component{
       errorSignup: false,
       errorMessageSignup: "",
     });
-
   };
 
   handleSignupSubmit(event){
@@ -450,7 +483,10 @@ class Login_signup extends React.Component{
 
   render(){
       if (this.state.logged === true) {
-        return <Redirect to='/' />
+        if(this.props.redirect == "/zaloguj"){
+          return <Redirect to='/' />
+        }
+        return <Redirect to={this.props.redirect} />
       }
       return(
         <div>
@@ -555,10 +591,9 @@ class Login_signup extends React.Component{
           <div className ="col-4"></div>
         </div>
       </div>
-
       );
     }
-  }
+}
 
 class Logout extends React.Component{
   constructor(props){
@@ -624,7 +659,6 @@ class PageFooter extends React.Component{
     );
   }
 }
-
 
 class SearchResults extends React.Component{
   constructor(props){
@@ -723,6 +757,29 @@ class SearchResults extends React.Component{
     this.setState({
       activeSearchSorting: event.target.id
     })
+  }
+
+  handleToCartClick(event){
+    event.preventDefault();
+    const data = {
+      id_produktu: event.target.id,
+      ilosc: 1,
+    }
+    fetch('http://localhost:9000/addtocart', {
+        method: 'post',
+        body: JSON.stringify(data),
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }     
+    })
+    .then(response=>response.text())
+    .then(response => {
+      if(response == "Przedmiot został dodany do koszyka."){
+        this.props.sendUpdatedCartItems(true);
+      }
+    })
+    .catch(err => err);
   }
 
   handleLimitChange(event){
@@ -834,6 +891,8 @@ class SearchResults extends React.Component{
                             {this.state.activeSearchSorting}
                           </button>
                           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                            <div className="dropdown-divider"></div>
                             <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
                             <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
                             <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
@@ -858,7 +917,7 @@ class SearchResults extends React.Component{
                 <div className="row">
                   <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                     <div className="row">
-                      <div className ="col-3 mb-5"><img height="140px" width="auto" src={produkt.zdjecie}></img></div>
+                      <div className ="col-3 mb-5"><img height="140px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img></div>
                       <div className ="col-6">
                         <div className="font-weight-bold text-left">
                           <h4>{produkt.nazwa_produktu}</h4>
@@ -881,8 +940,8 @@ class SearchResults extends React.Component{
                       <div className ="col-3 mb-5">
                         <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
                         <div className="placement-bottomAddToCart"></div>
-                        <button type="button" className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
-                                              disabled = {(this.props.isLogged ? "" : "disabled")}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
+                        <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
+                                              disabled = {(this.props.isLogged ? "" : "disabled")} onClick={(event) => this.handleToCartClick(event)}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
                       </div>
                     </div>
                   </div>
@@ -909,6 +968,8 @@ class SearchResults extends React.Component{
                             {this.state.activeSearchSorting}
                           </button>
                           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                            <div className="dropdown-divider"></div>
                             <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
                             <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
                             <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
@@ -939,33 +1000,123 @@ class SearchResults extends React.Component{
   }
 }
 
-export default App;
+class ShoppingCart extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = ({
+      isLoading: true,
+    });
+  }
+  componentDidMount(){
+    this.fetchCartData();
+  }
 
-/* 
-                <div>
-                  <div className="text-left pb-3"><h5>Kategorie</h5>
-                    {ApiResponse.kategorie.map(api => (
-                      <div className=" text-left mb-2">
-                        <input type="checkbox" /><span className="ml-2">{api.nazwa_kategorii}</span>
-                        <span className="text-right">{" (" + api.liczba_produktow})</span>
-                      </div>
-                    ))}
+  fetchCartData(){
+    let url = "http://localhost:9000/cart";
+    fetch(url, {
+        method: 'get',
+        credentials: 'include',
+        headers: new Headers({'content-type': 'application/json'})
+    })
+    .then(response=>response.text())
+    .then(response=>{ 
+      console.log(response);
+      this.setState({
+        ApiResponse: response,
+        isLoading:  false,
+      });
+    })
+    .catch(err => err);
+  }
+
+  render(){
+    if (this.state.isLoading) {
+      return (<div>Loading...</div>);
+    }else{
+      let ApiResponse = JSON.parse(this.state.ApiResponse);
+      return(
+        <div>
+        <div className='row '>
+          <div className='col-3'>
+          </div>
+          <div className= "col-6">
+            <div className="row">
+              <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                <div className = "row">
+                  <div className="col-11">
+                    <div className="font-weight-bold text-left">
+                      <h3>Twój Koszyk</h3>
+                    </div>
                   </div>
-                  <div className="text-left pb-5"><h5>Filtry</h5>
-                    {ApiResponse.filtry.map(filtry => (
-                      <div className=" text-left mb-4">
-                        <input type="checkbox" /><span className="ml-2">{filtry.atrybut}</span>
-                        <span className="text-right">{" (" + filtry.liczba_produktow})</span>
-                        <div className="ml-3 mt-2">
-                          {filtry.wartosci.map( wartosci => (
-                            <div className="mb-2">
-                              <input type="checkbox" /><span className="ml-2">{wartosci.wartosc}</span>
-                              <span className="text-right">{" (" + wartosci.liczba_produktow})</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="col-1">
+                    <span><i className="fas fa-trash-alt"></i></span>
                   </div>
                 </div>
+              </div>
+            </div>
+            {ApiResponse.produkty.map(produkt => (
+              <div className="row">
+                <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
+                  <div className="row">
+                    <div className ="col-2 p-0">
+                      <img height="70px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img>
+                    </div>
+                    <div className ="col-5">
+                      <div className="font-weight-bold text-left">
+                        <h5>{produkt.nazwa_produktu}</h5>
+                      </div>
+                    </div>
+                      <div className ="col-2">
+                        <div className="font-weight-bold text-left"><h5>{produkt.cena + " zł"}</h5></div>
+                        <div className="placement-bottomAddToCart"></div>
+                      </div>
+                      <div className ="col-2">
+                        <div className="font-weight-bold text-left"><h5>ilość:{produkt.ilosc}</h5></div>
+                      </div>
+                      <div className ="col-1">
+                        <span><i className="fas fa-trash-alt"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            <div className="row">
+              <div className="col-6">
+              </div>
+              <div className="col-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                <div className="row pb-2">
+                  <div className="col-xl-4">
+                    łącznie do zapłaty
+                  </div>
+                  <div className="col-xl-4"></div>
+                  <div className="col-xl-4">
+                    <h4>14500,04 zł</h4>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary">Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col-3'>
+          </div>
+        </div>
+        <div className ="row pt-4">
+          <div className ="col-3"></div>
+          <div className ="col-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+          <div className ="col-4"></div>
+        </div>
+      </div>
+      );
+    }
+  }
+}
+
+export default App;
+
+/*
+
 */

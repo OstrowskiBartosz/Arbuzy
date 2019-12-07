@@ -38,6 +38,18 @@ router.use(session({
 
 con.connect(function(err) {
   if (err) throw err;
+
+  router.get('/', function (req, res, next) {
+    let uzytkownik = req.session.user;
+    var sql = `
+    SELECT count(DISTINCT(pw.id_produktu)) as liczba
+    FROM Uzytkownicy u
+    INNER JOIN produkty_w_koszykach pw ON pw.id_uzytkownika=u.id_uzytkownika
+    WHERE login = \'` + uzytkownik + `\';`;
+    con.query(sql, function (err, result) {
+      res.send(JSON.stringify(result[0].liczba));
+    });
+  })
   router.post('/', function (req, res, next) {
     let username = req.body.login;
     let email = req.body.email;

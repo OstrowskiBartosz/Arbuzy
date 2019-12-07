@@ -234,16 +234,15 @@ router.post('/', function(req, res, next) {
             SELECT k.id_kategorii, k.nazwa_kategorii, count(p.nazwa_produktu) as liczba
             FROM produkty p
             INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-            WHERE nazwa_produktu like '%geforce%'
+            WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
             GROUP BY nazwa_kategorii;`;
             czyPobranoKategorie(zapytania, wyniki, function (err, wyniki) {
               zapytania[0] = `
               SELECT pp.id_producenta, pp.nazwa_producenta, count(p.nazwa_produktu) as liczba
               FROM produkty p
               INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
-              WHERE nazwa_produktu like '%geforce%'
+              WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
               GROUP BY nazwa_producenta;`;
-              console.log(zapytania[0]);
               czyPobranoProducentow(zapytania, wyniki, function (err, wyniki) {
                 res.send(JSON.stringify(wyniki, null, 3));
                 res.end();
