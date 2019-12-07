@@ -1,135 +1,3 @@
-CREATE DATABASE mydb;
-
-CREATE TABLE uzytkownicy(
-  id_uzytkownika MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-  imie VARCHAR(20) NOT NULL,
-  nazwisko VARCHAR(30) NOT NULL,
-  login VARCHAR(30) NOT NULL,
-  haslo VARCHAR(60) NOT NULL,
-  miasto_zamieszkania VARCHAR(50) NOT NULL,
-  ulica_zamieszkania VARCHAR(50) NOT NULL,
-  kod_pocztowy VARCHAR(6) NOT NULL,
-  typ_uzytkownika TINYINT(1) NOT NULL,
-  adres_email VARCHAR(70) NOT NULL,
-  telefon VARCHAR(9) NOT NULL,
-  info VARCHAR(500),
-  numer_nip VARCHAR(10),
-  nazwa_firmy VARCHAR(100)
-);
-
-CREATE TABLE kategorie(
-  id_kategorii MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nazwa_kategorii VARCHAR(100) NOT NULL,
-);
-
-CREATE TABLE producenci(
-  id_producenta MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nazwa_producenta VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE produkty(
-  id_produktu MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  id_kategorii MEDIUMINT NOT NULL,
-  id_producenta MEDIUMINT NOT NULL,
-  nazwa_produktu VARCHAR(150) NOT NULL,
-  opis_produktu VARCHAR(5000) NOT NULL,
-  FOREIGN KEY (id_kategorii) REFERENCES kategorie(id_kategorii),
-  FOREIGN KEY (id_producenta) REFERENCES producenci(id_producenta)
-);
-
-CREATE TABLE atrybuty(
-  id_atrybutu MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  id_produktu MEDIUMINT NOT NULL,
-  atrybut VARCHAR(80) NOT NULL,
-  wartosc VARCHAR(80) NOT NULL,
-  typ VARCHAR(10) NOT NULL,
-  FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
-);
-
-CREATE TABLE ceny(
-  id_ceny MEDIUMINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_produktu MEDIUMINT NOT NULL,
-  cena_netto FLOAT(7,2) NOT NULL,
-  cena_brutto FLOAT(7,2) NOT NULL,
-  procentvat TINYINT NOT NULL,
-  od DATETIME NOT NULL,
-  do DATETIME NOT NULL,
-  FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
-);
- _________________________________________________________________________________________________________________
-|                                     ŻEBY PRZYJMOWAŁO POLSKIE ZNAKI                                              |
-|                                                                                                                 |
-|                ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
-|                ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
-|_________________________________________________________________________________________________________________|
-
-insert into producenci values (1, 'Western Digital');
-insert into producenci values (2, 'Toshiba');
-insert into producenci values (3, 'Seagate');
-insert into producenci values (4, 'Intel');
-insert into producenci values (5, 'Transcend');
-insert into producenci values (6, 'Samsung');
-insert into producenci values (7, 'Kingston');
-insert into producenci values (8, 'ADATA');
-insert into producenci values (9, 'Asus');
-insert into producenci values (10, 'Gigabyte');
-insert into producenci values (11, 'MSI');
-insert into producenci values (12, 'Palit');
-insert into producenci values (13, 'Zotac');
-insert into producenci values (14, 'LG');
-insert into producenci values (15, 'Lite-On');
-insert into producenci values (16, 'Thermaltake');
-insert into producenci values (17, 'Cooler Master');
-insert into producenci values (18, 'Corsair');
-insert into producenci values (19, 'Chieftec');
-insert into producenci values (20, 'SilentiumPC');
-insert into producenci values (21, 'G.Skill');
-insert into producenci values (22, 'HyperX');
-insert into producenci values (23, 'Ballistix');
-insert into producenci values (24, 'Patriot');
-insert into producenci values (25, 'ASRock');
-insert into producenci values (26, 'AMD');
-
-insert into kategorie values (1, 'Dyski HDD');
-insert into kategorie values (2, 'Dyski SSD');
-insert into kategorie values (3, 'Karty graficzne');
-insert into kategorie values (4, 'Napędy optyczne');
-insert into kategorie values (5, 'Obudowy');
-insert into kategorie values (6, 'Pamięci RAM');
-insert into kategorie values (7, 'Płyty główne');
-insert into kategorie values (8, 'Procesory');
-insert into kategorie values (9, 'Zasilacze');
-
-insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1660 GAMING OC", "Chcąc sięgać po najnowsze produkcje gamingowe, warto dysponować układem graficznym tego pokroju. Karta NVIDIA GTX 1660 bazuje na nowoczesnej architekturze Turing, co zapewnia jej wyższą wydajność w grach, projektowaniu grafiki i podczas użytkowania i obróbki multimediów. Karta GTX 1660 to rozwiązanie dedykowane dla graczy, streamerów oraz dla osób zajmujących się obróbką multimediów. Jednostka korzysta z pamięci GDDR5, oferuje wysoki zakres taktowania oraz doskonałe parametry użytkowe. GTX 1660 to karta graficzna stworzona z myślą o najbardziej wymagających użytkownikach.")
-
-insert into produkty values (1, 3, 4, "Gigabyte GeForce GTX 1080", "Chcąc sięgać po ");
-insert into produkty values (2, 3, 4, "Gigabyte GeForce RTX 2080", "Super karta");
-insert into produkty values (3, 3, 4, "Gigabyte GeForce RTX 2060TI", "Mega Kartra do wszystkiego ");
-insert into produkty values (4, 2, 2, "Super laptop GeForce", "praktycznie do wszystkiego ");
-
-insert into atrybuty values (1, 1, "pamieć RAM", "6 GB", 1);
-insert into atrybuty values (2, 1, "typ chłodzenia", "Wentylator", 1);
-insert into atrybuty values (3, 1, "Rodzaj chipsetu", "GeForce GTX 1660", 1);
-insert into atrybuty values (4, 2, "pamieć RAM", "8 GB", 1);
-insert into atrybuty values (5, 2, "typ chłodzenia", "Wodne", 1);
-insert into atrybuty values (6, 2, "Rodzaj chipsetu", "GeForce GTX 2080", 1);
-insert into atrybuty values (7, 3, "pamieć RAM", "12 GB", 1);
-insert into atrybuty values (8, 3, "typ chłodzenia", "Wentylator", 1);
-insert into atrybuty values (9, 3, "Rodzaj chipsetu", "GeForce RTX 2060", 1);
-insert into atrybuty values (10, 4, "pamieć RAM", "12 GB", 1);
-insert into atrybuty values (11, 4, "Karta Graficzna", "Gigabyte GeForce RTX 2080", 1);
-insert into atrybuty values (12, 4, "Procesor ", "Intel i7 9900K", 1);
-insert into atrybuty values (13, 1, "Zdjecie główne", "https://images.morele.net/i256/4141835_0_i256.jpg", 2);
-insert into atrybuty values (14, 2, "Zdjecie główne", "https://images.morele.net/i256/6352928_0_i256.jpg", 2);
-insert into atrybuty values (15, 3, "Zdjecie główne", "https://images.morele.net/i256/5938939_0_i256.jpg", 2);
-insert into atrybuty values (16, 4, "Zdjecie główne", "https://images.morele.net/i256/6314046_0_i256.jpg", 2);
-
-insert into ceny values (1, 1, 979, 1184.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
-insert into ceny values (2, 2, 1079, 1284.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
-insert into ceny values (3, 3, 1400, 1786.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
-insert into ceny values (4, 4, 7453, 9876.59, 21, STR_TO_DATE('02/12/2019 21:00','%d/%m/%Y %H:%i'), STR_TO_DATE('03/12/2019 21:00','%d/%m/%Y %H:%i'));
-
-// nowe inserty
 INSERT INTO produkty VALUES(1, 1, 3, "Barracuda 1 TB 3.5" SATA III (ST1000DM010)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością na poziomie 7200 obr./min, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu.|https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png");
 INSERT INTO atrybuty VALUES(1, 1, "Format dysku", "3.5"", 1);
 INSERT INTO atrybuty VALUES(2, 1, "Pojemność dysku [GB]", "1000", 1);
@@ -214,3 +82,82 @@ INSERT INTO atrybuty VALUES(56, 9, "Pamięć podręczna", "16", 0);
 INSERT INTO atrybuty VALUES(57, 9, "Zdjęcie", "https://images.morele.net/i1064/353686_0_i1064.jpg", 2);
 INSERT INTO atrybuty VALUES(58, 9, "Zdjęcie", "https://images.morele.net/i1064/353686_1_i1064.jpg", 3);
 INSERT INTO ceny VALUES (9, 9, 97.94, 120.47, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(10, 1, 1, "Digital Black 1 TB 3.5" SATA III (WD1003FZEX)", "Western Digital lub inaczej WD to amerykańska marka założona już w 1970 roku, która od początku specjalizuje się w produkcji dysków twardych do komputerów stacjonarnych, serwerów i laptopów. Producent ten jest zdecydowanie jednym z największych dostawców tych urządzeń na świecie i jest także znany z wprowadzania na rynek nowych szybszych standardów, dzięki którym nasze komputery dzisiaj potrafią zapisać niebagatelne ilości danych.");
+INSERT INTO atrybuty VALUES(59, 10, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(60, 10, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(61, 10, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(62, 10, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(63, 10, "Pamięć podręczna", "64", 0);
+INSERT INTO atrybuty VALUES(64, 10, "Zdjęcie", "https://images.morele.net/i1064/616526_3_i1064.jpg", 2);
+INSERT INTO ceny VALUES (10, 10, 277.87, 341.78, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(11, 1, 3, "Barracuda 2 TB 3.5" SATA III (ST2000DM008)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością na poziomie 7200 obr./min, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu.|https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png");
+INSERT INTO atrybuty VALUES(65, 11, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(66, 11, "Pojemność dysku [GB]", "2000", 1);
+INSERT INTO atrybuty VALUES(67, 11, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(68, 11, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(69, 11, "Pamięć podręczna", "256", 0);
+INSERT INTO atrybuty VALUES(70, 11, "Zdjęcie", "https://images.morele.net/i1064/4765408_2_i1064.png", 2);
+INSERT INTO atrybuty VALUES(71, 11, "Zdjęcie", "https://images.morele.net/i1064/4765408_0_i1064.jpg", 3);
+INSERT INTO atrybuty VALUES(72, 11, "Zdjęcie", "https://images.morele.net/i1064/4765408_1_i1064.jpg", 3);
+INSERT INTO ceny VALUES (11, 11, 202.43, 248.99, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(12, 1, 3, "Barracuda 8 TB 3.5" SATA III (ST8000DM004)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością na poziomie 7200 obr./min, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu.|https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png");
+INSERT INTO atrybuty VALUES(73, 12, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(74, 12, "Pojemność dysku [GB]", "8000", 1);
+INSERT INTO atrybuty VALUES(75, 12, "Prędkość obrotowa [obr./min.]", "5400", 0);
+INSERT INTO atrybuty VALUES(76, 12, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(77, 12, "Pamięć podręczna", "256", 0);
+INSERT INTO atrybuty VALUES(78, 12, "Zdjęcie", "https://images.morele.net/i1064/1727818_2_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(79, 12, "Zdjęcie", "https://images.morele.net/i1064/1727818_0_i1064.jpg", 3);
+INSERT INTO atrybuty VALUES(80, 12, "Zdjęcie", "https://images.morele.net/i1064/1727818_1_i1064.jpg", 3);
+INSERT INTO ceny VALUES (12, 12, 688.29, 846.60, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(13, 1, 3, "Barracuda Pro 1 TB 2.5" SATA III (ST1000LM049)", "7 mm wysokości sprawia, że 2,5-calowe dyski BarraCuda Pro znakomicie sprawdzają się podczas modernizacji cienkich laptopów oraz podobnych systemów w małych obudowach. Te dyski twarde o prędkości na poziomie 7200 obr./min są dostępne w pojemnościach do 1 TB i oferują najszybsze współczynniki transferu danych do 160 MB/s, co umożliwia osiągnięcie wysokiej wydajności użytkowania komputera PC oraz przesyłania plików.|https://images.morele.net/description/1700000/1695259_2018_03_13_10_37_38232546731.png|Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 12 TB portfolio produktów BarraCuda to doskonała opcja umożliwiająca modernizację sprzętu w różnym przedziale cenowym. Bezkompromisowy dysk BarraCuda Pro łączy największą w branży przestrzeń pamięci masowej z prędkością na poziomie 7200 obr./min, umożliwiając osiągnięcie wysokiej wydajności i niskich czasów ładowania podczas korzystania z gier lub pracy przy dużych obciążeniach. BarraCuda Pro ma również 5-letnią ograniczoną gwarancję.|Wszystkie dyski twarde należące do rodziny BarraCuda są wyposażone w technologię wielopoziomowego buforowania Multi-Tier Caching (MTC). Technologia MTC przenosi Twój komputer PC na nowy poziom wydajności, dzięki czemu możesz szybciej niż do tej pory ładować aplikacje i pliki. Dzięki zastosowaniu inteligentnych poziomów pamięci NAND Flash, DRAM oraz technologii pamięci podręcznej nośników dysk BarraCuda zapewnia lepszą wydajność odczytu i zapisu przez optymalizację przepływu danych.");
+INSERT INTO atrybuty VALUES(81, 13, "Format dysku", "2.5"", 1);
+INSERT INTO atrybuty VALUES(82, 13, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(83, 13, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(84, 13, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(85, 13, "Pamięć podręczna", "128", 0);
+INSERT INTO atrybuty VALUES(86, 13, "Zdjęcie", "https://images.morele.net/i1064/1695259_2_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(87, 13, "Zdjęcie", "https://images.morele.net/i1064/1695259_1_i1064.jpg", 3);
+INSERT INTO ceny VALUES (13, 13, 214.96, 264.40, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(14, 1, 1, "Digital Black 1 TB 2.5" SATA III (WD10JPLX)", "Zaawansowane technologie zapewniają wydajność do najbardziej wymagających zastosowań, takich jak edycja zdjęć i wideo oraz gry internetowe.|https://images.morele.net/d/14629587538373d31d17c376d1028b259dc1076ea56d0a0207c762.jpeg|Wysoka wydajność, wysoka pojemność, wysoka niezawodność i najnowocześniejsze rozwiązania techniczne sprawiają, że dysk WD Black zaspokoi oczekiwania najbardziej wymagających użytkowników.|https://images.morele.net/d/14629587538509b66984a3b7ac4f86ea9cef13143e2b51d3e6e749.jpeg|Dyski twarde WD Black oferują najlepszą kombinację parametrów dla zaawansowanych komputerów typu notebook: prędkość obrotową 7200 obr./min, 16 MB pamięci podręcznej oraz interfejs SATA 6 Gb/s.|https://images.morele.net/d/146295875386786119b65d1ab5269c79f7009257e6f349e71d38c.jpeg|Dyski WD Black są wyposażone w dwa procesory oraz większą i szybszą dynamiczną pamięć podręczną. Te cechy zapewniają maksymalną szybkość odczytu i zapisu.|Opracowany przez firmę WD dynamiczny algorytm buforowania optymalizuje alokację pamięci podręcznej między cyklami odczytu i zapisu, powodując zwiększenie wydajności w czasie rzeczywistym. Jeśli na przykład danej chwili przeprowadzanych jest znacznie więcej operacji odczytu niż zapisu, na odczytywane dane przeznaczane jest automatycznie większa ilość pamięci podręcznej, co pozwala zmniejszyć natłok danych i poprawia ogólną wydajność dysku.|Przed wprowadzeniem do sprzedaży produkty WD są poddawane wyczerpującym testom integralności funkcjonalnej (Functional Integrity Testing, F.I.T). Dzięki temu zyskujemy pewność, że nasze produkty stale spełniają najwyższe normy jakości i niezawodności godne marki WD. Firma WD posiada również obszerną bazę wiedzy, zawierającą ponad pomocnych 1000 artykułów oraz pomocne oprogramowanie i narzędzia. Dział pomocy technicznej firmy WD pracuje dłużej, aby zapewnić pomoc wtedy, gdy potrzebują jej nasi klienci. Bezpłatne linie pomocy technicznej są gotowe służyć pomocą naszym klientom. Dodatkowe informacje są także dostępne na stronie internetowej pomocy technicznej firmy WD.|Dyski twarde WD Black zostały przetestowane i są zalecane do stosowania w komputerach przenośnych typu notebook.");
+INSERT INTO atrybuty VALUES(88, 14, "Format dysku", "2.5"", 1);
+INSERT INTO atrybuty VALUES(89, 14, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(90, 14, "Prędkość obrotowa [obr./min.]", "7200", 0);
+INSERT INTO atrybuty VALUES(91, 14, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(92, 14, "Pamięć podręczna", "32", 0);
+INSERT INTO atrybuty VALUES(93, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_1_i1064.jpeg", 2);
+INSERT INTO atrybuty VALUES(94, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_0_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(95, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_2_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(96, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_3_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(97, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_4_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(98, 14, "Zdjęcie", "https://images.morele.net/i1064/883195_5_i1064.jpeg", 3);
+INSERT INTO ceny VALUES (14, 14, 300.48, 369.59, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(15, 1, 3, "Barracuda 8 TB 3.5" SATA III (ST8000DM004)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu. Dysk BarraCuda Pro posiada również 5-letnią gwarancję.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.");
+INSERT INTO atrybuty VALUES(99, 15, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(100, 15, "Pojemność dysku [GB]", "8000", 1);
+INSERT INTO atrybuty VALUES(101, 15, "Prędkość obrotowa [obr./min.]", "5400", 0);
+INSERT INTO atrybuty VALUES(102, 15, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(103, 15, "Pamięć podręczna", "256", 0);
+INSERT INTO atrybuty VALUES(104, 15, "Zdjęcie", "https://images.morele.net/i1064/1727818_2_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(105, 15, "Zdjęcie", "https://images.morele.net/i1064/1727818_0_i1064.jpg", 3);
+INSERT INTO atrybuty VALUES(106, 15, "Zdjęcie", "https://images.morele.net/i1064/1727818_1_i1064.jpg", 3);
+INSERT INTO ceny VALUES (15, 15, 688.29, 846.60, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(16, 1, 1, "Digital Blue 1 TB 3.5" SATA III (WD10EZRZ)", "Powiększ pojemność pamięci swojego komputera PC, korzystając z dysków WD Blue i szeregu dostępnych opcji. Produkty tej marki są zalecane do stacjonarnych komputerów PC i komputerów typu all-in-one.|https://content.morele.net/WesternDigital/WDBlue_Desktop_PowerPage/images/WDBlue_Desktop_hero.jpg|Dostępne za darmo oprogramowanie Acronis True Image WD Edition pozwala wykonać kopię zapasową systemu operacyjnego, aplikacji, ustawień i wszystkich danych zapisanych na dysku.|https://content.morele.net/WesternDigital/WDBlue_Desktop_PowerPage/images/WDBlue_Desktop_feature1.jpg|Technologia NoTouch Ramp Load – głowica dysku jest umieszczana w bezpiecznej pozycji w celu ochrony danych.|https://content.morele.net/WesternDigital/WDBlue_Desktop_PowerPage/images/WDBlue_Desktop_feature2.jpg");
+INSERT INTO atrybuty VALUES(107, 16, "Format dysku", "3.5"", 1);
+INSERT INTO atrybuty VALUES(108, 16, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(109, 16, "Prędkość obrotowa [obr./min.]", "5400", 0);
+INSERT INTO atrybuty VALUES(110, 16, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(111, 16, "Pamięć podręczna", "64", 0);
+INSERT INTO atrybuty VALUES(112, 16, "Zdjęcie", "https://images.morele.net/i1064/764807_0_i1064.jpeg", 2);
+INSERT INTO atrybuty VALUES(113, 16, "Zdjęcie", "https://images.morele.net/i1064/764807_1_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(114, 16, "Zdjęcie", "https://images.morele.net/i1064/764807_2_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(115, 16, "Zdjęcie", "https://images.morele.net/i1064/764807_3_i1064.jpeg", 3);
+INSERT INTO atrybuty VALUES(116, 16, "Zdjęcie", "https://images.morele.net/i1064/764807_4_i1064.jpeg", 3);
+INSERT INTO ceny VALUES (16, 16, 144.04, 177.17, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
