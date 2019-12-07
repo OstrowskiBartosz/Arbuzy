@@ -147,3 +147,22 @@ INSERT INTO atrybuty VALUES(10, 2, "Interfejs", "SATA III", 0);
 INSERT INTO atrybuty VALUES(11, 2, "Pamięć podręczna", "64", 0);
 INSERT INTO atrybuty VALUES(12, 2, "Zdjęcie", "https://images.morele.net/i1064/860922_0_i1064.jpeg", 2);
 INSERT INTO ceny VALUES (2, 2, 209.75, 257.99, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(3, 1, 3, "Barracuda 1 TB 2.5" SATA III (ST1000LM048)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu. Dysk BarraCuda Pro posiada również 5-letnią gwarancję.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.");
+INSERT INTO atrybuty VALUES(13, 3, "Format dysku", "2.5"", 1);
+INSERT INTO atrybuty VALUES(14, 3, "Pojemność dysku [GB]", "1000", 1);
+INSERT INTO atrybuty VALUES(15, 3, "Prędkość obrotowa [obr./min.]", "5400", 0);
+INSERT INTO atrybuty VALUES(16, 3, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(17, 3, "Pamięć podręczna", "128", 0);
+INSERT INTO atrybuty VALUES(18, 3, "Zdjęcie", "https://images.morele.net/i1064/1042366_1_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(19, 3, "Zdjęcie", "https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png", 3);
+INSERT INTO ceny VALUES (3, 3, 155.41, 191.15, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
+
+INSERT INTO produkty VALUES(4, 1, 1, "Blue 500 GB 2.5" SATA III (WD5000LPCX)", "Dysk twardy Western Digital Blue o pojemności 500 GB.");
+INSERT INTO atrybuty VALUES(20, 4, "Format dysku", "2.5"", 1);
+INSERT INTO atrybuty VALUES(21, 4, "Pojemność dysku [GB]", "500", 1);
+INSERT INTO atrybuty VALUES(22, 4, "Prędkość obrotowa [obr./min.]", "5400", 0);
+INSERT INTO atrybuty VALUES(23, 4, "Interfejs", "SATA III", 0);
+INSERT INTO atrybuty VALUES(24, 4, "Pamięć podręczna", "16", 0);
+INSERT INTO atrybuty VALUES(25, 4, "Zdjęcie", "https://images.morele.net/i1064/769736_0_i1064.jpeg", 2);
+INSERT INTO ceny VALUES (4, 4, 142.15, 174.84, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
