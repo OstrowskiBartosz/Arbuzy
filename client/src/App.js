@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {
@@ -217,7 +217,7 @@ class Navbar extends React.Component{
       this.setState({ 
         isLogged: this.props.isLogged, 
       });
-      if(this.props.isLogged == true){
+      if(this.props.isLogged === true){
         this.fetchCartData();
       }
     }
@@ -231,7 +231,7 @@ class Navbar extends React.Component{
         headers: new Headers({'content-type': 'application/json'})
     })
     .then(response=>response.text())
-    .then(response=>{ 
+    .then(response=>{
       this.setState({ 
         CartItems: response, 
       });
@@ -240,15 +240,15 @@ class Navbar extends React.Component{
   }
 
   getUpdatedCartItems(updateCartData){
-    if(updateCartData == true){
+    if(updateCartData === true){
      this.fetchCartData();
     }
   }
 
   getLoggedUser(loggedData){
-    if(loggedData == true){
+    if(loggedData === true){
      this.fetchCartData();
-    }else if(loggedData == false){
+    }else if(loggedData === false){
       this.setState({
         CartItems: 0, 
      });
@@ -301,15 +301,15 @@ class Navbar extends React.Component{
                   <div className="dropdown-menu" aria-labelledby="navbarCategory">
                     <a className="dropdown-item" id="Wszędzie" onClick={(event) => this.handleCategoryChange(event)}>Wszędzie</a>
                     <div className="dropdown-divider"></div>
-                    <a className="dropdown-item" id="Komputery" onClick={(event) => this.handleCategoryChange(event)}>Komputery</a>
-                    <a className="dropdown-item" id="Laptopy" onClick={(event) => this.handleCategoryChange(event)}>Laptopy</a>
-                    <a className="dropdown-item" id="Karty Graficzne" onClick={(event) => this.handleCategoryChange(event)}>Karty Graficzne</a>
-                    <a className="dropdown-item" id="Procesory" onClick={(event) => this.handleCategoryChange(event)}>Procesory</a>
-                    <a className="dropdown-item" id="Dyski SSD" onClick={(event) => this.handleCategoryChange(event)}>Dyski SSD</a>
                     <a className="dropdown-item" id="Dyski HDD" onClick={(event) => this.handleCategoryChange(event)}>Dyski HDD</a>
-                    <a className="dropdown-item" id="pamięć RAM" onClick={(event) => this.handleCategoryChange(event)}>pamięć RAM</a>
-                    <a className="dropdown-item" id="Płyty główne" onClick={(event) => this.handleCategoryChange(event)}>Płyty główne</a>
+                    <a className="dropdown-item" id="Dyski SSD" onClick={(event) => this.handleCategoryChange(event)}>Dyski SSD</a>
+                    <a className="dropdown-item" id="Karty graficzne" onClick={(event) => this.handleCategoryChange(event)}>Karty graficzne</a>
+                    <a className="dropdown-item" id="Napędy optyczne" onClick={(event) => this.handleCategoryChange(event)}>Napędy optyczne</a>
                     <a className="dropdown-item" id="Obudowy" onClick={(event) => this.handleCategoryChange(event)}>Obudowy</a>
+                    <a className="dropdown-item" id="Pamięci RAM" onClick={(event) => this.handleCategoryChange(event)}>Pamięci RAM</a>
+                    <a className="dropdown-item" id="Płyty główne" onClick={(event) => this.handleCategoryChange(event)}>Płyty główne</a>
+                    <a className="dropdown-item" id="Procesory" onClick={(event) => this.handleCategoryChange(event)}>Procesory</a>
+                    <a className="dropdown-item" id="Zasilacze" onClick={(event) => this.handleCategoryChange(event)}>Zasilacze</a>
                   </div>
                 </li>
                 <Link to={`/wyszukaj?q=${this.state.searchValue}&w=${this.state.searchCategory}`}>
@@ -331,9 +331,15 @@ class Navbar extends React.Component{
                     <i className='bigicon fas fa-user'></i>
                   </Link>
                 </li>
-                <li className='nav-item pr-3'>
-                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer position-relative' to="/koszyk">
+                <li className={'nav-item pr-3 '  + (this.state.isLogged ? 'hidden' : '')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer position-relative' to="/zaloguj">
                     <span className = "pr-1">Koszyk</span>
+                    <i className='bigicon fas fa-shopping-cart'></i><span className="badge badge-dark navbarCartStyle position-absolute">{this.state.CartItems}</span>
+                  </Link>
+                </li>
+                <li className={'nav-item pr-3 '  + (this.state.isLogged ? '' : 'hidden')}>
+                  <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer position-relative' to="/koszyk">
+                    <span className = "pr-2">Koszyk</span>
                     <i className='bigicon fas fa-shopping-cart'></i><span className="badge badge-dark navbarCartStyle position-absolute">{this.state.CartItems}</span>
                   </Link>
                 </li>
@@ -358,7 +364,7 @@ class Navbar extends React.Component{
             <MainPage />
           </Route>
           <Route path="/zaloguj">
-            <Login_signup redirect={window.location.pathname  + window.location.search} sendLoggedUser={this.getLoggedUser}  />
+            <LoginSignupComp redirect={window.location.pathname  + window.location.search} sendLoggedUser={this.getLoggedUser}  />
           </Route>
           <Route path="/wyloguj">
             <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
@@ -367,7 +373,7 @@ class Navbar extends React.Component{
             <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValue} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} />
           </Route>
           <Route path="/koszyk">
-            <ShoppingCart />
+            <ShoppingCart sendUpdatedCartItems={this.getUpdatedCartItems} />
           </Route>
         </Switch>
       </Router>
@@ -375,7 +381,7 @@ class Navbar extends React.Component{
   }
 }
 
-class Login_signup extends React.Component{
+class LoginSignupComp extends React.Component{
   constructor(props){
     super(props);
     this.state = ({
@@ -413,7 +419,6 @@ class Login_signup extends React.Component{
           errorSignup: true, 
           errorMessageSignup: response, })
       }else{
-        //console.log(response);
         this.setState({ 
           logged: true,
         });
@@ -483,7 +488,7 @@ class Login_signup extends React.Component{
 
   render(){
       if (this.state.logged === true) {
-        if(this.props.redirect == "/zaloguj"){
+        if(this.props.redirect === "/zaloguj"){
           return <Redirect to='/' />
         }
         return <Redirect to={this.props.redirect} />
@@ -713,7 +718,6 @@ class SearchResults extends React.Component{
       var nextPageAvailable, prevPageAvailable;
       if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.activePage){ nextPageAvailable = false; }
       if(this.state.activePage > 1){ prevPageAvailable = true; }
-      console.log(response);
       this.setState({
         ApiResponse: response,
         isLoading:  false,
@@ -732,12 +736,12 @@ class SearchResults extends React.Component{
     this.setState({
       Page: event.target.id,
     })
-    const data = {
-      nazwa_produktu: this.state.searchValue,
-      kategoria: this.state.searchCategory,
-      strona: this.state.page,
-      limit: this.state.limit,
-    }
+    // const data = {
+    //   nazwa_produktu: this.state.searchValue,
+    //   kategoria: this.state.searchCategory,
+    //   strona: this.state.page,
+    //   limit: this.state.limit,
+    // }
     // fetch('http://localhost:9000/search', {
     //     method: 'post',
     //     body: JSON.stringify(data),
@@ -775,7 +779,7 @@ class SearchResults extends React.Component{
     })
     .then(response=>response.text())
     .then(response => {
-      if(response == "Przedmiot został dodany do koszyka."){
+      if(response === "Przedmiot został dodany do koszyka."){
         this.props.sendUpdatedCartItems(true);
       }
     })
@@ -1005,6 +1009,8 @@ class ShoppingCart extends React.Component{
     super(props)
     this.state = ({
       isLoading: true,
+      fullPrice: 0,
+      isEmpty: false,
     });
   }
   componentDidMount(){
@@ -1021,102 +1027,231 @@ class ShoppingCart extends React.Component{
     .then(response=>response.text())
     .then(response=>{ 
       console.log(response);
+      var cena = 0;
+      var apiOBject = JSON.parse(response);
+      if(apiOBject.produkty.length == 0){
+        this.setState({
+          isEmpty: true,
+        })
+      }
+      var produktyWKoszykach = new Array(apiOBject.produkty.length);
+      for (var i = 0; i < produktyWKoszykach.length; i++) { 
+        produktyWKoszykach[i] = new Array(2);
+        produktyWKoszykach[i][0] = apiOBject.produkty[i].id_w_koszyku;
+        produktyWKoszykach[i][1] = apiOBject.produkty[i].ilosc;
+
+        produktyWKoszykach[i][2] = apiOBject.produkty[i].cena;
+
+        var cenastr = produktyWKoszykach[i][2].toString();
+        cenastr = cenastr.replace(".", ",");
+        produktyWKoszykach[i][2] = parseInt(cenastr);
+
+        produktyWKoszykach[i][3] = apiOBject.produkty[i].nazwa_produktu;
+        produktyWKoszykach[i][4] = apiOBject.produkty[i].zdjecie;
+        produktyWKoszykach[i][5] = apiOBject.produkty[i].id_produktu;
+        cena = cena + produktyWKoszykach[i][1]*produktyWKoszykach[i][2];
+      }
+
+      var cenastr = cena.toString();
+      cenastr = cenastr.replace(".", ",")
+      
       this.setState({
         ApiResponse: response,
         isLoading:  false,
+        cartNumberElements: apiOBject.produkty.length,
+        cartArray: produktyWKoszykach,
+        fullPrice: parseInt(cenastr),
       });
     })
     .catch(err => err);
+  }
+
+  handleTrashClick(id_produktu_w_koszyku, id_produktu){
+    let url = "http://localhost:9000/cart";
+    var object = {};
+    object.id_produktu_w_koszyku = id_produktu_w_koszyku;
+    object.id_produktu = id_produktu;
+    fetch(url, {
+        method: 'delete',
+        credentials: 'include',
+        body: JSON.stringify(object),
+        headers: new Headers({'content-type': 'application/json'})
+    })
+    .then(response=>response.text())
+    .then(response=>{
+      if(response === "Produkt został usunięty."){
+        var produktyWKoszykach = this.state.cartArray;
+        var index = produktyWKoszykach.findIndex(e => e[0] === id_produktu_w_koszyku);
+        produktyWKoszykach.splice(index, 1);
+        this.setState({
+          cartArray: produktyWKoszykach,
+        });
+        if(produktyWKoszykach.length == 0){
+          this.setState({
+            isEmpty: true,
+          })
+        }
+        this.props.sendUpdatedCartItems(true);
+      }
+    })
+    .catch(err => err);
+  }
+
+  handleQuantityClick(event, id, sign){
+    var cena = 0;
+    var produktyWKoszykach = this.state.cartArray;
+    var index = produktyWKoszykach.findIndex(e => e[0] === id);
+    if(sign === "+"){
+      if(produktyWKoszykach[index][1] !== 5){
+        produktyWKoszykach[index][1] = produktyWKoszykach[index][1] + 1;
+        cena = produktyWKoszykach[index][2];
+      }
+    }
+    else{
+      if(produktyWKoszykach[index][1] !== 1){
+        produktyWKoszykach[index][1] = produktyWKoszykach[index][1] - 1;
+        cena = -produktyWKoszykach[index][2];
+      }
+    }
+    this.setState({
+      cartArray: produktyWKoszykach,
+      fullPrice: this.state.fullPrice + cena,
+    });
   }
 
   render(){
     if (this.state.isLoading) {
       return (<div>Loading...</div>);
     }else{
-      let ApiResponse = JSON.parse(this.state.ApiResponse);
-      return(
-        <div>
-        <div className='row '>
-          <div className='col-3'>
-          </div>
-          <div className= "col-6">
-            <div className="row">
-              <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-                <div className = "row">
-                  <div className="col-11">
-                    <div className="font-weight-bold text-left">
-                      <h3>Twój Koszyk</h3>
+      if(this.state.isEmpty === false){
+        return(
+          <div>
+          <div className='row '>
+            <div className='col-3'>
+            </div>
+            <div className= "col-6">
+              <div className="row">
+                <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                  <div className = "row">
+                    <div className="col-11">
+                      <div className="font-weight-bold text-left">
+                        <h3>Twój Koszyk</h3>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-1">
-                    <span><i className="fas fa-trash-alt"></i></span>
+                    <div className="col-1 align-text-center">
+                      {/* {<span><i className="fas fa-trash-alt"></i></span>} */}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {ApiResponse.produkty.map(produkt => (
               <div className="row">
                 <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
-                  <div className="row">
-                    <div className ="col-2 p-0">
-                      <img height="70px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img>
-                    </div>
-                    <div className ="col-5">
-                      <div className="font-weight-bold text-left">
-                        <h5>{produkt.nazwa_produktu}</h5>
+                  <div className="row CartBorder pb-2">
+                      <div className ="col-2 p-0">
+                      </div>
+                      <div className ="col-5 align-text-center">
+                        <div className="text-left">
+                          Nazwa
+                        </div>
+                      </div>
+                      <div className ="col-2 align-text-center">
+                        <div className="text-left">
+                          Cena
+                        </div>
+                      </div>
+                      <div className ="col-2 align-text-center">
+                        <div className=" align-left" >
+                          Ilość
+                        </div>
+                      </div>
+                      <div className ="col-1 align-text-center">
+                        
                       </div>
                     </div>
-                      <div className ="col-2">
-                        <div className="font-weight-bold text-left"><h5>{produkt.cena + " zł"}</h5></div>
-                        <div className="placement-bottomAddToCart"></div>
-                      </div>
-                      <div className ="col-2">
-                        <div className="font-weight-bold text-left"><h5>ilość:{produkt.ilosc}</h5></div>
-                      </div>
-                      <div className ="col-1">
-                        <span><i className="fas fa-trash-alt"></i></span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              ))}
-            <div className="row">
-              <div className="col-6">
               </div>
-              <div className="col-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-                <div className="row pb-2">
-                  <div className="col-xl-4">
-                    łącznie do zapłaty
-                  </div>
-                  <div className="col-xl-4"></div>
-                  <div className="col-xl-4">
-                    <h4>14500,04 zł</h4>
-                  </div>
-                </div>
+              {this.state.cartArray.map(produkt => (
                 <div className="row">
-                  <div className="col-12">
-                    <button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary">Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button>
+                  <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
+                    <div className="row">
+                      <div className ="col-2 p-0">
+                        <img height="70px" width="auto" alt="obraz produktu" src={produkt[4]}></img>
+                      </div>
+                      <div className ="col-5 align-text-center">
+                        <div className="text-left">
+                          {produkt[3]}
+                        </div>
+                      </div>
+                        <div className ="col-2 align-text-center">
+                          <div className="text-left">
+                            {produkt[2] + " zł"}
+                          </div>
+                          <div className="placement-bottomAddToCart"></div>
+                        </div>
+                        <div className ="col-2 align-text-center">
+                          <i className="fas fa-minus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "-")}></i>
+                          <div className="text-left pl-2 pr-2">
+                            <input className="text-center" size="1" value={produkt[1]}></input>
+                          </div>
+                          <i className="fas fa-plus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "+")}></i>
+                        </div>
+                        <div className ="col-1 align-text-center">
+                          <span><i className="fas fa-trash-alt cursor-pointer" onClick={() => this.handleTrashClick(produkt[0], produkt[5])}></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              <div className="row">
+                <div className="col-6">
+                </div>
+                <div className="col-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                  <div className="row pb-2">
+                    <div className="col-xl-4">
+                      łącznie do zapłaty
+                    </div>
+                    <div className="col-xl-4"></div>
+                    <div className="col-xl-4">
+                      <h4>{this.state.fullPrice} zł</h4>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary">Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div className='col-3'>
+            </div>
           </div>
-          <div className='col-3'>
+          <div className ="row pt-4">
+            <div className ="col-3"></div>
+            <div className ="col-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-4"></div>
           </div>
         </div>
-        <div className ="row pt-4">
-          <div className ="col-3"></div>
-          <div className ="col-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
-          <div className ="col-4"></div>
-        </div>
-      </div>
-      );
+        );
+      }else{
+        return(
+          <div className="row">
+            <div className='col-3'>
+            </div>
+            <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+              <div className = "row">
+                <div className = "col-12">
+                  <h1>Koszyk jest pusty, dodaj coś do niego :-) </h1>
+                </div>
+              </div>
+            </div>
+            <div className='col-3'>
+            </div>
+          </div>
+        )
+      }
     }
   }
 }
 
 export default App;
-
-/*
-
-*/
