@@ -1,38 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
-var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
+var con = require('./database_connection');
 var async = require("async");
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json())
-
-var con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'lolo',
-  database: "mydb",
-  charset : 'utf8_unicode_ci',
-})
-var Storeoptions = {
-  host: 'localhost',
-  user: 'root',
-  password: 'lolo',
-  database: 'mydb'
-};
-var sessionStore = new MySQLStore(Storeoptions);
-router.use(session({
-  key: 'user_sid',
-  secret: 'idealpancake',
-  store: sessionStore,
-  saveUninitialized: false,
-  resave: false,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 2,
-    httpOnly: false,
-  },
-}));
 
 
 function DodajDoKoszyka(sql, callback){

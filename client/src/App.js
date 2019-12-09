@@ -275,12 +275,19 @@ class Navbar extends React.Component{
     });
   }
 
+  handleSearchSubmit(event){
+    this.setState({
+      searchValueToSend: this.state.searchValue,
+    })
+    console.log(this.state.searchValueToSend);
+  }
+
   render(){
     return(
       <Router>
         <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border sticky-top">
           <Link className="navbar-brand" to="/">
-            <div className='NavbarLogoPart3 center-Element'>
+            <div className='NavbarLogoPart3 center-Element-horizontal'>
               <i className="fab fa-adn"></i>
             </div>
             <div className='NavbarLogoPart1'>A</div>
@@ -291,8 +298,8 @@ class Navbar extends React.Component{
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-            <div className="center-Element">
-              <form className="form-inline" onSubmit={(event) => this.handleSearchClick(event)} id="searchBar">
+            <div className="center-Element-horizontal">
+              <form className="form-inline" id="searchBar">
                 <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar" value={this.state.searchValue} onChange= {(event) => this.handleSearchChange(event)} required></input>
                 <li className="nav-item dropdown" id="searchBarDropdown">
                   <a className="nav-link" id="navbarCategory" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -312,7 +319,7 @@ class Navbar extends React.Component{
                     <a className="dropdown-item" id="Zasilacze" onClick={(event) => this.handleCategoryChange(event)}>Zasilacze</a>
                   </div>
                 </li>
-                <Link to={`/wyszukaj?q=${this.state.searchValue}&w=${this.state.searchCategory}`}>
+                <Link to={`/wyszukaj?q=${this.state.searchValue}&w=${this.state.searchCategory}`} onClick={(event) => this.handleSearchSubmit(event)}>
                   <button type="submit">Wyszukaj <i className="fa fa-search"></i></button>
                 </Link>
               </form>
@@ -370,7 +377,7 @@ class Navbar extends React.Component{
             <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
           </Route>
           <Route path="/wyszukaj">
-            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValue} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} />
+            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValueToSend} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} />
           </Route>
           <Route path="/koszyk">
             <ShoppingCart sendUpdatedCartItems={this.getUpdatedCartItems} />
@@ -691,7 +698,26 @@ class SearchResults extends React.Component{
     });
   }
 
+  componentDidUpdate(prevState) {
+    if(this.props.searchValue!==prevState.searchValue){
+      this.state = ({
+        searchValue: this.props.searchValue,
+        searchCategory: this.props.searchCategory,
+        prevPageAvailable: false,
+        nextPageAvailable: false,
+        page: 1,
+        activeSearchLimit: 10,
+        searchLimit10: true,
+      });
+      this.fetchSearchData();
+    }
+  }
+
   componentDidMount(){
+    this.fetchSearchData();
+  }
+
+  fetchSearchData(){
     const data = {
       nazwa_produktu: this.state.searchValue,
       kategoria: this.state.searchCategory,
@@ -888,7 +914,7 @@ class SearchResults extends React.Component{
                         </div>
                       </div>
                       <div className="col-4 ">
-                        <div className="center-Element d-inline">
+                        <div className="center-Element-horizontal d-inline">
                           <div className="btn btn-secondary">sortowanie </div>
                           <div className="dropdown d-inline">
                             <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -921,7 +947,7 @@ class SearchResults extends React.Component{
                   <div className="row">
                     <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                       <div className="row">
-                        <div className ="col-3 mb-5"><img height="140px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img></div>
+                        <div className ="col-3 mb-5 position-relative"><div className="image-container"><img height="auto" width="100%" max-height="100px" className="center-Element-vertical d-block" alt="obraz produktu" src={produkt.zdjecie}></img></div></div>
                         <div className ="col-6">
                           <div className="font-weight-bold text-left">
                             <h4>{produkt.nazwa_produktu}</h4>
@@ -965,7 +991,7 @@ class SearchResults extends React.Component{
                         </div>
                       </div>
                       <div className="col-4 ">
-                        <div className="center-Element d-inline">
+                        <div className="center-Element-horizontal d-inline">
                           <div className="btn btn-secondary">sortowanie </div>
                           <div className="dropdown d-inline">
                             <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
