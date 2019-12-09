@@ -46,7 +46,7 @@ CREATE TABLE atrybuty(
   id_atrybutu MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_produktu MEDIUMINT NOT NULL,
   atrybut VARCHAR(80) NOT NULL,
-  wartosc VARCHAR(80) NOT NULL,
+  wartosc VARCHAR(200) NOT NULL,
   typ VARCHAR(10) NOT NULL,
   FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
 );
