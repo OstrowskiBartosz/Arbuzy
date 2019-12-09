@@ -63,8 +63,8 @@
   - `drop database mydb;`
   - `create database mydb;`
   - `use mydb;`
-  - `source < *pełna sciezka do pliku ze szkieletem bazy*`
-  - `source < *pełna sciezka do pliku z produktami bazy*`
+  - `source *pełna sciezka do pliku ze szkieletem bazy*`
+  - `source *pełna sciezka do pliku z produktami bazy*`
   
   - przykład:
   source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet
