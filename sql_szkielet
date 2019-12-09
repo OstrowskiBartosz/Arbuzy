@@ -46,7 +46,7 @@ CREATE TABLE atrybuty(
   id_atrybutu MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_produktu MEDIUMINT NOT NULL,
   atrybut VARCHAR(80) NOT NULL,
-  wartosc VARCHAR(80) NOT NULL,
+  wartosc VARCHAR(200) NOT NULL,
   typ VARCHAR(10) NOT NULL,
   FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
 );
@@ -75,6 +75,8 @@ CREATE TABLE ceny(
  ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
  ALTER TABLE produkty_w_koszykach CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
  ALTER TABLE kategorie CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+INSERT INTO uzytkownicy VALUES("1", "Admin", "Adminny", "admin", "$2b$10$k7/mE9.uPGbxjlM6oDK0LOGncMD3iQdz.XT4cqAT9t.aqrJwQ2JFG", "Adminowo", "Adminna 123/4", "12-345", 0, "admin@admin.pl", "123456789", "", "4578963214", "Admini sp. z o.o.");
 
 insert into producenci values (1, 'Western Digital');
 insert into producenci values (2, 'Toshiba');
