@@ -1,4 +1,10 @@
 
+drop database mydb;
+
+create database mydb;
+
+use mydb;
+
 CREATE TABLE uzytkownicy(
   id_uzytkownika MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
   imie VARCHAR(20) NOT NULL,
