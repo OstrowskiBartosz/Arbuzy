@@ -199,6 +199,7 @@ function czyPobranoProducentow(zapytania, wyniki,  callback) {
 
 router.post('/', function(req, res, next) {
   let nazwa_produktu = req.body.nazwa_produktu;
+  let kategoria = req.body.kategoria;
   let strona = req.body.strona;
   let limit = req.body.limit;
   if (nazwa_produktu && strona && limit) {
@@ -211,8 +212,10 @@ router.post('/', function(req, res, next) {
     INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
     INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
     WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+    AND k.nazwa_kategorii like \'%` + kategoria + `%\'
     and a.typ = 2
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
+    console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
         zapytania[0]= `

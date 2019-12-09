@@ -79,7 +79,7 @@ router.post('/', function(req, res, next) {
   let uzytkownik = req.session.user;
   var zapytania = [];
   var wyniki;
-  if (id_produktu && ilosc) {
+  if (id_produktu && ilosc && uzytkownik) {
     zapytania[0] = `
     SELECT * FROM Uzytkownicy WHERE login = \'` + uzytkownik + `\';`;
     czyZnalezionoUzytkownika(zapytania, wyniki, function (err, wyniki) {

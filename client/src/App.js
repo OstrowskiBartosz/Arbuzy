@@ -292,7 +292,7 @@ class Navbar extends React.Component{
           </button>
           <div className="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <div className="center-Element">
-              <form className="form-inline" id="searchBar">
+              <form className="form-inline" onSubmit={(event) => this.handleSearchClick(event)} id="searchBar">
                 <input className="form-control" type="text" placeholder="Nazwa produktu..." aria-label="Search" id="NavbarLeftBar" value={this.state.searchValue} onChange= {(event) => this.handleSearchChange(event)} required></input>
                 <li className="nav-item dropdown" id="searchBarDropdown">
                   <a className="nav-link" id="navbarCategory" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -313,7 +313,7 @@ class Navbar extends React.Component{
                   </div>
                 </li>
                 <Link to={`/wyszukaj?q=${this.state.searchValue}&w=${this.state.searchCategory}`}>
-                  <button type="submit"  onClick={(event) => this.handleSearchClick(event)}>Wyszukaj <i className="fa fa-search"></i></button>
+                  <button type="submit">Wyszukaj <i className="fa fa-search"></i></button>
                 </Link>
               </form>
             </div>
@@ -807,199 +807,215 @@ class SearchResults extends React.Component{
       for (let i = 0; i < 5; i++) {
         pages.push(<li className="page-item"><a className="page-link" id={i+1} key={"p"+(i+1)} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
-
-      return(
-        <div>
-          <div className="row">
-            <div className="col-1"></div>
-            <div className="col-10 pt-5 text-left">
-              <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-1"></div>
-            <div className="col-2">
-              <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
-                <div className="text-left pb-4 font-weight-bold"> 
-                  Wyszukiwanie: "{this.state.searchValue}" 
-                </div>
-                <div className="text-left font-weight-bold">aktywne filtry:</div>
-                <div className="text-left mb-5">brak</div>
-                <div>
-                  <div className="text-left pb-2"><h5>Kategorie</h5>
-                    {ApiResponse.kategorie.map(api => (
-                      <div className=" text-left mb-2">
-                        <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                          <input type="checkbox" />
-                          <span className="checkmark"></span>
-                        </label>
-                      </div>
-                    ))}
-                    <div className="dropdown-divider mt-4 mb-4"></div>
-                  </div>
-                  <div className="text-left pb-2"><h5>Filtry</h5>
-                    {ApiResponse.filtry.map(filtry => (
-                      <div className=" text-left mb-4">
-                        <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
-                          <input type="checkbox" />
-                          <span className="checkmark"></span>
-                        </label>
-                        <div className="ml-3 mt-2">
-                          {filtry.wartosci.map( wartosci => (
-                            <div className="mb-2">
-                              <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
-                                <input type="checkbox" />
-                                <span className="checkmark"></span>
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="dropdown-divider mt-4 mb-4"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-left pb-2"><h5>Producenci</h5>
-                    {ApiResponse.producenci.map(api => (
-                      <div className=" text-left mb-2">
-                        <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                          <input type="checkbox" />
-                          <span className="checkmark"></span>
-                        </label>
-                      </div>
-                    ))}
-                    <div className="dropdown-divider mt-4 mb-4"></div>
-                  </div>
-                </div>
-                <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>
+      if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
+        return(
+          <div>
+            <div className="row">
+              <div className="col-1"></div>
+              <div className="col-10 pt-5 text-left">
+                <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
               </div>
             </div>
-            <div className="col-7">
-              <div className="row">
-                <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
-                  <div className="row">
-                    <div className="col-4">
-                      <div className="float-left">
-                        <ul className="pagination float-right">
-                          <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-1" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
-                          <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-1" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
-                          <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-1" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
-                        </ul>
-                        <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
-                      </div>
-                    </div>
-                    <div className="col-4 ">
-                      <div className="center-Element d-inline">
-                        <div className="btn btn-secondary">sortowanie </div>
-                        <div className="dropdown d-inline">
-                          <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {this.state.activeSearchSorting}
-                          </button>
-                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
-                            <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
-                            <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <nav aria-label="Page navigation">
-                        <ul className="pagination float-right">
-                          <div className=" float-right btn btn-secondary d-inline">strona </div>
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
-                          {pages}
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
-                        </ul>
-                      </nav>
-                    </div>
+            <div className="row">
+              <div className="col-1"></div>
+              <div className="col-2">
+                <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
+                  <div className="text-left pb-4 font-weight-bold"> 
+                    Wyszukiwanie: "{this.state.searchValue}" 
                   </div>
-                </div>
-              </div>
-              {ApiResponse.produkty.map(produkt => (
-                <div className="row">
-                  <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
-                    <div className="row">
-                      <div className ="col-3 mb-5"><img height="140px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img></div>
-                      <div className ="col-6">
-                        <div className="font-weight-bold text-left">
-                          <h4>{produkt.nazwa_produktu}</h4>
+                  <div className="text-left font-weight-bold">aktywne filtry:</div>
+                  <div className="text-left mb-5">brak</div>
+                  <div>
+                    <div className="text-left pb-2"><h5>Kategorie</h5>
+                      {ApiResponse.kategorie.map(api => (
+                        <div className=" text-left mb-2">
+                          <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                          </label>
                         </div>
-                        <div className="idProduktu text-left"><span>id produktu: </span>{produkt.id_produktu}</div>
-                        <div className="row d-inline text-left">
-                        <div className="placement-bottomAtributes"></div>
-                          <ul>
-                            {produkt.atrybuty.map(atrybut => (
-                              <div className ="d-block">
-                                <li>
-                                  <span className ="d-inline">{atrybut.atrybut}:</span>
-                                  <span className ="font-weight-bold pl-2">{atrybut.wartosc}</span>
-                                </li>
+                      ))}
+                      <div className="dropdown-divider mt-4 mb-4"></div>
+                    </div>
+                    <div className="text-left pb-2"><h5>Filtry</h5>
+                      {ApiResponse.filtry.map(filtry => (
+                        <div className=" text-left mb-4">
+                          <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                          </label>
+                          <div className="ml-3 mt-2">
+                            {filtry.wartosci.map( wartosci => (
+                              <div className="mb-2">
+                                <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
+                                  <input type="checkbox" />
+                                  <span className="checkmark"></span>
+                                </label>
                               </div>
                             ))}
+                          </div>
+                          <div className="dropdown-divider mt-4 mb-4"></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-left pb-2"><h5>Producenci</h5>
+                      {ApiResponse.producenci.map(api => (
+                        <div className=" text-left mb-2">
+                          <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                          </label>
+                        </div>
+                      ))}
+                      <div className="dropdown-divider mt-4 mb-4"></div>
+                    </div>
+                  </div>
+                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>
+                </div>
+              </div>
+              <div className="col-7">
+                <div className="row">
+                  <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                    <div className="row">
+                      <div className="col-4">
+                        <div className="float-left">
+                          <ul className="pagination float-right">
+                            <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-1" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
+                            <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-1" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
+                            <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-1" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
                           </ul>
+                          <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
                         </div>
                       </div>
-                      <div className ="col-3 mb-5">
-                        <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
-                        <div className="placement-bottomAddToCart"></div>
-                        <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
-                                              disabled = {(this.props.isLogged ? "" : "disabled")} onClick={(event) => this.handleToCartClick(event)}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
+                      <div className="col-4 ">
+                        <div className="center-Element d-inline">
+                          <div className="btn btn-secondary">sortowanie </div>
+                          <div className="dropdown d-inline">
+                            <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              {this.state.activeSearchSorting}
+                            </button>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <div className="dropdown-divider"></div>
+                              <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                              <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                              <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <nav aria-label="Page navigation">
+                          <ul className="pagination float-right">
+                            <div className=" float-right btn btn-secondary d-inline">strona </div>
+                            <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
+                            {pages}
+                            <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
+                          </ul>
+                        </nav>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
-              <div className="row">
-                <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                {ApiResponse.produkty.map(produkt => (
                   <div className="row">
-                    <div className="col-4">
-                      <div className="float-left">
-                        <ul className="pagination float-right">
-                          <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-2" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
-                          <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-2" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
-                          <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-2" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
-                        </ul>
-                        <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
-                      </div>
-                    </div>
-                    <div className="col-4 ">
-                      <div className="center-Element d-inline">
-                        <div className="btn btn-secondary">sortowanie </div>
-                        <div className="dropdown d-inline">
-                          <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {this.state.activeSearchSorting}
-                          </button>
-                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
-                            <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
-                            <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                    <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
+                      <div className="row">
+                        <div className ="col-3 mb-5"><img height="140px" width="auto" alt="obraz produktu" src={produkt.zdjecie}></img></div>
+                        <div className ="col-6">
+                          <div className="font-weight-bold text-left">
+                            <h4>{produkt.nazwa_produktu}</h4>
                           </div>
+                          <div className="idProduktu text-left"><span>id produktu: </span>{produkt.id_produktu}</div>
+                          <div className="row d-inline text-left">
+                          <div className="placement-bottomAtributes"></div>
+                            <ul>
+                              {produkt.atrybuty.map(atrybut => (
+                                <div className ="d-block">
+                                  <li>
+                                    <span className ="d-inline">{atrybut.atrybut}:</span>
+                                    <span className ="font-weight-bold pl-2">{atrybut.wartosc}</span>
+                                  </li>
+                                </div>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className ="col-3 mb-5">
+                          <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
+                          <div className="placement-bottomAddToCart"></div>
+                          <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
+                                                disabled = {(this.props.isLogged ? "" : "disabled")} onClick={(event) => this.handleToCartClick(event)}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
                         </div>
                       </div>
                     </div>
-                    <div className="col-4">
-                      <nav aria-label="Page navigation">
-                        <ul className="pagination float-right">
-                          <div className=" float-right btn btn-secondary d-inline">strona </div>
-                          <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i></a></li>
-                          {pages}
-                          <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" > <i className="fas fa-chevron-right"></i></a></li>
-                        </ul>
-                      </nav>
+                  </div>
+                ))}
+                <div className="row">
+                  <div className="col-12 componentBackgroundColor mt-3 shadow-sm pt-3 bg-white rounded">
+                    <div className="row">
+                      <div className="col-4">
+                        <div className="float-left">
+                          <ul className="pagination float-right">
+                            <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-2" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
+                            <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-2" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
+                            <li className={"page-item " + (this.state.searchLimit30 ? "active" : "")}><a className="page-link" id="l30-2" onClick={(event) => this.handleLimitChange(event)}>30</a></li>
+                          </ul>
+                          <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
+                        </div>
+                      </div>
+                      <div className="col-4 ">
+                        <div className="center-Element d-inline">
+                          <div className="btn btn-secondary">sortowanie </div>
+                          <div className="dropdown d-inline">
+                            <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              {this.state.activeSearchSorting}
+                            </button>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <div className="dropdown-divider"></div>
+                              <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                              <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                              <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <nav aria-label="Page navigation">
+                          <ul className="pagination float-right">
+                            <div className=" float-right btn btn-secondary d-inline">strona </div>
+                            <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i></a></li>
+                            {pages}
+                            <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" > <i className="fas fa-chevron-right"></i></a></li>
+                          </ul>
+                        </nav>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-2"></div>
+              <div className="col-2"></div>
+            </div> 
           </div>
-
-        </div>
-      );
+        );
+      }else{
+        return(
+          <div className="row">
+            <div className='col-3'>
+            </div>
+            <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+              <div className = "row">
+                <div className = "col-12">
+                  <h1>Nie mamy takich przedmiotów :-() </h1>
+                </div>
+              </div>
+            </div>
+            <div className='col-3'>
+            </div>
+          </div>
+        );
+      }
     }
   }
 }
@@ -1026,7 +1042,6 @@ class ShoppingCart extends React.Component{
     })
     .then(response=>response.text())
     .then(response=>{ 
-      console.log(response);
       var cena = 0;
       var apiOBject = JSON.parse(response);
       if(apiOBject.produkty.length == 0){
@@ -1044,7 +1059,7 @@ class ShoppingCart extends React.Component{
 
         var cenastr = produktyWKoszykach[i][2].toString();
         cenastr = cenastr.replace(".", ",");
-        produktyWKoszykach[i][2] = parseInt(cenastr);
+        produktyWKoszykach[i][2] = parseFloat(cenastr); 
 
         produktyWKoszykach[i][3] = apiOBject.produkty[i].nazwa_produktu;
         produktyWKoszykach[i][4] = apiOBject.produkty[i].zdjecie;
@@ -1060,7 +1075,7 @@ class ShoppingCart extends React.Component{
         isLoading:  false,
         cartNumberElements: apiOBject.produkty.length,
         cartArray: produktyWKoszykach,
-        fullPrice: parseInt(cenastr),
+        fullPrice: parseFloat(cenastr),
       });
     })
     .catch(err => err);
@@ -1082,9 +1097,12 @@ class ShoppingCart extends React.Component{
       if(response === "Produkt został usunięty."){
         var produktyWKoszykach = this.state.cartArray;
         var index = produktyWKoszykach.findIndex(e => e[0] === id_produktu_w_koszyku);
+        var cena = this.state.fullPrice-(produktyWKoszykach[index][2]*produktyWKoszykach[index][1]);
+
         produktyWKoszykach.splice(index, 1);
         this.setState({
           cartArray: produktyWKoszykach,
+          fullPrice: cena,
         });
         if(produktyWKoszykach.length == 0){
           this.setState({
@@ -1092,6 +1110,8 @@ class ShoppingCart extends React.Component{
           })
         }
         this.props.sendUpdatedCartItems(true);
+      }else{
+
       }
     })
     .catch(err => err);
@@ -1102,13 +1122,13 @@ class ShoppingCart extends React.Component{
     var produktyWKoszykach = this.state.cartArray;
     var index = produktyWKoszykach.findIndex(e => e[0] === id);
     if(sign === "+"){
-      if(produktyWKoszykach[index][1] !== 5){
+      if(produktyWKoszykach[index][1] < 5){
         produktyWKoszykach[index][1] = produktyWKoszykach[index][1] + 1;
         cena = produktyWKoszykach[index][2];
       }
     }
     else{
-      if(produktyWKoszykach[index][1] !== 1){
+      if(produktyWKoszykach[index][1] > 1){
         produktyWKoszykach[index][1] = produktyWKoszykach[index][1] - 1;
         cena = -produktyWKoszykach[index][2];
       }
@@ -1139,7 +1159,6 @@ class ShoppingCart extends React.Component{
                       </div>
                     </div>
                     <div className="col-1 align-text-center">
-                      {/* {<span><i className="fas fa-trash-alt"></i></span>} */}
                     </div>
                   </div>
                 </div>
@@ -1171,7 +1190,7 @@ class ShoppingCart extends React.Component{
                 </div>
               </div>
               {this.state.cartArray.map(produkt => (
-                <div className="row">
+                <div className="row" key={produkt[0]}>
                   <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
                     <div className="row">
                       <div className ="col-2 p-0">
@@ -1191,7 +1210,7 @@ class ShoppingCart extends React.Component{
                         <div className ="col-2 align-text-center">
                           <i className="fas fa-minus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "-")}></i>
                           <div className="text-left pl-2 pr-2">
-                            <input className="text-center" size="1" value={produkt[1]}></input>
+                            <input className="text-center" size="1" value={produkt[1]} readOnly></input>
                           </div>
                           <i className="fas fa-plus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "+")}></i>
                         </div>

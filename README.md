@@ -56,3 +56,16 @@
 - po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter) lub alternatywnie w konsoli wpisujemy `git commit -m "Your comment"`
 - następnie w konsoli wpisujemy
   - `git push origin master`
+
+### Import bazy
+
+- W MySQL client kolejne polecenia
+  - `drop database mydb;`
+  - `create database mydb;`
+  - `use mydb;`
+  - `source < *pełna sciezka do pliku ze szkieletem bazy*`
+  - `source < *pełna sciezka do pliku z produktami bazy*`
+  
+  - przykład:
+  source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet
+  source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_produkty

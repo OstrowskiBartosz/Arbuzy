@@ -1,4 +1,3 @@
-CREATE DATABASE mydb;
 
 CREATE TABLE uzytkownicy(
   id_uzytkownika MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -19,7 +18,7 @@ CREATE TABLE uzytkownicy(
 
 CREATE TABLE kategorie(
   id_kategorii MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nazwa_kategorii VARCHAR(100) NOT NULL,
+  nazwa_kategorii VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE producenci(
@@ -65,13 +64,11 @@ CREATE TABLE ceny(
     FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id_uzytkownika),
     FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
   );
- _________________________________________________________________________________________________________________
-|                                     ŻEBY PRZYJMOWAŁO POLSKIE ZNAKI                                              |
-|                                                                                                                 |
-|                ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
-|                ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;                      |  
-|           ALTER TABLE produkty_w_koszykach CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;               |  
-|_________________________________________________________________________________________________________________|
+ 
+ ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ ALTER TABLE produkty_w_koszykach CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ ALTER TABLE kategorie CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 insert into producenci values (1, 'Western Digital');
 insert into producenci values (2, 'Toshiba');
