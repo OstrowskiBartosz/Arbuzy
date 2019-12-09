@@ -73,14 +73,15 @@ class CategoryBar extends React.Component{
             <div className = "categoryBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
               <div className ="categoryHeader">Kategorie</div>
               <ul>
-                <li className = "categoryLink">Komputery</li>
-                <li className = "categoryLink">Laptopy</li>
-                <li className = "categoryLink">Karty Graficzne</li>
-                <li className = "categoryLink">Procesory</li>
-                <li className = "categoryLink">Dyski SSD/HDD</li>
-                <li className = "categoryLink">pamięć RAM</li>
-                <li className = "categoryLink">Płyty główne</li>
-                <li className = "categoryLink">Obudowy komputerowe</li>
+                <li id="3" className = "categoryLink">Karty graficzne</li>
+                <li id="8" className = "categoryLink">Procesory</li>
+                <li id="7" className = "categoryLink">Płyty główne</li>
+                <li id="6" className = "categoryLink">Pamięci RAM</li>
+                <li id="1" className = "categoryLink">Dyski HDD</li>
+                <li id="2" className = "categoryLink">Dyski SSD</li>
+                <li id="5" className = "categoryLink">Obudowy</li>
+                <li id="9" className = "categoryLink">Zasilacze</li>
+                <li id="4" className = "categoryLink">Napędy optyczne</li>
               </ul>
             </div>
         </div>
