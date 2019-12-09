@@ -44,7 +44,11 @@
 ### Przygotowanie bazy
 
 - Instalacja MariaDB z `https://mariadb.com/downloads/`
-- Utworzenie bazy mozliwe z pliku `sql.txt`
+- Utworzenie bazy mozliwe z plików za pomocą poelcenia `source`
+  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet`
+  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_produkty`
+  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_szkielet`
+  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_produkty`
 - Aby wyłączyć bazę w celu podmiany plików wpisujemy w MySclClient
   - `SHUTDOWN;`
 - Aby włączyć bazę wpisujemy w terminalu z uprawnieniami administratora -`net start mysql`
@@ -56,16 +60,3 @@
 - po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter) lub alternatywnie w konsoli wpisujemy `git commit -m "Your comment"`
 - następnie w konsoli wpisujemy
   - `git push origin master`
-
-### Import bazy
-
-- W MySQL client kolejne polecenia
-
-  - `source *pełna sciezka do pliku ze szkieletem bazy*`
-  - `source *pełna sciezka do pliku z produktami bazy*`
-
-  - przykład:
-  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet`
-  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_produkty`
-  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_szkielet`
-  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_produkty`
