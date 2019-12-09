@@ -60,9 +60,12 @@
 ### Import bazy
 
 - W MySQL client kolejne polecenia
+
   - `source *pełna sciezka do pliku ze szkieletem bazy*`
   - `source *pełna sciezka do pliku z produktami bazy*`
-  
+
   - przykład:
-  source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet
-  source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_produkty
+  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_szkielet`
+  - `source C:\Users\Haxxf\OneDrive\Dokumenty\Arbuzy\sql_produkty`
+  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_szkielet`
+  - `source D:\Systemowe\Dokumenty\React\Arbuzy\sql_produkty`
