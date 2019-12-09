@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var cors = require('cors');
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,6 +21,25 @@ app.use(cors({
   origin: 'http://localhost:3000',
   allowCredentials: true, 
   credentials : true
+}));
+
+var Storeoptions = {
+  host: 'localhost',
+  user: 'root',
+  password: 'lolo',
+  database: 'mydb'
+};
+var sessionStore = new MySQLStore(Storeoptions);
+app.use(session({
+  key: 'user_sid',
+  secret: 'idealpancake',
+  store: sessionStore,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 2,
+    httpOnly: false,
+  },
 }));
 
 // view engine setup
