@@ -310,5 +310,3 @@ INSERT INTO atrybuty VALUES(230, 27, "Zdjęcie", "https://images.morele.net/i106
 INSERT INTO atrybuty VALUES(231, 27, "Zdjęcie", "https://images.morele.net/i1064/4160128_4_i1064.jpg", 3);
 INSERT INTO atrybuty VALUES(232, 27, "Zdjęcie", "https://images.morele.net/i1064/4160128_5_i1064.jpg", 3);
 INSERT INTO ceny VALUES (27, 27, 405.66, 498.96, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
-
-INSERT INTO produkty VALUES(28, 1, 3, "łódź", "żółć");
