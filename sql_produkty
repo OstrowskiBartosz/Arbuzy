@@ -1,3 +1,5 @@
+SET NAMES utf8;
+
 INSERT INTO produkty VALUES(1, 1, 3, "Barracuda 1 TB 3.5\" SATA III (ST1000DM010)", "Dysk BarraCuda jest liderem w branży, oferując największą pojemność pamięci masowej do komputerów stacjonarnych i przenośnych. Dzięki dyskom osiągającym pojemność do 10 TB, portfolio produktów BarraCuda to wspaniała opcja umożliwiająca modernizację w różnej cenie. Bezkompromisowy dysk BarraCuda Pro łączy wiodącą w branży pojemność z prędkością na poziomie 7200 obr./min, zapewniającą wysoką wydajność i błyskawiczne czasy ładowania podczas gier lub wykonywania zadań o dużym obciążeniu.|https://images.morele.net/d/14700294685988f2cb7a0671022410425c28de6b0bb123ed539e97.png|Wydobądź jak najwięcej mocy ze swojej pamięci masowej dzięki dyskom BarraCuda. Począwszy od komputerów pełnych zdjęć i wspomnień, aż po komputery do gier, które potrzebują więcej miejsca, dysk BarraCuda rośnie wraz z twoimi potrzebami.|https://images.morele.net/d/147002946877550da87185e4105d1d96782d0013109dda4e29dc36.png");
 INSERT INTO atrybuty VALUES(1, 1, "Format dysku", "3.5\"", 1);
 INSERT INTO atrybuty VALUES(2, 1, "Pojemność dysku [GB]", "1000", 1);

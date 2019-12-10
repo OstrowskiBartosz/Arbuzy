@@ -1,4 +1,5 @@
 
+SET NAMES utf8;
 drop database mydb;
 
 create database mydb;
