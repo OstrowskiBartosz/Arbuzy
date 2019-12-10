@@ -208,6 +208,7 @@ class Navbar extends React.Component{
     this.state = {
       isLogged: false,
       searchValue: q,
+      searchValueToSend: q,
       searchCategory: w,
       CartItems: 0,
     };
@@ -277,10 +278,13 @@ class Navbar extends React.Component{
   }
 
   handleSearchSubmit(event){
-    this.setState({
-      searchValueToSend: this.state.searchValue,
-    })
-    console.log(this.state.searchValueToSend);
+    if(this.state.searchValue.length === 0){
+      event.preventDefault();
+    }else{
+      this.setState({
+        searchValueToSend: this.state.searchValue,
+      })
+    }
   }
 
   render(){
@@ -503,15 +507,15 @@ class LoginSignupComp extends React.Component{
       }
       return(
         <div>
-        <div className='row '>
-          <div className='col-4'>
+        <div className='row'>
+          <div className='col-xl-4'>
           </div>
-          <div className='col-4 m-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
+          <div className='col-xl-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
             <div className = "card-body">
-              <div id="Signuptab" className = {"outlinetab col-6 " + (this.state.activeSignup ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
+              <div id="Signuptab" className = {"outlinetab col-lg-6 " + (this.state.activeSignup ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
                 Rejestracja
               </div>
-              <div id="Logintab" className = {"outlinetab col-6 " + (this.state.activeLogin ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
+              <div id="Logintab" className = {"outlinetab col-lg-6 " + (this.state.activeLogin ? " activeTab" : "")} onClick={(event) => this.handleSLChange(event)}>
                 Logowanie
               </div>
 
@@ -522,32 +526,32 @@ class LoginSignupComp extends React.Component{
                 <form id="SignupForm" onSubmit={(event) => this.handleSignupSubmit(event)}>
                   <div>Dane logowania</div>
                   <div className='row'>
-                    <div className='col-6 signupinput'><input type='text' name="login" className="form-control" placeholder= "login" required></input></div>
-                    <div className='col-6 signupinput'><input type='password' name="haslo" className="form-control" placeholder= "hasło" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="login" className="form-control" placeholder= "Login" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='password' name="haslo" className="form-control" placeholder= "Hasło" required></input></div>
                   </div>
 
                   <div className='row'>
-                    <div className='col-12 signupinput'><input type='text' name="email" className="form-control" placeholder= "adres email" required></input></div>
+                    <div className='col-12 signupinput'><input type='text' name="email" className="form-control" placeholder= "Adres email" required></input></div>
                   </div>
 
                   <div>Dane personalne</div>
                   <div className='row'>
-                    <div className='col-6 signupinput'><input type='text' name="imie" className="form-control" placeholder= "Imie" required></input></div>
-                    <div className='col-6 signupinput'><input type='text' name="nazwisko" className="form-control" placeholder= "Nazwisko" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="imie" className="form-control" placeholder= "Imie" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="nazwisko" className="form-control" placeholder= "Nazwisko" required></input></div>
                   </div>
 
                   <div className='row'>
-                    <div className='col-6 signupinput'><input type='text' name="telefon_o" className="form-control" placeholder= "telefon osobisty" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="telefon_o" className="form-control" placeholder= "Telefon osobisty" required></input></div>
                   </div>
 
-                  <div className="SignupCompanyCheckbox">
+                  <div className="SignupCompanyCheckbox pb-4">
                     Czy zakładane jest konto firmy?  <input type='checkbox' placeholder= "Nazwisko" onChange={(event) => this.handleFirmaChange(event)}></input>
                   </div>
 
                   <div className = {'' + (this.state.czyfirma ? "" : "hidden")}>Dane firmy</div>
                   <div className={'row ' + (this.state.czyfirma ? "" : "hidden")}>
-                    <div className='col-6 signupinput'><input type='text' name="nazwa_firmy" className="form-control" placeholder= "Nazwa firmy" required={(this.state.czyfirma ? " required" : "")}></input></div>
-                    <div className='col-6 signupinput'><input type='text' name="nip" className="form-control" placeholder= "numer NIP" required={(this.state.czyfirma ? " required" : "")}></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="nazwa_firmy" className="form-control" placeholder= "Nazwa firmy" required={(this.state.czyfirma ? " required" : "")}></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="nip" className="form-control" placeholder= "numer NIP" required={(this.state.czyfirma ? " required" : "")}></input></div>
                   </div>
 
 
@@ -557,8 +561,8 @@ class LoginSignupComp extends React.Component{
                   </div>
 
                   <div className='row'>
-                    <div className='col-6 signupinput'><input type='text' name="miasto" className="form-control" placeholder= "Miasto zamieszkania" required></input></div>
-                    <div className='col-6 signupinput'><input type='text' name="kod" className="form-control" placeholder= "kod pocztowy" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="miasto" className="form-control" placeholder= "Miasto zamieszkania" required></input></div>
+                    <div className='col-lg-6 signupinput'><input type='text' name="kod" className="form-control" placeholder= "kod pocztowy" required></input></div>
                   </div>
                   <small id="notka" className="form-text text-muted">Nigdy nie podzielimy się z nikim twoimi danymi.</small>
 
@@ -595,14 +599,14 @@ class LoginSignupComp extends React.Component{
               </div>
             </div>
           </div>
-          <div className='col-4'>
+          <div className='col-xl-4'>
           </div>
         </div>
-        <div className ="row">
-          <div className ="col-4"></div>
-          <div className ="col-4 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
-          <div className ="col-4"></div>
-        </div>
+        <div className ="row pt-4">
+            <div className ="col-lg-3"></div>
+            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-lg-4"></div>
+          </div>
       </div>
       );
     }
@@ -641,19 +645,23 @@ class Logout extends React.Component{
       return(
         <div>
           <div className='row '>
-            <div className='col-4'>
-            </div>
-            <div className='col-4 m-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
+            <div className='col-lg-4'></div>
+            <div className='col-lg-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
               <div className= "card-body ">
                 <div className="p-3 text-left">
                   <h5 className="card-title bigfont">Czy na pewno chcesz się wylogować?</h5>
                   <div className="loginSignupSubmitButton">
-                    <div className ="d-inline pr-5"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
                     <button  className="btn btn-outline-success" onClick = {(event) => this.handleLogout(event)}>Wyloguj</button>
                   </div>
                 </div>
               </div>
             </div>
+            <div className='col-lg-4'></div>
+          </div>
+          <div className ="row pt-4">
+            <div className ="col-lg-3"></div>
+            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-lg-4"></div>
           </div>
         </div>
     )};
@@ -715,7 +723,9 @@ class SearchResults extends React.Component{
   }
 
   componentDidMount(){
+    console.log("sdav");
     this.fetchSearchData();
+    console.log("svdavads");
   }
 
   fetchSearchData(){
@@ -948,8 +958,13 @@ class SearchResults extends React.Component{
                   <div className="row">
                     <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                       <div className="row">
-                        <div className ="col-3 mb-5 position-relative"><div className="image-container"><img height="auto" width="100%" max-height="100px" className="center-Element-vertical d-block" alt="obraz produktu" src={produkt.zdjecie}></img></div></div>
-                        <div className ="col-6">
+                        <div className ="col-2 pr-0 mr-0">
+                          <div className="image-container">
+                            <img className="center-Element-vertical feature_image" alt="obraz produktu" src={produkt.zdjecie}>
+                            </img>
+                          </div>
+                        </div>
+                        <div className ="col-7">
                           <div className="font-weight-bold text-left">
                             <h4>{produkt.nazwa_produktu}</h4>
                           </div>
@@ -968,7 +983,7 @@ class SearchResults extends React.Component{
                             </ul>
                           </div>
                         </div>
-                        <div className ="col-3 mb-5">
+                        <div className ="col-3">
                           <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
                           <div className="placement-bottomAddToCart"></div>
                           <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
@@ -1174,9 +1189,9 @@ class ShoppingCart extends React.Component{
         return(
           <div>
           <div className='row '>
-            <div className='col-3'>
+            <div className='col-sm-3'>
             </div>
-            <div className= "col-6">
+            <div className= "col-sm-6">
               <div className="row">
                 <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
                   <div className = "row">
@@ -1190,7 +1205,7 @@ class ShoppingCart extends React.Component{
                   </div>
                 </div>
               </div>
-              <div className="row">
+              <div className="row hide-l">
                 <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
                   <div className="row CartBorder pb-2">
                       <div className ="col-2 p-0">
@@ -1220,28 +1235,30 @@ class ShoppingCart extends React.Component{
                 <div className="row" key={produkt[0]}>
                   <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
                     <div className="row">
-                      <div className ="col-2 p-0">
-                        <img height="70px" width="auto" alt="obraz produktu" src={produkt[4]}></img>
+                      <div className ="col-xl-2 p-0 mb-3">
+                        <div className="image-container2">
+                          <img alt="obraz produktu" className=" center-Element-vertical feature_image2" src={produkt[4]}></img>
+                        </div>                       
                       </div>
-                      <div className ="col-5 align-text-center">
+                      <div className ="col-xl-5 align-text-center font-size-bigger mb-5">
                         <div className="text-left">
                           {produkt[3]}
                         </div>
                       </div>
-                        <div className ="col-2 align-text-center">
+                        <div className ="col-xl-2 align-text-center font-size-bigger mb-5">
                           <div className="text-left">
                             {produkt[2] + " zł"}
                           </div>
                           <div className="placement-bottomAddToCart"></div>
                         </div>
-                        <div className ="col-2 align-text-center">
+                        <div className ="col-xl-2 align-text-center mb-5">
                           <i className="fas fa-minus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "-")}></i>
                           <div className="text-left pl-2 pr-2">
                             <input className="text-center" size="1" value={produkt[1]} readOnly></input>
                           </div>
                           <i className="fas fa-plus cursor-pointer" onClick={(event) => this.handleQuantityClick(event, produkt[0], "+")}></i>
                         </div>
-                        <div className ="col-1 align-text-center">
+                        <div className ="col-xl-1 align-text-center mb-5">
                           <span><i className="fas fa-trash-alt cursor-pointer" onClick={() => this.handleTrashClick(produkt[0], produkt[5])}></i></span>
                         </div>
                       </div>
@@ -1249,9 +1266,9 @@ class ShoppingCart extends React.Component{
                   </div>
                 ))}
               <div className="row">
-                <div className="col-6">
+                <div className="col-xl-6">
                 </div>
-                <div className="col-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                <div className="col-xl-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
                   <div className="row pb-2">
                     <div className="col-xl-4">
                       łącznie do zapłaty
@@ -1269,13 +1286,13 @@ class ShoppingCart extends React.Component{
                 </div>
               </div>
             </div>
-            <div className='col-3'>
+            <div className='col-sm-3'>
             </div>
           </div>
           <div className ="row pt-4">
-            <div className ="col-3"></div>
-            <div className ="col-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
-            <div className ="col-4"></div>
+            <div className ="col-lg-3"></div>
+            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-lg-4"></div>
           </div>
         </div>
         );

@@ -123,15 +123,36 @@
   #searchBar input { font-size: 15px; width: 350px; font-size: 15px; }
   #searchBar button { font-size: 15px; width: 107px; height: 45px;}
   .navbar-Font-Size{ font-size: 15px; }
+  .navbarCartStyle{
+    font-size: 10px;
+    z-index: 5;
+    position: absolute; 
+    left:78px;
+    bottom: 3px;
+  }
 }
 @media (max-width: 1071px) {
   #searchBar input { width: 250px; }
   #searchBar button { width: 107px;}
+  .navbarCartStyle{
+    font-size: 10px;
+    z-index: 5;
+    position: absolute; 
+    left:80px;
+    bottom: 3px;
+  }
 }
 @media (max-width: 991px) {
   #searchBar input { width: 180px; height: 40px;}
   #searchBar button { width: 107px; height: 40px;}
   #NavbarLeftBar{display: block;}
+  .navbarCartStyle{
+    font-size: 10px;
+    z-index: 5;
+    position: absolute; 
+    left:75px;
+    bottom: 2px;
+  }
 }
 
 .center-Element-horizontal{
@@ -141,7 +162,6 @@
 
 .center-Element-vertical {
   margin: 0;
-  background: yellow;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -194,10 +214,9 @@
 }
 /* AKTYWNA ZAKŁADKA LOGIN I SIGNUP*/
 .activeTab{
-  border-bottom: red 4px solid;
+  border-bottom: blue 4px solid;
   animation-duration: 2s;
 }
-
 /* ERRORY W LOGIN I SIGNUP*/
 
 .error{
@@ -268,7 +287,7 @@
 
 .placement-bottomAddToCart {
   display: inline-block;
-  height: 70%;
+  height: 50%;
   vertical-align: bottom;
   width: 0px;
 }
@@ -281,7 +300,17 @@
 
 .image-container{
   height: 200px;
-  width: 200px;
+  width: 100px;
+}
+
+.feature_image {
+  display:block;
+
+  max-height: 100%; 
+  height: auto; 
+  
+  max-width:100%;
+  width: auto;
 }
 /* */
 /* Customize the label (the container) */
@@ -369,4 +398,33 @@
 
 .CartBorder{
   border-bottom: 2px solid lightgrey;
+}
+
+.font-size-bigger{
+  font-size: 22px;
+}
+
+
+.image-container2{
+  height: 120px;
+  width: 80px;
+}
+
+.feature_image2 {
+  display:block;
+
+  max-height: 100%; 
+  height: auto; 
+  
+  max-width:100%;
+  width: auto;
+}
+
+@media (max-width: 1200px) {
+  .hide-l {
+    display: none;
+  }
+  .align-text-center{
+    justify-content: center
+  }
 }
