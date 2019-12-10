@@ -827,7 +827,7 @@ class SearchResults extends React.Component{
 
   render(){
     if (this.state.isLoading) {
-      return (<div>Loading...</div>);
+      return (<div className="loading"></div>);
     }else{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
