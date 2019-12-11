@@ -8,6 +8,7 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 
 class App extends React.Component {
@@ -19,6 +20,7 @@ class App extends React.Component {
       showSearchResult: false,
       searchValue: "",
       searchCategory: "",
+      hasExpired: false,
     });
   }
 
@@ -27,21 +29,27 @@ class App extends React.Component {
   }
 
   fetchLoggedUser(){
-    let url = "http://localhost:9000/session";
-    fetch(url, {
-        method: 'get',
-        credentials: 'include',
-        headers: new Headers({'content-type': 'application/json'}),        
-    })
-    .then(response=>response.text())
-    .then(response => { 
-      if(response === "logged"){
-        this.setState({ 
-          isLogged: true,
-        });
-      }
-    })
-    .catch(err => err);
+    if(undefined !== Cookies.get('user_sid')){
+      let url = "http://localhost:9000/session";
+      fetch(url, {
+          method: 'get',
+          credentials: 'include',
+          headers: new Headers({'content-type': 'application/json'}),        
+      })
+      .then(response=>response.text())
+      .then(response => { 
+        if(response === "logged"){
+          this.setState({ 
+            isLogged: true,
+          });
+        }else{
+          this.setState({ 
+            hasExpired: true,
+          });
+        }
+      })
+      .catch(err => err);
+    }
   }
 
   getSearchValue(searchValue, searchCategory){
@@ -55,7 +63,7 @@ class App extends React.Component {
   render(){
     return (
         <div className="App">
-          <Navbar isLogged={this.state.isLogged} sendSearchValue={this.getSearchValue} />
+          <Navbar isLogged={this.state.isLogged} hasExpired={this.state.hasExpired} sendSearchValue={this.getSearchValue} />
         </div>
     );
   }
@@ -102,7 +110,7 @@ class MainPage extends React.Component{
       return(
         <div>
           <div>
-            <div className = "row">
+            <div className = "row navbar-padding">
               <div className ="col-1"></div>
               <div className ="col-2">
                 <CategoryBar />
@@ -195,6 +203,8 @@ class Navbar extends React.Component{
     this.getLoggedUser = this.getLoggedUser.bind(this);
     this.getUpdatedCartItems = this.getUpdatedCartItems.bind(this);
 
+    this.getAlertMessage = this.getAlertMessage.bind(this);
+
     const params = new URLSearchParams(window.location.search);
     let q = "";
     let w = "Wszędzie";
@@ -211,7 +221,13 @@ class Navbar extends React.Component{
       searchValueToSend: q,
       searchCategory: w,
       CartItems: 0,
+
+      alertColor: "",
+      alertHeading: "",
+      alertText: "",
+      showAlert: false,
     };
+    var alertTimer;
   }
 
   componentDidUpdate(prevState) {
@@ -287,10 +303,26 @@ class Navbar extends React.Component{
     }
   }
 
+  getAlertMessage(alertColor, alertHeading, alertText){
+      this.setState({
+          showAlert: false
+      });
+      setTimeout(
+        function() {
+          this.setState({
+            alertColor: alertColor,
+            alertHeading: alertHeading,
+            alertText: alertText,
+            showAlert: true,
+          })
+        }
+        .bind(this), 1);
+  }
+
   render(){
     return(
       <Router>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border sticky-top">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border fixed-top">
           <Link className="navbar-brand" to="/">
             <div className='NavbarLogoPart3 center-Element-horizontal'>
               <i className="fab fa-adn"></i>
@@ -370,22 +402,30 @@ class Navbar extends React.Component{
               </ul>
             </div>
           </div>
+            <div id="alertBox" className={"alert alert-" + this.state.alertColor + " position-absolute main-alert " + (this.state.showAlert ? "fade-out-alert" : "hide-alert")}>
+              <button type="button" className="close" onClick={() => this.setState({ showAlert: false, })} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 className="alert-heading text-left ">{this.state.alertHeading}!</h4>
+              <hr className="mb-3 mt-3"/>
+              {this.state.alertText}
+            </div>
         </nav>
         <Switch>
           <Route exact path="/" >
             <MainPage />
           </Route>
           <Route path="/zaloguj">
-            <LoginSignupComp redirect={window.location.pathname  + window.location.search} sendLoggedUser={this.getLoggedUser}  />
+            <LoginSignupComp redirect={window.location.pathname  + window.location.search} hasExpired={this.props.hasExpired} sendLoggedUser={this.getLoggedUser}  sendAlertMessage={this.getAlertMessage}/>
           </Route>
           <Route path="/wyloguj">
-            <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} />
+            <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendAlertMessage={this.getAlertMessage}/>
           </Route>
           <Route path="/wyszukaj">
-            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValueToSend} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} />
+            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValueToSend} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} sendAlertMessage={this.getAlertMessage}/>
           </Route>
           <Route path="/koszyk">
-            <ShoppingCart sendUpdatedCartItems={this.getUpdatedCartItems} />
+            <ShoppingCart sendUpdatedCartItems={this.getUpdatedCartItems} sendAlertMessage={this.getAlertMessage}/>
           </Route>
         </Switch>
       </Router>
@@ -435,11 +475,20 @@ class LoginSignupComp extends React.Component{
           logged: true,
         });
         this.props.sendLoggedUser(this.state.logged);
+        this.props.sendAlertMessage("primary", "Zarejestrowano i zalogowano!", "Rejestracja konta przebiegła pomyślnie. Konto jest teraz zalogowane.");
       }
     })
     .catch(err => err);
   }
 
+  componentDidMount(){
+    if(this.props.hasExpired === true){
+      this.setState({
+        errorLogin: true, 
+        errorMessageLogin: "Sesja wygasła. Proszę się zalogować ponownie.", 
+      });
+    }
+  }
   handleLoginSubmit(event){
     event.preventDefault();
     this.setState({ 
@@ -469,6 +518,7 @@ class LoginSignupComp extends React.Component{
           logged: true,
         });
         this.props.sendLoggedUser(this.state.logged);
+        this.props.sendAlertMessage("primary", "Zalogowano", "Konto zostało zalogowane.");
       }
     })
     .catch(err => err);
@@ -507,7 +557,7 @@ class LoginSignupComp extends React.Component{
       }
       return(
         <div>
-        <div className='row'>
+        <div className='row navbar-padding'>
           <div className='col-xl-4'>
           </div>
           <div className='col-xl-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
@@ -634,6 +684,7 @@ class Logout extends React.Component{
         isLogged: false,
       });
       this.props.sendLoggedUser(this.state.isLogged);
+      this.props.sendAlertMessage("danger", "Wylogowano", "Konto zostało wylogowane.");
     })
     .catch(err => err);
   }
@@ -644,14 +695,14 @@ class Logout extends React.Component{
     }else{
       return(
         <div>
-          <div className='row '>
+          <div className='row navbar-padding'>
             <div className='col-lg-4'></div>
             <div className='col-lg-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded'>
               <div className= "card-body ">
                 <div className="p-3 text-left">
                   <h5 className="card-title bigfont">Czy na pewno chcesz się wylogować?</h5>
                   <div className="loginSignupSubmitButton">
-                    <button  className="btn btn-outline-success" onClick = {(event) => this.handleLogout(event)}>Wyloguj</button>
+                    <button  className="btn btn-outline-primary" onClick = {(event) => this.handleLogout(event)}>Wyloguj</button>
                   </div>
                 </div>
               </div>
@@ -660,7 +711,7 @@ class Logout extends React.Component{
           </div>
           <div className ="row pt-4">
             <div className ="col-lg-3"></div>
-            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-secondary" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
             <div className ="col-lg-4"></div>
           </div>
         </div>
@@ -723,9 +774,7 @@ class SearchResults extends React.Component{
   }
 
   componentDidMount(){
-    console.log("sdav");
     this.fetchSearchData();
-    console.log("svdavads");
   }
 
   fetchSearchData(){
@@ -817,6 +866,7 @@ class SearchResults extends React.Component{
     .then(response=>response.text())
     .then(response => {
       if(response === "Przedmiot został dodany do koszyka."){
+        this.props.sendAlertMessage("primary", "Dodano produkt", "Produkt został dodany do koszyka.");
         this.props.sendUpdatedCartItems(true);
       }
     })
@@ -847,7 +897,7 @@ class SearchResults extends React.Component{
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
         return(
           <div>
-            <div className="row">
+            <div className="row navbar-padding">
               <div className="col-1"></div>
               <div className="col-10 pt-5 text-left">
                 <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
@@ -1043,7 +1093,7 @@ class SearchResults extends React.Component{
         );
       }else{
         return(
-          <div className="row">
+          <div className="row navbar-padding">
             <div className='col-3'>
             </div>
             <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
@@ -1137,6 +1187,7 @@ class ShoppingCart extends React.Component{
     .then(response=>response.text())
     .then(response=>{
       if(response === "Produkt został usunięty."){
+        this.props.sendAlertMessage("danger", "Usunięto produkt", "Produkt został usunięty z koszyka.");
         var produktyWKoszykach = this.state.cartArray;
         var index = produktyWKoszykach.findIndex(e => e[0] === id_produktu_w_koszyku);
         var cena = this.state.fullPrice-(produktyWKoszykach[index][2]*produktyWKoszykach[index][1]);
@@ -1188,7 +1239,7 @@ class ShoppingCart extends React.Component{
       if(this.state.isEmpty === false){
         return(
           <div>
-          <div className='row '>
+          <div className='row navbar-padding'>
             <div className='col-sm-3'>
             </div>
             <div className= "col-sm-6">
@@ -1270,13 +1321,10 @@ class ShoppingCart extends React.Component{
                 </div>
                 <div className="col-xl-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
                   <div className="row pb-2">
-                    <div className="col-xl-4">
-                      łącznie do zapłaty
-                    </div>
-                    <div className="col-xl-4"></div>
-                    <div className="col-xl-4">
-                      <h4>{this.state.fullPrice} zł</h4>
-                    </div>
+                    <div className="col-md-12">
+                      <span className="d-inline float-left">łącznie do zapłaty</span>
+                      <span className="float-right font-weight-bold font-size-bigger">{this.state.fullPrice} zł</span>
+                      </div>
                   </div>
                   <div className="row">
                     <div className="col-12">
@@ -1298,7 +1346,7 @@ class ShoppingCart extends React.Component{
         );
       }else{
         return(
-          <div className="row">
+          <div className="row navbar-padding">
             <div className='col-3'>
             </div>
             <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">

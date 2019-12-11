@@ -4,7 +4,6 @@ var con = require('./database_connection');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
-
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json())
 router.use(bodyParser.urlencoded({extended : true}));

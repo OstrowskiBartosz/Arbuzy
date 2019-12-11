@@ -114,6 +114,27 @@
   font-size: 20px;
 }
 
+/* ALERT */
+.main-alert{
+  top: 150%;
+  right: 40%;
+  z-index: 100;
+  visibility: visible;
+  opacity: 2;
+}
+
+.hide-alert{
+  visibility: hidden;
+  opacity: 2;
+}
+
+.fade-out-alert {
+  visibility: visible;
+  opacity: 0;
+  transition: visibility 5s, opacity 5s linear;
+}
+
+
 @media (max-width: 1423px) {
   #searchBar #searchBarDropdown{
     display: none;
@@ -153,6 +174,10 @@
     left:75px;
     bottom: 2px;
   }
+  .main-alert{
+    top: 150%;
+    right: 3%;
+  }
 }
 
 .center-Element-horizontal{
@@ -168,6 +193,7 @@
   margin-right: -50%;
   transform: translate(-50%, -50%)
 }
+
 
 /* LOGIN I SIGNUP*/
 .loginSignupSubmitButton{
@@ -427,4 +453,9 @@
   .align-text-center{
     justify-content: center
   }
+}
+
+/* FIXED TOP NAVBAR PADDING*/
+.navbar-padding{
+  margin-top: 64px;
 }
