@@ -227,7 +227,6 @@ class Navbar extends React.Component{
       alertText: "",
       showAlert: false,
     };
-    var alertTimer;
   }
 
   componentDidUpdate(prevState) {
@@ -393,7 +392,7 @@ class Navbar extends React.Component{
                     <i className='bigicon fas fa-sign-in-alt'></i>
                   </Link>
                 </li>
-                <li className={'nav-item ' + (this.state.isLogged ? '' : 'hidden')}>
+                <li className={'nav-item small-left ' + (this.state.isLogged ? '' : 'hidden')}>
                   <Link className='font-weight-bold navbar-Font-Size nav-link cursor-pointer' to="/wyloguj">
                     <span className = "pr-2">Wyloguj</span>
                     <i className='bigicon fas fa-sign-out-alt'></i>
@@ -755,6 +754,8 @@ class SearchResults extends React.Component{
       numberOfPages: 0,
       resItemWord: "produktów",
       resItemCount: 0,
+
+      ProductLoading: []
     });
   }
 
@@ -777,7 +778,9 @@ class SearchResults extends React.Component{
     this.fetchSearchData();
   }
 
-  fetchSearchData(){
+  fetchSearchData(id){
+
+
     const data = {
       nazwa_produktu: this.state.searchValue,
       kategoria: this.state.searchCategory,
@@ -804,6 +807,15 @@ class SearchResults extends React.Component{
       var nextPageAvailable, prevPageAvailable;
       if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.activePage){ nextPageAvailable = false; }
       if(this.state.activePage > 1){ prevPageAvailable = true; }
+
+      if(undefined !== responseobject.produkty){
+        var produkty = new Array(responseobject.produkty.length);
+        for (var i = 0; i < responseobject.produkty.length; i++) { 
+          produkty[i] = new Array(2);
+          produkty[i][0] = responseobject.produkty[i].id_produktu;
+          produkty[i][1] = false;
+        }
+      }
       this.setState({
         ApiResponse: response,
         isLoading:  false,
@@ -812,6 +824,7 @@ class SearchResults extends React.Component{
         resItemWord: produkt,
         nextPageAvailable: nextPageAvailable,
         prevPageAvailable: prevPageAvailable,
+        ProductLoading: produkty,
       });
     })
     .catch(err => err);
@@ -849,12 +862,21 @@ class SearchResults extends React.Component{
     })
   }
 
-  handleToCartClick(event){
+  handleToCartClick(event, buttonID){
     event.preventDefault();
+
+    let produkty = this.state.ProductLoading;
+    var index = produkty.findIndex(e => e[0] === buttonID);
+    produkty[index][1] = true;
+    this.setState({
+      ProductLoading: produkty,
+    })
+
     const data = {
-      id_produktu: event.target.id,
+      id_produktu: event.currentTarget.id,
       ilosc: 1,
     }
+    console.log(data);
     fetch('http://localhost:9000/addtocart', {
         method: 'post',
         body: JSON.stringify(data),
@@ -868,6 +890,24 @@ class SearchResults extends React.Component{
       if(response === "Przedmiot został dodany do koszyka."){
         this.props.sendAlertMessage("primary", "Dodano produkt", "Produkt został dodany do koszyka.");
         this.props.sendUpdatedCartItems(true);
+        produkty[index][1] = false;
+        this.setState({
+          ProductLoading: produkty,
+        })
+      }else if (response === "Limit koszyka."){
+        this.props.sendAlertMessage("danger", "Limit w koszyku", "Osiągnięto limit w koszyku.");
+        this.props.sendUpdatedCartItems(true);
+        produkty[index][1] = false;
+        this.setState({
+          ProductLoading: produkty,
+        })
+      }else{
+        this.props.sendAlertMessage("danger", "Wystąpił błąd.", "Wystąpił nieoczekiwany błąd.");
+        this.props.sendUpdatedCartItems(true);
+        produkty[index][1] = false;
+        this.setState({
+          ProductLoading: produkty,
+        })
       }
     })
     .catch(err => err);
@@ -895,6 +935,7 @@ class SearchResults extends React.Component{
         pages.push(<li className="page-item"><a className="page-link" id={i+1} key={"p"+(i+1)} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
+
         return(
           <div>
             <div className="row navbar-padding">
@@ -1004,7 +1045,7 @@ class SearchResults extends React.Component{
                     </div>
                   </div>
                 </div>
-                {ApiResponse.produkty.map(produkt => (
+                {ApiResponse.produkty.map((produkt, index) => (
                   <div className="row">
                     <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                       <div className="row">
@@ -1036,8 +1077,16 @@ class SearchResults extends React.Component{
                         <div className ="col-3">
                           <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
                           <div className="placement-bottomAddToCart"></div>
-                          <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")} 
-                                                disabled = {(this.props.isLogged ? "" : "disabled")} onClick={(event) => this.handleToCartClick(event)}>dodaj do koszyka <i className="fas fa-cart-plus"></i></button>
+                          <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")}
+                                                disabled = {(this.state.ProductLoading[index][1] ? "" : "disabled")} 
+                                                disabled = {(this.props.isLogged ? "" : "disabled")} onClick={(event) => this.handleToCartClick(event, produkt.id_produktu)}> 
+                                                                                          <span className={"spinner-border spinner-border-sm mb-1 text-light mr-3 " + (this.state.ProductLoading[index][1] ? "" : "hidden" )}></span>
+                                                                                          <span className={" " + (this.state.ProductLoading[index][1] ? "" : "hidden" )}>dodawanie ...</span>
+                                                                                          <span className={" " +  (this.state.ProductLoading[index][1] ? "hidden" : "" )}>dodaj do koszyka </span>
+                                                                                          <i className={"fas fa-cart-plus " +  (this.state.ProductLoading[index][1] ? "hidden" : "" )}></i>   
+  
+                                                                               
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1236,6 +1285,7 @@ class ShoppingCart extends React.Component{
     if (this.state.isLoading) {
       return (<div>Loading...</div>);
     }else{
+      console.log(this.state.cartArray);
       if(this.state.isEmpty === false){
         return(
           <div>

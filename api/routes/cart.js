@@ -120,9 +120,10 @@ router.get('/', function(req, res, next) {
       INNER JOIN uzytkownicy u ON pwk.id_uzytkownika=u.id_uzytkownika
       INNER JOIN atrybuty a ON pwk.id_produktu=a.id_produktu
       WHERE pwk.id_uzytkownika = \'` + id + `\' and a.typ = 2
-      GROUP BY p.nazwa_produktu
+      GROUP BY p.id_produktu
       LIMIT ` + limit + ` OFFSET ` + offset + `;`;
       var wyniki = new Object();
+      console.log(zapytania[0]);
       czyPobranoProdukty(zapytania, wyniki, function (err, wyniki) {
         res.send(JSON.stringify(wyniki, null, 3));
         res.end();
