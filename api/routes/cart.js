@@ -41,7 +41,7 @@ function czyPobranoProdukty(zapytania, wyniki, callback){
         ProduktObiekt.id_produktu = result[row].id_produktu;
         ProduktObiekt.cena = result[row].cena_brutto;
         ProduktObiekt.id_w_koszyku = result[row].id_produktu_w_koszyku;
-        ProduktObiekt.ilosc = result[row].liczba;
+        ProduktObiekt.ilosc = result[row].ilosc;
         ProduktObiekt.zdjecie = result[row].zdjecie;
         grupyProduktow.push(ProduktObiekt);
         ProduktObiekt = new Object();
@@ -113,7 +113,7 @@ router.get('/', function(req, res, next) {
     if (wyniki.length > 0) {
       let id = wyniki[0].id_uzytkownika;
       zapytania[0] = `
-      SELECT p.nazwa_produktu, p.id_produktu, c.cena_brutto, pwk.id_produktu_w_koszyku, count(p.nazwa_produktu) as liczba, a.wartosc as zdjecie
+      SELECT p.nazwa_produktu, p.id_produktu, c.cena_brutto, pwk.id_produktu_w_koszyku, ilosc, a.wartosc as zdjecie
       FROM produkty_w_koszykach pwk
       INNER JOIN produkty p ON p.id_produktu = pwk.id_produktu
       INNER JOIN ceny c ON pwk.id_produktu=c.id_produktu
@@ -123,7 +123,6 @@ router.get('/', function(req, res, next) {
       GROUP BY p.id_produktu
       LIMIT ` + limit + ` OFFSET ` + offset + `;`;
       var wyniki = new Object();
-      console.log(zapytania[0]);
       czyPobranoProdukty(zapytania, wyniki, function (err, wyniki) {
         res.send(JSON.stringify(wyniki, null, 3));
         res.end();
