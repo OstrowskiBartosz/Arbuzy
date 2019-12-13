@@ -1,10 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
   Link,
-  Redirect,
 } from 'react-router-dom';
 
 class ShoppingCart extends React.Component{
@@ -31,7 +27,7 @@ class ShoppingCart extends React.Component{
     .then(response=>{ 
       var cena = 0;
       var apiOBject = JSON.parse(response);
-      if(apiOBject.produkty.length == 0){
+      if(apiOBject.produkty.length === 0){
         this.setState({
           isEmpty: true,
         })
@@ -54,7 +50,7 @@ class ShoppingCart extends React.Component{
         cena = cena + produktyWKoszykach[i][1]*produktyWKoszykach[i][2];
       }
 
-      var cenastr = cena.toString();
+      cenastr = cena.toString();
       cenastr = cenastr.replace(".", ",")
       
       this.setState({
@@ -93,7 +89,7 @@ class ShoppingCart extends React.Component{
           cartArray: produktyWKoszykach,
           fullPrice: cena,
         });
-        if(produktyWKoszykach.length == 0){
+        if(produktyWKoszykach.length === 0){
           this.setState({
             isEmpty: true,
           })
@@ -110,7 +106,7 @@ class ShoppingCart extends React.Component{
     var produktyWKoszykach = this.state.cartArray;
     var index = produktyWKoszykach.findIndex(e => e[0] === id);
     
-    if(produktyWKoszykach[index][1] > 1 || (produktyWKoszykach[index][1] === 1 && sign != "-")){
+    if(produktyWKoszykach[index][1] > 1 || (produktyWKoszykach[index][1] === 1 && sign !== "-")){
       this.setState({
         disableEverything: true,
       })

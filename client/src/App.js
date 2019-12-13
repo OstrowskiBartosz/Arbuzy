@@ -6,7 +6,6 @@ import {
   Route,
   Switch,
   Link,
-  Redirect,
 } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
@@ -17,16 +16,13 @@ import LoginSignupComp from './components/LoginSignupComp.jsx';
 //import PageFooter from './components/PageFooter.jsx';
 import MainPage from './components/MainPage.jsx';
 
+import history from './components/history'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.getSearchValue = this.getSearchValue.bind(this);
     this.state = ({
       isLogged: false,
-      showSearchResult: false,
-      searchValue: "",
-      searchCategory: "",
       hasExpired: false,
     });
   }
@@ -59,18 +55,10 @@ class App extends React.Component {
     }
   }
 
-  getSearchValue(searchValue, searchCategory){
-    this.setState({
-      searchValue: searchValue,
-      searchCategory: searchCategory,
-    });
-
-  }
-
   render(){
     return (
         <div className="App">
-          <Navbar isLogged={this.state.isLogged} hasExpired={this.state.hasExpired} sendSearchValue={this.getSearchValue} />
+          <Navbar isLogged={this.state.isLogged} hasExpired={this.state.hasExpired} />
         </div>
     );
   }
@@ -99,6 +87,7 @@ class Navbar extends React.Component{
       searchValue: q,
       searchValueToSend: q,
       searchCategory: w,
+      searchCategoryToSend: w,
       CartItems: 0,
 
       alertColor: "",
@@ -154,14 +143,9 @@ class Navbar extends React.Component{
     });
   }
 
-  handleSearchClick(){
-    this.props.sendSearchValue(this.state.searchValue, this.state.searchCategory);
-  }
-
   handleCategoryChange(event){
-    event.preventDefault();
     this.setState({
-      searchCategory: event.target.id
+      searchCategory: event.currentTarget.id
     })
   }
 
@@ -177,6 +161,7 @@ class Navbar extends React.Component{
     }else{
       this.setState({
         searchValueToSend: this.state.searchValue,
+        searchCategoryToSend: this.state.searchCategory,
       })
     }
   }
@@ -296,14 +281,21 @@ class Navbar extends React.Component{
           <Route path="/zaloguj">
             <LoginSignupComp redirect={window.location.pathname  + window.location.search} hasExpired={this.props.hasExpired} sendLoggedUser={this.getLoggedUser}  sendAlertMessage={this.getAlertMessage}/>
           </Route>
-          <Route path="/wyloguj">
+          <Route path="/wyloguj" >
             <Logout isLogged={this.state.isLogged} sendLoggedUser={this.getLoggedUser} sendAlertMessage={this.getAlertMessage}/>
           </Route>
-          <Route path="/wyszukaj">
-            <SearchResults isLogged={this.state.isLogged} searchValue={this.state.searchValueToSend} searchCategory={this.state.searchCategory} sendUpdatedCartItems={this.getUpdatedCartItems} sendAlertMessage={this.getAlertMessage}/>
+          <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
+            <SearchResults isLogged={this.state.isLogged} 
+                           searchValue={this.state.searchValueToSend} 
+                           searchCategory={this.state.searchCategoryToSend} 
+                           sendUpdatedCartItems={this.getUpdatedCartItems} 
+                           sendAlertMessage={this.getAlertMessage} 
+                           history={history}
+                           />
           </Route>
           <Route path="/koszyk">
-            <ShoppingCart sendUpdatedCartItems={this.getUpdatedCartItems} sendAlertMessage={this.getAlertMessage}/>
+            <ShoppingCart  sendUpdatedCartItems={this.getUpdatedCartItems} 
+                           sendAlertMessage={this.getAlertMessage}/>
           </Route>
         </Switch>
       </Router>

@@ -19,7 +19,6 @@ function czyPobranoAtrybuty(produkt, callback){
   FROM produkty p
   INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
   WHERE p.id_produktu = \'` + produkt + `\' and a.typ = 1;`;
-  console.log(sql);
   pobierzAtrybuty(sql, function (err, resultAtrybuty) {
     if (resultAtrybuty.length > 0) {
       for(var rowAtrybuty in resultAtrybuty){
@@ -177,8 +176,31 @@ router.post('/', function(req, res, next) {
 
   let strona = req.body.strona;
   let limit = req.body.limit;
+  let sort = req.body.sort;
+  let querysort;
+
+  switch (sort){
+    case 'cena malejąco':
+      querysort = "ORDER BY c.cena_brutto DESC";
+      break;
+    case 'cena rosnąco':
+      querysort = "ORDER BY c.cena_brutto ASC";
+      break;
+    case 'nazwa produktu A-Z':
+      querysort = "ORDER BY p.nazwa_produktu ASC";
+      break;
+    case 'nazwa produktu Z-A':
+      querysort = "ORDER BY p.nazwa_produktu DESC";
+      break;
+    default:
+      querysort = "";
+  }
+
   if (nazwa_produktu && strona && limit) {
     let offset = (limit*strona)-limit;
+    console.log(limit);
+    console.log(strona);
+    console.log(offset);
     var zapytania = [];
     zapytania[0] = `
     SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.wartosc 
@@ -188,8 +210,10 @@ router.post('/', function(req, res, next) {
     INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
     WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
     AND k.nazwa_kategorii like \'%` + kategoria + `%\'
-    and a.typ = 2
+    and a.typ = 2 `
+    + querysort + `
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
+    console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
         zapytania[0]= `

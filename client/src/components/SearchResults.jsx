@@ -1,45 +1,44 @@
 import React from 'react';
+import history from './history'
 
 class SearchResults extends React.Component{
   constructor(props){
     super(props);
+
+    const params = new URLSearchParams(window.location.search);
     this.state = ({
       searchValue: this.props.searchValue,
       searchCategory: this.props.searchCategory,
+
       prevPageAvailable: false,
       nextPageAvailable: false,
-      page: 1,
-      activePage: 1,
-      
-      activeSearchLimit: 10,
-      searchLimit10: true,
-      searchLimit20: false,
-      searchLimit30: false,
-
-      activeSearchSorting: "domyślne",
-
-      isLoading: true,
-      ApiResponse: [],
+      page: params.has('p') ? params.get('p') : 1,
       numberOfPages: 0,
       resItemWord: "produktów",
       resItemCount: 0,
+      
+      activeSearchLimit: params.has('l') ? params.get('l') : 10,
+      searchLimit10: false,
+      searchLimit20: false,
+      searchLimit30: false,
+      ["searchLimit" + (params.has('l') ? params.get('l') : 10)]: "true",
 
+      activeSearchSorting: params.has('s') ? params.get('s') : "domyślne",
+
+      isLoading: true,
+      ApiResponse: [],
       ProductLoading: []
     });
   }
 
-  componentDidUpdate(prevState) {
-    if(this.props.searchValue!==prevState.searchValue){
-      this.state = ({
-        searchValue: this.props.searchValue,
-        searchCategory: this.props.searchCategory,
-        prevPageAvailable: false,
-        nextPageAvailable: false,
-        page: 1,
-        activeSearchLimit: 10,
-        searchLimit10: true,
-      });
-      this.fetchSearchData();
+  componentDidUpdate(prevState, prevProps) {
+    window.onpopstate  = (e) => {
+      this.setStateWithParams();
+      
+    }
+
+    if( prevState.searchValue !== this.props.searchValue || prevState.searchCategory !==  this.props.searchCategory){
+      this.setStateWithParams();
     }
   }
 
@@ -47,14 +46,42 @@ class SearchResults extends React.Component{
     this.fetchSearchData();
   }
 
-  fetchSearchData(id){
+  setStateWithParams(){
+    const params = new URLSearchParams(window.location.search);
+    this.setState({
+      searchValue: this.props.searchValue,
+      searchCategory: this.props.searchCategory,
 
+      prevPageAvailable: false,
+      nextPageAvailable: false,
+      page: params.has('p') ? params.get('p') : 1,
+      numberOfPages: 0,
+      resItemWord: "produktów",
+      resItemCount: 0,
 
+      activeSearchLimit: params.has('l') ? params.get('l') : 10,
+      searchLimit10: false,
+      searchLimit20: false,
+      searchLimit30: false,
+      ["searchLimit" + (params.has('l') ? params.get('l') : 10)]: "true",
+
+      activeSearchSorting: params.has('s') ? params.get('s') : "domyślne",
+
+      isLoading: true,
+      ApiResponse: [],
+      ProductLoading: []
+
+    }, () => this.fetchSearchData());
+
+  }
+
+  fetchSearchData(){
     const data = {
       nazwa_produktu: this.state.searchValue,
       kategoria: this.state.searchCategory,
       strona: this.state.page,
       limit: this.state.activeSearchLimit,
+      sort: this.state.activeSearchSorting,
     }
     fetch('http://localhost:9000/search', {
         method: 'post',
@@ -74,8 +101,8 @@ class SearchResults extends React.Component{
       }else{produkt = "produkt";}
 
       var nextPageAvailable, prevPageAvailable;
-      if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.activePage){ nextPageAvailable = false; }
-      if(this.state.activePage > 1){ prevPageAvailable = true; }
+      if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.page){ nextPageAvailable = false; }
+      if(this.state.page > 1){ prevPageAvailable = true; }
 
       if(undefined !== responseobject.produkty){
         var produkty = new Array(responseobject.produkty.length);
@@ -100,35 +127,44 @@ class SearchResults extends React.Component{
   }
 
   handlePageChange(event){
-    console.log(event.target.id);
     this.setState({
-      Page: event.target.id,
-    })
-    // const data = {
-    //   nazwa_produktu: this.state.searchValue,
-    //   kategoria: this.state.searchCategory,
-    //   strona: this.state.page,
-    //   limit: this.state.limit,
-    // }
-    // fetch('http://localhost:9000/search', {
-    //     method: 'post',
-    //     body: JSON.stringify(data),
-    //     credentials: 'include',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }     
-    // })
-    // .then(response=>response.text())
-    // .then(response => { 
-    // })
-    // .catch(err => err);
+      page: event.target.id,
+    }, () => {
+      this.fetchSearchData();
+      const params = new URLSearchParams(window.location.search);
+      params.set('p', this.state.page);
+      history.push(window.location.pathname+"?"+params);  
+    });
   }
 
   handleSortChange(event){
     event.preventDefault();
     this.setState({
-      activeSearchSorting: event.target.id
-    })
+      activeSearchSorting: event.target.id,
+      page: 1,
+    }, () => {
+      this.fetchSearchData();
+      const params = new URLSearchParams(window.location.search);
+      params.set('s', this.state.activeSearchSorting);
+      history.push(window.location.pathname+"?"+params);
+    });
+  }
+
+  handleLimitChange(event){
+    var searchLimit = event.target.id;
+    searchLimit = searchLimit.substring(1, (event.target.id.length-2));
+    this.setState({
+      searchLimit10: false,
+      searchLimit20: false,
+      searchLimit30: false,
+      ["searchLimit" + searchLimit]: "true",
+      activeSearchLimit: searchLimit
+    }, () => {
+      this.fetchSearchData();
+      const params = new URLSearchParams(window.location.search);
+      params.set('l', this.state.activeSearchLimit);
+      history.push(window.location.pathname+"?"+params);
+    });
   }
 
   handleToCartClick(event, buttonID){
@@ -145,7 +181,6 @@ class SearchResults extends React.Component{
       id_produktu: event.currentTarget.id,
       ilosc: 1,
     }
-    console.log(data);
     fetch('http://localhost:9000/addtocart', {
         method: 'post',
         body: JSON.stringify(data),
@@ -182,18 +217,6 @@ class SearchResults extends React.Component{
     .catch(err => err);
   }
 
-  handleLimitChange(event){
-    var searchLimit = event.target.id;
-    searchLimit = searchLimit.substring(1, (event.target.id.length-2));
-    this.setState({
-      searchLimit10: false,
-      searchLimit20: false,
-      searchLimit30: false,
-      ["searchLimit" + searchLimit]: "true",
-      activeSearchLimit: searchLimit
-    });
-  }
-
   render(){
     if (this.state.isLoading) {
       return (<div className="loading"></div>);
@@ -201,7 +224,7 @@ class SearchResults extends React.Component{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
       for (let i = 0; i < 5; i++) {
-        pages.push(<li className="page-item"><a className="page-link" id={i+1} key={"p"+(i+1)} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
+        pages.push(<li className="page-item" key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
 
@@ -225,9 +248,9 @@ class SearchResults extends React.Component{
                   <div>
                     <div className="text-left pb-2"><h5>Kategorie</h5>
                       {ApiResponse.kategorie.map(api => (
-                        <div className=" text-left mb-2">
+                        <div className=" text-left mb-2" key={"k" + api.id_kategorii}>
                           <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" />
+                            <input type="checkbox" id={"k" + api.id_kategorii}/>
                             <span className="checkmark"></span>
                           </label>
                         </div>
@@ -235,17 +258,17 @@ class SearchResults extends React.Component{
                       <div className="dropdown-divider mt-4 mb-4"></div>
                     </div>
                     <div className="text-left pb-2"><h5>Filtry</h5>
-                      {ApiResponse.filtry.map(filtry => (
-                        <div className=" text-left mb-4">
+                      {ApiResponse.filtry.map((filtry, index) => (
+                        <div className=" text-left mb-4" key={"f" + index}>
                           <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
-                            <input type="checkbox" />
+                            <input type="checkbox" id={"f" + filtry.atrybut}/>
                             <span className="checkmark"></span>
                           </label>
                           <div className="ml-3 mt-2">
-                            {filtry.wartosci.map( wartosci => (
-                              <div className="mb-2">
+                            {filtry.wartosci.map( (wartosci, index) => (
+                              <div className="mb-2" key={"f" + filtry.atrybut + "-w" + wartosci.wartosc}>
                                 <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
-                                  <input type="checkbox" />
+                                  <input type="checkbox" id={"f" + filtry.atrybut + "-w" + wartosci.wartosc}/>
                                   <span className="checkmark"></span>
                                 </label>
                               </div>
@@ -257,9 +280,9 @@ class SearchResults extends React.Component{
                     </div>
                     <div className="text-left pb-2"><h5>Producenci</h5>
                       {ApiResponse.producenci.map(api => (
-                        <div className=" text-left mb-2">
-                          <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" />
+                        <div className=" text-left mb-2" key={"pro" + api.id_producenta}>
+                          <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span  className="text-right">{" (" + api.liczba_produktow})</span>
+                            <input type="checkbox" id={"pro" + api.id_producenta}/>
                             <span className="checkmark"></span>
                           </label>
                         </div>
@@ -294,7 +317,8 @@ class SearchResults extends React.Component{
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                               <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
                               <div className="dropdown-divider"></div>
-                              <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                              <a className="dropdown-item" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
+                              <a className="dropdown-item" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
                               <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
                               <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
                             </div>
@@ -315,7 +339,7 @@ class SearchResults extends React.Component{
                   </div>
                 </div>
                 {ApiResponse.produkty.map((produkt, index) => (
-                  <div className="row">
+                  <div className="row" key={"produkt" + produkt.id_produktu}>
                     <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 bg-white rounded">
                       <div className="row">
                         <div className ="col-2 pr-0 mr-0">
@@ -333,7 +357,7 @@ class SearchResults extends React.Component{
                           <div className="placement-bottomAtributes"></div>
                             <ul>
                               {produkt.atrybuty.map(atrybut => (
-                                <div className ="d-block">
+                                <div className ="d-block" key={"produkt" + produkt.id_produktu + "-w" + atrybut.atrybut}>
                                   <li>
                                     <span className ="d-inline">{atrybut.atrybut}:</span>
                                     <span className ="font-weight-bold pl-2">{atrybut.wartosc}</span>
@@ -382,9 +406,10 @@ class SearchResults extends React.Component{
                               {this.state.activeSearchSorting}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <a className="dropdown-item" id="domyślne2" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
                               <div className="dropdown-divider"></div>
-                              <a className="dropdown-item" id="według ceny" onClick={(event) => this.handleSortChange(event)}>według ceny</a>
+                              <a className="dropdown-item" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
+                              <a className="dropdown-item" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
                               <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
                               <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
                             </div>
