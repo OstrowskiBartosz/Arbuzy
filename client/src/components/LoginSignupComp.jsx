@@ -144,16 +144,6 @@ class LoginSignupComp extends React.Component {
           <div className="col-xl-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
             <div className="card-body">
               <div
-                id="Signuptab"
-                className={
-                  "outlinetab col-lg-6 " +
-                  (this.state.activeSignup ? " activeTab" : "")
-                }
-                onClick={event => this.handleSLChange(event)}
-              >
-                Rejestracja
-              </div>
-              <div
                 id="Logintab"
                 className={
                   "outlinetab col-lg-6 " +
@@ -162,6 +152,16 @@ class LoginSignupComp extends React.Component {
                 onClick={event => this.handleSLChange(event)}
               >
                 Logowanie
+              </div>
+              <div
+                id="Signuptab"
+                className={
+                  "outlinetab col-lg-6 " +
+                  (this.state.activeSignup ? " activeTab" : "")
+                }
+                onClick={event => this.handleSLChange(event)}
+              >
+                Rejestracja
               </div>
             </div>
             <div
@@ -184,7 +184,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="login"
                         className="form-control"
-                        placeholder="Login"
+                        placeholder="login"
                         required
                       ></input>
                     </div>
@@ -193,7 +193,7 @@ class LoginSignupComp extends React.Component {
                         type="password"
                         name="haslo"
                         className="form-control"
-                        placeholder="Hasło"
+                        placeholder="hasło"
                         required
                       ></input>
                     </div>
@@ -205,7 +205,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="email"
                         className="form-control"
-                        placeholder="Adres email"
+                        placeholder="adres e-mail"
                         required
                       ></input>
                     </div>
@@ -218,7 +218,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="imie"
                         className="form-control"
-                        placeholder="Imie"
+                        placeholder="imię"
                         required
                       ></input>
                     </div>
@@ -227,7 +227,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="nazwisko"
                         className="form-control"
-                        placeholder="Nazwisko"
+                        placeholder="nazwisko"
                         required
                       ></input>
                     </div>
@@ -239,17 +239,16 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="telefon_o"
                         className="form-control"
-                        placeholder="Telefon osobisty"
+                        placeholder="numer telefonu"
                         required
                       ></input>
                     </div>
                   </div>
 
-                  <div className="SignupCompanyCheckbox pb-4">
-                    Czy zakładane jest konto firmy?{" "}
+                  <div className="SignupCompanyCheckbox pb-2">
+                    Czy zakładane jest konto firmowe?{" "}
                     <input
                       type="checkbox"
-                      placeholder="Nazwisko"
                       onChange={event => this.handleFirmaChange(event)}
                     ></input>
                   </div>
@@ -265,7 +264,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="nazwa_firmy"
                         className="form-control"
-                        placeholder="Nazwa firmy"
+                        placeholder="nazwa firmy"
                         required={this.state.czyfirma ? " required" : ""}
                       ></input>
                     </div>
@@ -274,20 +273,22 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="nip"
                         className="form-control"
-                        placeholder="numer NIP"
+                        placeholder="numer nip"
                         required={this.state.czyfirma ? " required" : ""}
                       ></input>
                     </div>
                   </div>
 
-                  <div>Dane zamieszkania</div>
+                  <div className={"" + (this.state.czyfirma ? "hidden" : "")}>
+                    Dane zamieszkania
+                  </div>
                   <div className="row">
                     <div className="col-12 signupinput">
                       <input
                         type="text"
                         name="ulica"
                         className="form-control"
-                        placeholder="Ulica zamieszkania, numer budynku i mieszkania"
+                        placeholder="ulica, numer domu i mieszkania"
                         required
                       ></input>
                     </div>
@@ -299,7 +300,7 @@ class LoginSignupComp extends React.Component {
                         type="text"
                         name="miasto"
                         className="form-control"
-                        placeholder="Miasto zamieszkania"
+                        placeholder="miasto"
                         required
                       ></input>
                     </div>
@@ -332,7 +333,7 @@ class LoginSignupComp extends React.Component {
                   <div className="loginSignupSubmitButton">
                     <input
                       type="submit"
-                      value="utwórz konto"
+                      value="Utwórz konto"
                       className="btn btn-outline-primary"
                     ></input>
                   </div>
@@ -402,7 +403,7 @@ class LoginSignupComp extends React.Component {
           <div className="col-lg-5 text-left">
             <Link className="btn btn-outline-secondary" to="/">
               {" "}
-              <i className="fas fa-chevron-left"></i> Cofnij do strony głównej
+              <i className="fas fa-chevron-left"></i> Wróć do strony głównej
             </Link>
           </div>
           <div className="col-lg-4"></div>
