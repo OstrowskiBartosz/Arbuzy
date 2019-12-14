@@ -1,4 +1,10 @@
 import React from "react";
+import Styles from "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+import Baner1 from "../images/baner1.png";
+import Baner2 from "../images/baner2.png";
+import Baner3 from "../images/baner3.png";
+import Baner4 from "../images/baner4.png";
 
 import PageFooter from "./PageFooter.jsx";
 
@@ -17,8 +23,7 @@ class MainPage extends React.Component {
               <CategoryBar />
             </div>
             <div className="col-8 MainPageBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
-              <div className="testheader">STRONA GŁÓWNA</div>
-              <div id="watermelon"></div>
+              <BanerCarousel />
             </div>
             <div className="col-1"></div>
           </div>
@@ -137,6 +142,33 @@ class CategoryBar extends React.Component {
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+class BanerCarousel extends React.Component {
+  render() {
+    return (
+      <Carousel
+        autoPlay
+        showIndicators={false}
+        showStatus={false}
+        emulateTouch
+        infiniteLoop
+      >
+        <div>
+          <img src={Baner1} />
+        </div>
+        <div>
+          <img src={Baner2} />
+        </div>
+        <div>
+          <img src={Baner3} />
+        </div>
+        <div>
+          <img src={Baner4} />
+        </div>
+      </Carousel>
     );
   }
 }
