@@ -285,7 +285,7 @@ class Navbar extends React.Component{
               <button type="button" className="close" onClick={() => this.setState({ showAlert: false, })} aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 className="alert-heading text-left ">{this.state.alertHeading}!</h4>
+              <h4 className="alert-heading text-left ">{this.state.alertHeading}</h4>
               <hr className="mb-3 mt-3"/>
               {this.state.alertText}
             </div>
