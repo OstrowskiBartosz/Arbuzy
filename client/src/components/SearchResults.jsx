@@ -217,17 +217,33 @@ class SearchResults extends React.Component{
     .catch(err => err);
   }
 
+  handleFilterChange = (event) => {
+    console.log(event.currentTarget.id);
+    const params = new URLSearchParams(window.location.search);
+    if(event.target.checked){
+      params.set(event.currentTarget.id, "tak");
+    }else{
+      params.delete(event.currentTarget.id);
+    }
+    history.push(window.location.pathname+"?"+params);
+  }
+
   render(){
     if (this.state.isLoading) {
       return (<div className="loading"></div>);
     }else{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
+      var active;
       for (let i = 0; i < 5; i++) {
-        pages.push(<li className="page-item" key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
+        if((i) === this.state.page-1)
+          active = "page-item active";
+        else
+          active = "page-item"
+
+        pages.push(<li className={active} key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
-
         return(
           <div>
             <div className="row navbar-padding">
@@ -250,7 +266,18 @@ class SearchResults extends React.Component{
                       {ApiResponse.kategorie.map(api => (
                         <div className=" text-left mb-2" key={"k" + api.id_kategorii}>
                           <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" id={"k" + api.id_kategorii}/>
+                            <input type="checkbox" id={"k" + api.id_kategorii} onChange={this.handleFilterChange}/>
+                            <span className="checkmark"></span>
+                          </label>
+                        </div>
+                      ))}
+                      <div className="dropdown-divider mt-4 mb-4"></div>
+                    </div>
+                    <div className="text-left pb-2"><h5>Producenci</h5>
+                      {ApiResponse.producenci.map(api => (
+                        <div className=" text-left mb-2" key={"pro" + api.id_producenta}>
+                          <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span  className="text-right">{" (" + api.liczba_produktow})</span>
+                            <input type="checkbox" id={"pro" + api.id_producenta} onChange={this.handleFilterChange}/>
                             <span className="checkmark"></span>
                           </label>
                         </div>
@@ -261,14 +288,14 @@ class SearchResults extends React.Component{
                       {ApiResponse.filtry.map((filtry, index) => (
                         <div className=" text-left mb-4" key={"f" + index}>
                           <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
-                            <input type="checkbox" id={"f" + filtry.atrybut}/>
+                            <input type="checkbox" id={"f" + filtry.atrybut} onChange={this.handleFilterChange}/>
                             <span className="checkmark"></span>
                           </label>
                           <div className="ml-3 mt-2">
                             {filtry.wartosci.map( (wartosci, index) => (
                               <div className="mb-2" key={"f" + filtry.atrybut + "-w" + wartosci.wartosc}>
                                 <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
-                                  <input type="checkbox" id={"f" + filtry.atrybut + "-w" + wartosci.wartosc}/>
+                                  <input type="checkbox" id={"f" + filtry.atrybut + "-w" + wartosci.wartosc} onChange={this.handleFilterChange}/>
                                   <span className="checkmark"></span>
                                 </label>
                               </div>
@@ -277,17 +304,6 @@ class SearchResults extends React.Component{
                           <div className="dropdown-divider mt-4 mb-4"></div>
                         </div>
                       ))}
-                    </div>
-                    <div className="text-left pb-2"><h5>Producenci</h5>
-                      {ApiResponse.producenci.map(api => (
-                        <div className=" text-left mb-2" key={"pro" + api.id_producenta}>
-                          <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span  className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" id={"pro" + api.id_producenta}/>
-                            <span className="checkmark"></span>
-                          </label>
-                        </div>
-                      ))}
-                      <div className="dropdown-divider mt-4 mb-4"></div>
                     </div>
                   </div>
                   <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>

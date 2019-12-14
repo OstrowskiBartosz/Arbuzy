@@ -261,7 +261,7 @@ class ShoppingCart extends React.Component{
           </div>
           <div className ="row pt-4">
             <div className ="col-lg-3"></div>
-            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-danger" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
+            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-secondary" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
             <div className ="col-lg-4"></div>
           </div>
         </div>

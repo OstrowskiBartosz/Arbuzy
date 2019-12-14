@@ -27,29 +27,32 @@
 /* NAVBAR */
 .Navbar-border{
   border-bottom: 3px solid;
-  border-image: linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(255,0,0,1) 30%, rgba(255,0,0,1) 50%, rgba(255,0,0,1) 70%, rgba(0,255,0,1) 100%);
+  /*border-image: linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(255,0,0,1) 30%, rgba(255,0,0,1) 50%, rgba(255,0,0,1) 70%, rgba(0,255,0,1) 100%);*/
+  /*border-image: linear-gradient(90deg, rgba(0,0,255,1) 0%, rgba(100,100,100,1) 25%, rgba(100,100,100,1) 50%, rgba(100,100,100,1) 75%, rgba(0,0,255,1) 100%);*/
+  border-image: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(100,100,100,1) 25%, rgba(108,117,125,1) 50%, rgba(108,117,125,1) 75%, rgba(0,123,255,1) 100%);
   border-image-slice: 1;
 }
 
 .NavbarLogoPart1{
   font-size:30px;
-  color:green;
+  /*color:green;*/
+  color:rgba(0,123,255,1);
   display:inline-block;
   cursor: pointer;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 .NavbarLogoPart2{
   font-size:30px;
-  color: red;
+  /*color: red;*/
+  color: rgba(100,100,100,1);
   display:inline-block;
   cursor: pointer;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 .NavbarLogoPart3{
-  font-size:30px;
-  color:red;
+  background-image: url(./images/watermelon.svg) no-repeat fixed center;
+  background-color: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(100,100,100,1) 25%, rgba(108,117,125,1) 50%, rgba(108,117,125,1) 75%, rgba(0,123,255,1) 100%);
   display:inline-block;
-  padding-right: 10px;
   cursor: pointer; 
 }
 
@@ -62,6 +65,7 @@
 }
 
 #searchBar input {
+  height: 49px;
   padding: 10px;
   font-size: 18px;
   border-top: 1px solid grey;
@@ -240,7 +244,7 @@
 }
 /* AKTYWNA ZAKŁADKA LOGIN I SIGNUP*/
 .activeTab{
-  border-bottom: blue 4px solid;
+  border-bottom: rgba(0,123,255,1) 4px solid;
   animation-duration: 2s;
 }
 /* ERRORY W LOGIN I SIGNUP*/
@@ -300,8 +304,12 @@
 
 .Footer{
   margin-top: 100px;
-  background: green;
+  background: rgba(0, 0, 0, 0);
   height: 300px;
+
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(100,100,100,1) 25%, rgba(108,117,125,1) 50%, rgba(108,117,125,1) 75%, rgba(0,123,255,1) 100%);
+  border-image-slice: 1;
 }
 
 .cursor-pointer{
