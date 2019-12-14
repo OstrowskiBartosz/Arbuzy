@@ -19,3 +19,11 @@ code {
   height: 75px;
   margin: auto;
 }
+
+#watermelon {
+  background-image: url(./images/watermelon.svg);
+  background-size: contain;
+  width: 75px;
+  height: 75px;
+  margin: auto;
+}
