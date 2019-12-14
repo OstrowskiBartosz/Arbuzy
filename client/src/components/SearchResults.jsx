@@ -40,6 +40,13 @@ class SearchResults extends React.Component{
     if( prevState.searchValue !== this.props.searchValue || prevState.searchCategory !==  this.props.searchCategory){
       this.setStateWithParams();
     }
+    const params = new URLSearchParams(window.location.search);
+    params.forEach((value, key) => {
+      console.log(key);
+      if(key != "q" && key != "w" && key != "s" && key != "l" && key != "p" && null !== document.getElementById(key)){
+        document.getElementById(key).checked = true;
+      }
+    })
   }
 
   componentDidMount(){
@@ -218,11 +225,42 @@ class SearchResults extends React.Component{
   }
 
   handleFilterChange = (event) => {
-    console.log(event.currentTarget.id);
     const params = new URLSearchParams(window.location.search);
     if(event.target.checked){
+      var filter = event.currentTarget.id;
+      console.log(filter);
+      if(filter.includes("g_f")){
+        filter = filter.replace("g_f", "m_f");
+        var subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
+        for (let i = 0; i < subfilters.length; i++) {
+          document.getElementById(subfilters[i].id).checked = true;
+          params.set(subfilters[i].id, "tak");
+        }
+      }else if(filter.includes("g_k")){
+        //console.log(event.currentTarget.id);
+      }else if(filter.includes("g_p")){
+        //console.log(event.currentTarget.id);
+      }else if(filter.includes("m_f")){
+        //console.log(event.currentTarget.id);
+      }
       params.set(event.currentTarget.id, "tak");
     }else{
+      var filter = event.currentTarget.id;
+      if(filter.includes("g_f")){
+        filter = filter.replace("g_f", "m_f");
+        var subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
+        for (let i = 0; i < subfilters.length; i++) {
+          document.getElementById(subfilters[i].id).checked = false;
+          params.delete(subfilters[i].id);
+        }
+      }else if(filter.includes("m_f")){
+        filter = filter.replace("m_f", "g_f");
+        let filter_index = filter.indexOf('_w_');
+        filter = filter.substring(0, filter_index);
+        document.getElementById(filter).checked = false;
+        params.delete(filter);
+      }
+
       params.delete(event.currentTarget.id);
     }
     history.push(window.location.pathname+"?"+params);
@@ -240,9 +278,28 @@ class SearchResults extends React.Component{
           active = "page-item active";
         else
           active = "page-item"
-
         pages.push(<li className={active} key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
+
+      // let aktywne_filtry = [];
+      // const params = new URLSearchParams(window.location.search);
+      // params.forEach((value, key) => {
+      //   var k = key;
+      //   if(k.includes("g_f")){
+
+      //   }else if(k.includes("g_k")){
+      //     //console.log(event.currentTarget.id);
+      //   }else if(k.includes("g_p")){
+      //     //console.log(event.currentTarget.id);
+      //   }else if(k.includes("m_f")){
+
+      //   }
+      //   aktywne_filtry.push(<li className="pr-1" key={key}>{key}</li>);
+      // });
+      // if (aktywne_filtry.length === 0){
+      //   aktywne_filtry[0] = "brak";
+      // }
+
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
         return(
           <div>
@@ -259,14 +316,18 @@ class SearchResults extends React.Component{
                   <div className="text-left pb-4 font-weight-bold"> 
                     Wyszukiwanie: "{this.state.searchValue}" 
                   </div>
-                  <div className="text-left font-weight-bold">aktywne filtry:</div>
-                  <div className="text-left mb-5">brak</div>
+                  {/*
+                  <div className="text-left font-weight-bold ">aktywne filtry:</div>
+                  <div className="text-justify pt-3 pb-3">
+                    {//aktywne_filtry}
+                  </div>
+                    */}
                   <div>
                     <div className="text-left pb-2"><h5>Kategorie</h5>
                       {ApiResponse.kategorie.map(api => (
-                        <div className=" text-left mb-2" key={"k" + api.id_kategorii}>
+                        <div className=" text-left mb-2" key={"g_k" + api.id_kategorii}>
                           <label className="container"><span className="ml-2">{api.nazwa_kategorii}</span><span className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" id={"k" + api.id_kategorii} onChange={this.handleFilterChange}/>
+                            <input type="checkbox" id={"g_k" + api.id_kategorii} onChange={this.handleFilterChange}/>
                             <span className="checkmark"></span>
                           </label>
                         </div>
@@ -275,9 +336,9 @@ class SearchResults extends React.Component{
                     </div>
                     <div className="text-left pb-2"><h5>Producenci</h5>
                       {ApiResponse.producenci.map(api => (
-                        <div className=" text-left mb-2" key={"pro" + api.id_producenta}>
+                        <div className=" text-left mb-2" key={"g_p" + api.id_producenta}>
                           <label className="container"><span className="ml-2">{api.nazwa_producenta}</span><span  className="text-right">{" (" + api.liczba_produktow})</span>
-                            <input type="checkbox" id={"pro" + api.id_producenta} onChange={this.handleFilterChange}/>
+                            <input type="checkbox" id={"g_p" + api.id_producenta} onChange={this.handleFilterChange}/>
                             <span className="checkmark"></span>
                           </label>
                         </div>
@@ -286,16 +347,16 @@ class SearchResults extends React.Component{
                     </div>
                     <div className="text-left pb-2"><h5>Filtry</h5>
                       {ApiResponse.filtry.map((filtry, index) => (
-                        <div className=" text-left mb-4" key={"f" + index}>
+                        <div className=" text-left mb-4" key={"g_f" + index}>
                           <label className="container"><span className="ml-2">{filtry.atrybut}</span><span className="text-right">{" (" + filtry.liczba_produktow})</span>
-                            <input type="checkbox" id={"f" + filtry.atrybut} onChange={this.handleFilterChange}/>
+                            <input type="checkbox" id={"g_f" + filtry.atrybut} onChange={this.handleFilterChange}/>
                             <span className="checkmark"></span>
                           </label>
                           <div className="ml-3 mt-2">
                             {filtry.wartosci.map( (wartosci, index) => (
-                              <div className="mb-2" key={"f" + filtry.atrybut + "-w" + wartosci.wartosc}>
+                              <div className="mb-2" key={"m_f" + filtry.atrybut + "_w_f" + wartosci.wartosc}>
                                 <label className="container"><span className="ml-2">{wartosci.wartosc}</span><span className="text-right">{" (" + wartosci.liczba_produktow})</span>
-                                  <input type="checkbox" id={"f" + filtry.atrybut + "-w" + wartosci.wartosc} onChange={this.handleFilterChange}/>
+                                  <input type="checkbox" id={"m_f" + filtry.atrybut + "_w_f" + wartosci.wartosc} onChange={this.handleFilterChange}/>
                                   <span className="checkmark"></span>
                                 </label>
                               </div>
@@ -450,6 +511,7 @@ class SearchResults extends React.Component{
             </div> 
           </div>
         );
+        
       }else{
         return(
           <div className="row navbar-padding">
