@@ -27,6 +27,7 @@
 - instalacja w folderze `client` kolejno
   - `npm install react-router-dom` <- z uprawnieniami admina
   - `npm install js-cookie --save`
+  - `npm install react-responsive-carousel`
 - usunięcie z obu projektów wszystkie pliki i foldery oprócz `node_modules`
 - w folderze np. Arbuzy utworzyć git
   - `git init`
