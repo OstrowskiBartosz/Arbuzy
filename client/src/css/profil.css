@@ -1,3 +1,17 @@
-.content {
-  margin-top: 76px;
+.container.options {
+  margin-top: 86px;
+  padding: 10px;
+  background-color: white;
+  cursor: auto;
+  user-select: auto;
+}
+
+.option {
+  width: 100%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.left {
+  text-align: left;
 }
