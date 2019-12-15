@@ -26,6 +26,9 @@ class Profile extends React.Component {
       case "complaints-btn":
         this.setState({ activeTab: 3 });
         break;
+      case "settings-btn":
+        this.setState({ activeTab: 4 });
+        break;
     }
   }
 
@@ -64,6 +67,15 @@ class Profile extends React.Component {
               onClick={event => this.handleTabChange(event)}
             >
               <i className="fa fa-share-square"></i> Reklamacje
+            </button>
+          </div>
+          <div className="col">
+            <button
+              id="settings-btn"
+              className="btn btn-primary option"
+              onClick={event => this.handleTabChange(event)}
+            >
+              <i className="fas fa-cog"></i> Ustawienia
             </button>
           </div>
         </div>
@@ -137,6 +149,23 @@ class Profile extends React.Component {
                 wynikłe z tego tytułu odpowiada kupujący.
               </span>
             </div>
+          </div>
+        </div>
+        <div
+          className={
+            "container settings " + (this.state.activeTab == 4 ? "" : "d-none")
+          }
+        >
+          <div className="row">
+            <div className="col">
+              <h1>Ustawienia konta</h1>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">row1</div>
+          </div>
+          <div className="row">
+            <div className="col">row1</div>
           </div>
         </div>
       </div>
