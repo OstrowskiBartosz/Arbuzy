@@ -358,6 +358,7 @@
 .footer-element-header {
   float: left;
   margin-bottom: 5px;
+  text-align: left;
 }
 
 .footer-element-text {
