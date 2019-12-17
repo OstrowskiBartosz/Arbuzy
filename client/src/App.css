@@ -298,10 +298,47 @@
   display: inline-block;
 }
 /* STRONA GŁÓWNA */
+.container {
+  cursor: auto;
+  user-select: auto;
+}
+
+.container.mainpage {
+  margin-top: 86px;
+  padding: 10px;
+}
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.row > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .categoryCol {
+    max-width: 250px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .categoryCol {
+    margin-bottom: 10px;
+  }
+
+  .carouselCol {
+    margin-bottom: 10px;
+  }
+}
+
 .categoryBar {
   padding: 15px;
   text-align: left;
-  margin-top: 40px;
 }
 .categoryHeader {
   text-align: center;
@@ -327,6 +364,11 @@
 
 .megaPromocjeBar {
   text-align: left;
+}
+
+.carousel {
+  margin-top: 10px !important;
+  min-width: 680px;
 }
 
 .testheader {

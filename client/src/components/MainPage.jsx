@@ -15,85 +15,11 @@ class MainPage extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div>
-          <div className="row navbar-padding">
-            <div className="col-1"></div>
-            <div className="col-2">
-              <CategoryBar />
-            </div>
-            <div className="col-8 MainPageBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
-              <BanerCarousel />
-            </div>
-            <div className="col-1"></div>
-          </div>
-          <div className="row">
-            <div className="col-1"></div>
-            <div className="col-10 polecaneProduktyBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
-              <div className="testheader">POLECANE PRODUKTY</div>
-              <div>
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja
-              </div>
-            </div>
-            <div className="col-1"></div>
-          </div>
-
-          <div className="row">
-            <div className="col-1"></div>
-            <div className="col-10 megaPromocjeBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
-              <div className="testheader">MEGA PROMOCJE</div>
-              <div>
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja super promocja
-                super promocja super promocja super promocja
-              </div>
-            </div>
-            <div className="col-1"></div>
-          </div>
+      <div className="container mainpage">
+        <div className="row d-flex flex-wrap">
+          <CategoryBar />
+          <BanerCarousel />
         </div>
-        <PageFooter />
       </div>
     );
   }
@@ -106,41 +32,37 @@ class CategoryBar extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div>
-          <div className="categoryBar componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
-            <div className="categoryHeader">Kategorie</div>
-            <ul>
-              <li id="3" className="categoryLink">
-                Karty graficzne
-              </li>
-              <li id="8" className="categoryLink">
-                Procesory
-              </li>
-              <li id="7" className="categoryLink">
-                Płyty główne
-              </li>
-              <li id="6" className="categoryLink">
-                Pamięci RAM
-              </li>
-              <li id="1" className="categoryLink">
-                Dyski HDD
-              </li>
-              <li id="2" className="categoryLink">
-                Dyski SSD
-              </li>
-              <li id="5" className="categoryLink">
-                Obudowy
-              </li>
-              <li id="9" className="categoryLink">
-                Zasilacze
-              </li>
-              <li id="4" className="categoryLink">
-                Napędy optyczne
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div className="col categoryCol shadow-sm bg-white rounded">
+        <div className="categoryHeader">Kategorie</div>
+        <ul className="categoryBar">
+          <li id="3" className="categoryLink">
+            Karty graficzne
+          </li>
+          <li id="8" className="categoryLink">
+            Procesory
+          </li>
+          <li id="7" className="categoryLink">
+            Płyty główne
+          </li>
+          <li id="6" className="categoryLink">
+            Pamięci RAM
+          </li>
+          <li id="1" className="categoryLink">
+            Dyski HDD
+          </li>
+          <li id="2" className="categoryLink">
+            Dyski SSD
+          </li>
+          <li id="5" className="categoryLink">
+            Obudowy
+          </li>
+          <li id="9" className="categoryLink">
+            Zasilacze
+          </li>
+          <li id="4" className="categoryLink">
+            Napędy optyczne
+          </li>
+        </ul>
       </div>
     );
   }
@@ -149,26 +71,28 @@ class CategoryBar extends React.Component {
 class BanerCarousel extends React.Component {
   render() {
     return (
-      <Carousel
-        autoPlay
-        showIndicators={false}
-        showStatus={false}
-        emulateTouch
-        infiniteLoop
-      >
-        <div>
-          <img src={Baner1} />
-        </div>
-        <div>
-          <img src={Baner2} />
-        </div>
-        <div>
-          <img src={Baner3} />
-        </div>
-        <div>
-          <img src={Baner4} />
-        </div>
-      </Carousel>
+      <div className="col corouselCol shadow-sm bg-white rounded">
+        <Carousel
+          autoPlay
+          showIndicators={false}
+          showStatus={false}
+          emulateTouch
+          infiniteLoop
+        >
+          <div>
+            <img src={Baner1} />
+          </div>
+          <div>
+            <img src={Baner2} />
+          </div>
+          <div>
+            <img src={Baner3} />
+          </div>
+          <div>
+            <img src={Baner4} />
+          </div>
+        </Carousel>
+      </div>
     );
   }
 }

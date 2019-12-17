@@ -40,7 +40,7 @@ class Profile extends React.Component {
       return <Redirect to={this.props.redirect} />;
     }
     return (
-      <div className="container options">
+      <div className="container options shadow-sm bg-white rounded">
         <div className="d-flex flex-wrap">
           <div className="col">
             <button
