@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import PageFooter from "./PageFooter.jsx";
 
 class Logout extends React.Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Logout extends React.Component {
       return <Redirect to="/" />;
     } else {
       return (
-        <div>
+        <div className="container-fluid">
           <div className="row navbar-padding">
             <div className="col-lg-4"></div>
             <div className="col-lg-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
@@ -68,6 +69,9 @@ class Logout extends React.Component {
               </Link>
             </div>
             <div className="col-lg-4"></div>
+          </div>
+          <div>
+            <PageFooter />
           </div>
         </div>
       );

@@ -492,6 +492,7 @@ class Navbar extends React.Component {
             <ShoppingCart
               sendUpdatedCartItems={this.getUpdatedCartItems}
               sendAlertMessage={this.getAlertMessage}
+              isLogged={this.state.isLogged}
             />
           </Route>
         </Switch>

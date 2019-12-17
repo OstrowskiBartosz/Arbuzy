@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  overflow-x: hidden;
 }
 .App-logo {
   height: 40vmin;
@@ -135,15 +134,18 @@
 /* ALERT */
 .main-alert {
   top: 150%;
-  right: 40%;
+  right: 50%;
+  margin: 0 auto;
   z-index: 100;
   visibility: visible;
   opacity: 2;
+  display: block;
 }
 
 .hide-alert {
   visibility: hidden;
   opacity: 2;
+  height: 0;
 }
 
 .fade-out-alert {
@@ -406,6 +408,12 @@
   max-width: 100%;
   width: auto;
 }
+.FilterButton{
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 30px;
+}
+
 /* */
 /* Customize the label (the container) */
 .container {
@@ -523,6 +531,7 @@
 }
 
 /* FIXED TOP NAVBAR PADDING*/
+
 .navbar-padding {
   margin-top: 64px;
 }

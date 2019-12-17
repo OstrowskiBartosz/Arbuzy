@@ -1,7 +1,9 @@
 import React from 'react';
 import {
   Link,
+  Redirect,
 } from 'react-router-dom';
+import PageFooter from "./PageFooter.jsx";
 
 class ShoppingCart extends React.Component{
   constructor(props){
@@ -40,25 +42,22 @@ class ShoppingCart extends React.Component{
 
         produktyWKoszykach[i][2] = apiOBject.produkty[i].cena;
 
-        var cenastr = produktyWKoszykach[i][2].toString();
-        cenastr = cenastr.replace(".", ",");
-        produktyWKoszykach[i][2] = parseFloat(cenastr); 
+        produktyWKoszykach[i][6] = (apiOBject.produkty[i].cena).toFixed(2);
+        var cenastr = produktyWKoszykach[i][6].toString();
+        produktyWKoszykach[i][6] = cenastr.replace(".", ",");
 
         produktyWKoszykach[i][3] = apiOBject.produkty[i].nazwa_produktu;
         produktyWKoszykach[i][4] = apiOBject.produkty[i].zdjecie;
         produktyWKoszykach[i][5] = apiOBject.produkty[i].id_produktu;
         cena = cena + produktyWKoszykach[i][1]*produktyWKoszykach[i][2];
       }
-
-      cenastr = cena.toString();
-      cenastr = cenastr.replace(".", ",")
       
       this.setState({
         ApiResponse: response,
         isLoading:  false,
         cartNumberElements: apiOBject.produkty.length,
         cartArray: produktyWKoszykach,
-        fullPrice: parseFloat(cenastr),
+        fullPrice: cena,
         disableEverything: false,
       });
     })
@@ -136,9 +135,10 @@ class ShoppingCart extends React.Component{
             produktyWKoszykach[index][1] = produktyWKoszykach[index][1] - 1;
             cena = -produktyWKoszykach[index][2];
           }
+
           this.setState({
             cartArray: produktyWKoszykach,
-            fullPrice: this.state.fullPrice + cena,
+            fullPrice: (this.state.fullPrice + cena),
           });
         }
       })
@@ -152,13 +152,15 @@ class ShoppingCart extends React.Component{
   }
 
   render(){
-    if (this.state.isLoading) {
+    if (this.props.isLogged === false) {
+      return <Redirect to="/zaloguj" />;
+    }
+    else if (this.state.isLoading) {
       return (<div>Loading...</div>);
     }else{
-      console.log(this.state.cartArray);
       if(this.state.isEmpty === false){
         return(
-          <div>
+          <div className="container-fluid">
           <div className='row navbar-padding'>
             <div className='col-sm-3'>
             </div>
@@ -218,7 +220,7 @@ class ShoppingCart extends React.Component{
                       </div>
                         <div className ="col-xl-2 align-text-center font-size-bigger mb-5">
                           <div className="text-left">
-                            {produkt[2] + " zł"}
+                            {produkt[6] + " zł"}
                           </div>
                           <div className="placement-bottomAddToCart"></div>
                         </div>
@@ -244,8 +246,8 @@ class ShoppingCart extends React.Component{
                 <div className="col-xl-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
                   <div className="row pb-2">
                     <div className="col-md-12">
-                      <span className="d-inline float-left">łącznie do zapłaty</span>
-                      <span className="float-right font-weight-bold font-size-bigger">{this.state.fullPrice} zł</span>
+                      <span className="d-inline float-left pl-3">łącznie do zapłaty</span>
+                      <span className="float-right font-weight-bold font-size-bigger pr-3">{(this.state.fullPrice.toFixed(2)).replace(".", ",")} zł</span>
                       </div>
                   </div>
                   <div className="row">
@@ -264,23 +266,30 @@ class ShoppingCart extends React.Component{
             <div className ="col-lg-5 text-left"><Link className="btn btn-outline-secondary" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
             <div className ="col-lg-4"></div>
           </div>
+          <PageFooter />
         </div>
         );
       }else{
         return(
-          <div className="row navbar-padding">
-            <div className='col-3'>
-            </div>
-            <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-              <div className = "row">
-                <div className = "col-12">
-                  <h1>Koszyk jest pusty, dodaj coś do niego :-) </h1>
+          <div className="container-fluid">
+            <div className="row navbar-padding">
+              <div className='col-3'>
+              </div>
+              <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                <div className = "row">
+                  <div className = "col-12">
+                    <h1>Koszyk jest pusty, dodaj coś do niego :-) </h1>
+                  </div>
                 </div>
               </div>
+              <div className='col-3'>
+              </div>
             </div>
-            <div className='col-3'>
+            <div>
+              <PageFooter />
             </div>
           </div>
+
         )
       }
     }
