@@ -34,6 +34,7 @@ class CategoryBar extends React.Component {
     return (
       <div className="col categoryCol shadow-sm bg-white rounded">
         <div className="categoryHeader">Kategorie</div>
+        <hr />
         <ul className="categoryBar">
           <li id="3" className="categoryLink">
             Karty graficzne
