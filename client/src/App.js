@@ -8,7 +8,7 @@ import ShoppingCart from "./components/ShoppingCart.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import Logout from "./components/Logout.jsx";
 import LoginSignupComp from "./components/LoginSignupComp.jsx";
-//import PageFooter from './components/PageFooter.jsx';
+import PageFooter from "./components/PageFooter.jsx";
 import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
 
@@ -496,6 +496,7 @@ class Navbar extends React.Component {
             />
           </Route>
         </Switch>
+        <PageFooter />
       </Router>
     );
   }

@@ -5,6 +5,7 @@ import Baner1 from "../images/baner1.png";
 import Baner2 from "../images/baner2.png";
 import Baner3 from "../images/baner3.png";
 import Baner4 from "../images/baner4.png";
+import "../css/mainPage.css";
 
 import PageFooter from "./PageFooter.jsx";
 
