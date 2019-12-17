@@ -21,6 +21,7 @@ class MainPage extends React.Component {
           <CategoryBar />
           <BanerCarousel />
         </div>
+        <div className="row d-flex flex-wrap"></div>
       </div>
     );
   }

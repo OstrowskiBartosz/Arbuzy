@@ -357,6 +357,10 @@ hr {
   min-width: 680px;
 }
 
+.carousel .thumbs-wrapper {
+  margin: 0px !important;
+}
+
 .testheader {
   text-align: center;
   font-weight: bold;
