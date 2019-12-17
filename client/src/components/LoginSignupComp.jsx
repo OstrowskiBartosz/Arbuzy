@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import PageFooter from "./PageFooter.jsx";
 
 class LoginSignupComp extends React.Component {
   constructor(props) {
@@ -138,7 +139,7 @@ class LoginSignupComp extends React.Component {
       return <Redirect to={this.props.redirect} />;
     }
     return (
-      <div>
+      <div className="container-fluid">
         <div className="row navbar-padding">
           <div className="col-xl-4"></div>
           <div className="col-xl-4 mt-5 componentBackgroundColor shadow-sm p-3 mb-5 bg-white rounded">
@@ -185,6 +186,7 @@ class LoginSignupComp extends React.Component {
                         name="login"
                         className="form-control"
                         placeholder="login"
+                        autoComplete="username"
                         required
                       ></input>
                     </div>
@@ -194,6 +196,7 @@ class LoginSignupComp extends React.Component {
                         name="haslo"
                         className="form-control"
                         placeholder="hasło"
+                        autoComplete="current-password"
                         required
                       ></input>
                     </div>
@@ -361,6 +364,7 @@ class LoginSignupComp extends React.Component {
                       name="login"
                       className="form-control"
                       placeholder="login"
+                      autoComplete="username"
                       required
                     ></input>
                   </div>
@@ -370,6 +374,7 @@ class LoginSignupComp extends React.Component {
                       name="haslo"
                       className="form-control"
                       placeholder="hasło"
+                      autoComplete="current-password"
                       required
                     ></input>
                   </div>
@@ -407,6 +412,9 @@ class LoginSignupComp extends React.Component {
             </Link>
           </div>
           <div className="col-lg-4"></div>
+        </div>
+        <div>
+          <PageFooter />
         </div>
       </div>
     );

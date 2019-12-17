@@ -1,4 +1,6 @@
 import React from 'react';
+import PageFooter from "./PageFooter.jsx";
+import { Link, Redirect } from "react-router-dom";
 import history from './history'
 
 class SearchResults extends React.Component{
@@ -27,7 +29,8 @@ class SearchResults extends React.Component{
 
       isLoading: true,
       ApiResponse: [],
-      ProductLoading: []
+      ProductLoading: [],
+      LastPage: "",
     });
   }
 
@@ -119,6 +122,7 @@ class SearchResults extends React.Component{
           produkty[i][1] = false;
         }
       }
+
       this.setState({
         ApiResponse: response,
         isLoading:  false,
@@ -128,6 +132,7 @@ class SearchResults extends React.Component{
         nextPageAvailable: nextPageAvailable,
         prevPageAvailable: prevPageAvailable,
         ProductLoading: produkty,
+        LastPage: window.location.search+window.location.search,
       });
     })
     .catch(err => err);
@@ -281,29 +286,10 @@ class SearchResults extends React.Component{
         pages.push(<li className={active} key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
       }
 
-      // let aktywne_filtry = [];
-      // const params = new URLSearchParams(window.location.search);
-      // params.forEach((value, key) => {
-      //   var k = key;
-      //   if(k.includes("g_f")){
-
-      //   }else if(k.includes("g_k")){
-      //     //console.log(event.currentTarget.id);
-      //   }else if(k.includes("g_p")){
-      //     //console.log(event.currentTarget.id);
-      //   }else if(k.includes("m_f")){
-
-      //   }
-      //   aktywne_filtry.push(<li className="pr-1" key={key}>{key}</li>);
-      // });
-      // if (aktywne_filtry.length === 0){
-      //   aktywne_filtry[0] = "brak";
-      // }
-
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
         return(
-          <div>
-            <div className="row navbar-padding">
+          <div className="container-fluid">
+            <div className="row navbar-padding p-relative">
               <div className="col-1"></div>
               <div className="col-10 pt-5 text-left">
                 <div><h4>Znaleziono <span className="font-weight-bold">{this.state.resItemCount + " "}</span>{this.state.resItemWord} dla <span className="font-weight-bold">"{this.state.searchValue}"</span></h4></div>
@@ -316,12 +302,6 @@ class SearchResults extends React.Component{
                   <div className="text-left pb-4 font-weight-bold"> 
                     Wyszukiwanie: "{this.state.searchValue}" 
                   </div>
-                  {/*
-                  <div className="text-left font-weight-bold ">aktywne filtry:</div>
-                  <div className="text-justify pt-3 pb-3">
-                    {//aktywne_filtry}
-                  </div>
-                    */}
                   <div>
                     <div className="text-left pb-2"><h5>Kategorie</h5>
                       {ApiResponse.kategorie.map(api => (
@@ -367,7 +347,7 @@ class SearchResults extends React.Component{
                       ))}
                     </div>
                   </div>
-                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1">filtruj</button>
+                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 FilterButton">filtruj</button>
                 </div>
               </div>
               <div className="col-7">
@@ -508,23 +488,40 @@ class SearchResults extends React.Component{
                 </div>
               </div>
               <div className="col-2"></div>
-            </div> 
+            </div>
+            <PageFooter />
           </div>
         );
         
       }else{
         return(
-          <div className="row navbar-padding">
-            <div className='col-3'>
-            </div>
-            <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-              <div className = "row">
-                <div className = "col-12">
-                  <h1>Nie mamy takich przedmiotów :-() </h1>
+          <div className="container-fluid">
+            <div>
+              <div className="row navbar-padding">
+                <div className='col-3'>
+                </div>
+                <div className="col-6 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                  <div className = "row">
+                    <div className = "col-12">
+                      <h1>Nie mamy takich przedmiotów :-() </h1>
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3'>
                 </div>
               </div>
+              <div className="row pt-4">
+                <div className="col-lg-3"></div>
+                <div className="col-lg-5 text-left">
+                  <Link className="btn btn-outline-secondary" to={this.state.LastPage}>
+                    <i className="fas fa-chevron-left"></i> Cofnij do poprzedniej strony
+                  </Link>
+                </div>
+                <div className="col-lg-4"></div>
+              </div>
             </div>
-            <div className='col-3'>
+            <div>
+              <PageFooter />
             </div>
           </div>
         );
