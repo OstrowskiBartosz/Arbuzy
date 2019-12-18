@@ -90,10 +90,10 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
         </div>
         <div
@@ -107,10 +107,10 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
         </div>
         <div
@@ -162,10 +162,10 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
           <div className="row">
-            <div className="col">row1</div>
+            <div className="col"></div>
           </div>
         </div>
       </div>
