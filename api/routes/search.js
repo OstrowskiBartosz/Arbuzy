@@ -173,27 +173,30 @@ router.post('/', function(req, res, next) {
   let link = req.body.link;
 
   
-  var filterString = ``;
+  var filterString = `AND (`;
 
   var LinkSplit = ((decodeURIComponent(link)).replace(/\+/g, " ")).split("&");
   console.log(LinkSplit);
   LinkSplit.forEach(element => {
     if(element.includes("g_k")){
-      filterString = filterString + ` AND k.id_kategorii LIKE \'` + element.substring(element.indexOf('g_k')+3, element.indexOf('=')) + `\'`;
+      filterString = filterString + ` OR k.id_kategorii LIKE \'` + element.substring(element.indexOf('g_k')+3, element.indexOf('=')) + `\'`;
     }
     else if(element.includes("g_p")){
-      filterString = filterString + ` AND pp.id_producenta LIKE \'` + element.substring(element.indexOf('g_p')+3, element.indexOf('=')) + `\'`;
+      filterString = filterString + ` OR pp.id_producenta LIKE \'` + element.substring(element.indexOf('g_p')+3, element.indexOf('=')) + `\'`;
     }
     else if(element.includes("w_f")){
-      filterString = filterString + ` AND a.atrybut LIKE \'` + element.substring(element.indexOf('m_f')+3, element.indexOf('_w_f')) + `\' AND a.wartosc LIKE \'` + element.substring(element.indexOf('w_f')+3, element.indexOf('=')) + `\'`;
+      filterString = filterString + ` OR a.atrybut LIKE \'` + element.substring(element.indexOf('m_f')+3, element.indexOf('_w_f')) + `\' AND a.wartosc LIKE \'` + element.substring(element.indexOf('w_f')+3, element.indexOf('=')) + `\'`;
     }
     else if(element.includes("g_f")){
-      filterString = filterString + ` AND a.atrybut LIKE \'` + element.substring(element.indexOf('g_f')+3, element.indexOf('=')) + `\'`;
+      filterString = filterString + ` OR a.atrybut LIKE \'` + element.substring(element.indexOf('g_f')+3, element.indexOf('=')) + `\'`;
     }
-    console.log(filterString);
   });
-  console.log(filterString);
-
+  var filterString = filterString + ` )`;
+  if(filterString.length === 7){
+    filterString = filterString.replace("AND ( )", "");
+  }else{
+    filterString = filterString.replace(" OR ", "");
+  }
 
   if(kategoria == "Wszędzie")
     kategoria = "";
@@ -219,23 +222,45 @@ router.post('/', function(req, res, next) {
     default:
       querysort = "";
   }
-
+  /*
+    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.atrybut,
+    (SELECT at.wartosc
+      FROM atrybuty at
+      WHERE at.typ = '2'
+      AND at.id_produktu = p.id_produktu
+    ) as wartosc
+    FROM produkty p
+    INNER JOIN ceny c ON p.id_produktu=c.id_produktu
+    INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+    INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
+    LEFT JOIN atrybuty a ON p.id_produktu=a.id_produktu 
+      AND id_atrybutu = (SELECT min(a1.id_produktu) 
+                         FROM atrybuty AS a1
+                         WHERE p.id_produktu=a1.id_produktu)
+    WHERE nazwa_produktu like '%Barracuda%'
+    AND k.nazwa_kategorii like '%%';
+  */
 
   if (nazwa_produktu && strona && limit) {
     let offset = (limit*strona)-limit;
     var zapytania = [];
     zapytania[0] = `
-    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.wartosc, pp.id_producenta
-    FROM produkty p
-    INNER JOIN ceny c ON p.id_produktu=c.id_produktu
-    INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-    INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-    INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
-    WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
-    AND k.nazwa_kategorii like \'%` + kategoria + `%\'
-    and a.typ = 2 `
-    + querysort + `
-    ` + filterString + `
+    SELECT DISTINCT nazwa_produktu, id_produktu, nazwa_kategorii, cena_brutto, wartosc from (
+      SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto,
+      (SELECT at.wartosc 
+        FROM atrybuty at
+        WHERE at.typ = 2
+        AND at.id_produktu = p.id_produktu
+      ) AS wartosc
+      FROM produkty p
+      INNER JOIN ceny c ON p.id_produktu=c.id_produktu
+      INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+      INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
+      LEFT JOIN atrybuty a ON p.id_produktu=a.id_produktu
+      WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+      AND k.nazwa_kategorii like \'%` + kategoria + `%\'`
+      + querysort + `
+      ` + filterString + `) AS x
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
     console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {

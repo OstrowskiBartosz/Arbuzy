@@ -9,8 +9,8 @@ import SearchResults from "./components/SearchResults.jsx";
 import Logout from "./components/Logout.jsx";
 import LoginSignupComp from "./components/LoginSignupComp.jsx";
 import PageFooter from "./components/PageFooter.jsx";
-import MainPage from "./components/MainPage.jsx";
-import Profile from "./components/Profile.jsx";
+//import MainPage from "./components/MainPage.jsx";
+//import Profile from "./components/Profile.jsx";
 
 import history from "./components/history";
 
@@ -458,7 +458,7 @@ class Navbar extends React.Component {
         </nav>
         <Switch>
           <Route exact path="/">
-            <MainPage />
+            {/*<MainPage /> */}
           </Route>
           <Route path="/zaloguj">
             <LoginSignupComp
@@ -476,7 +476,7 @@ class Navbar extends React.Component {
             />
           </Route>
           <Route path="/profil">
-            <Profile />
+            {/*<Profile /> */}
           </Route>
           <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
             <SearchResults

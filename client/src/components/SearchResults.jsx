@@ -44,7 +44,6 @@ class SearchResults extends React.Component{
     }
     const params = new URLSearchParams(window.location.search);
     params.forEach((value, key) => {
-      console.log(key);
       if(key !== "q" && key !== "w" && key !== "s" && key !== "l" && key !== "p" && null !== document.getElementById(key)){
         document.getElementById(key).checked = true;
       }
@@ -114,7 +113,6 @@ class SearchResults extends React.Component{
       var nextPageAvailable, prevPageAvailable;
       if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.page){ nextPageAvailable = false; }
       if(this.state.page > 1){ prevPageAvailable = true; }
-      this.state.pageLimit = (responseobject.liczba_przedmiotow/this.state.activeSearchLimit);
 
       if(undefined !== responseobject.produkty){
         var produkty = new Array(responseobject.produkty.length);
@@ -135,6 +133,7 @@ class SearchResults extends React.Component{
         prevPageAvailable: prevPageAvailable,
         ProductLoading: produkty,
         LastPage: window.location.search+window.location.search,
+        pageLimit: (responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
       });
     })
     .catch(err => err);
@@ -233,9 +232,8 @@ class SearchResults extends React.Component{
 
   handleFilterChange = (event) => {
     const params = new URLSearchParams(window.location.search);
+    var filter = event.currentTarget.id;
     if(event.target.checked){
-      var filter = event.currentTarget.id;
-      console.log(filter);
       if(filter.includes("g_f")){
         filter = filter.replace("g_f", "m_f");
         var subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
@@ -252,7 +250,6 @@ class SearchResults extends React.Component{
       }
       params.set(event.currentTarget.id, "tak");
     }else{
-      var filter = event.currentTarget.id;
       if(filter.includes("g_f")){
         filter = filter.replace("g_f", "m_f");
         subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
@@ -352,7 +349,7 @@ class SearchResults extends React.Component{
                       ))}
                     </div>
                   </div>
-                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 FilterButton">filtruj</button>
+                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 FilterButton" onClick={ () => this.fetchSearchData()}>filtruj</button>
                 </div>
               </div>
               <div className="col-7">
