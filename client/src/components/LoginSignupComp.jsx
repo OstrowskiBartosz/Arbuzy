@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import PageFooter from "./PageFooter.jsx";
 
 class LoginSignupComp extends React.Component {
   constructor(props) {
@@ -412,9 +411,6 @@ class LoginSignupComp extends React.Component {
             </Link>
           </div>
           <div className="col-lg-4"></div>
-        </div>
-        <div>
-          <PageFooter />
         </div>
       </div>
     );

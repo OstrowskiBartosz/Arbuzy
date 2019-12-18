@@ -297,42 +297,6 @@
 .errorMessage {
   display: inline-block;
 }
-/* STRONA GŁÓWNA */
-.container {
-  cursor: auto;
-  user-select: auto;
-}
-
-hr {
-  margin-bottom: 0px;
-  margin-top: 0px;
-}
-
-.container.mainpage {
-  margin-top: 86px;
-  padding: 10px;
-}
-
-@media (min-width: 992px) {
-  .categoryCol {
-    max-width: 250px;
-    margin-right: 10px;
-  }
-}
-
-@media (max-width: 991.98px) {
-  .categoryCol {
-    margin-bottom: 10px;
-  }
-
-  .categoryBar {
-    columns: 3;
-  }
-
-  .carouselCol {
-    margin-bottom: 10px;
-  }
-}
 
 .categoryBar {
   padding: 15px;
