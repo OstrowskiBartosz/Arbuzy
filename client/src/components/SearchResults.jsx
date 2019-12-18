@@ -1,6 +1,5 @@
 import React from 'react';
-import PageFooter from "./PageFooter.jsx";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import history from './history'
 
 class SearchResults extends React.Component{
@@ -46,7 +45,7 @@ class SearchResults extends React.Component{
     const params = new URLSearchParams(window.location.search);
     params.forEach((value, key) => {
       console.log(key);
-      if(key != "q" && key != "w" && key != "s" && key != "l" && key != "p" && null !== document.getElementById(key)){
+      if(key !== "q" && key !== "w" && key !== "s" && key !== "l" && key !== "p" && null !== document.getElementById(key)){
         document.getElementById(key).checked = true;
       }
     })
@@ -62,6 +61,7 @@ class SearchResults extends React.Component{
       searchValue: this.props.searchValue,
       searchCategory: this.props.searchCategory,
 
+      pageLimit: 0,
       prevPageAvailable: false,
       nextPageAvailable: false,
       page: params.has('p') ? params.get('p') : 1,
@@ -92,6 +92,7 @@ class SearchResults extends React.Component{
       strona: this.state.page,
       limit: this.state.activeSearchLimit,
       sort: this.state.activeSearchSorting,
+      link: window.location.search,
     }
     fetch('http://localhost:9000/search', {
         method: 'post',
@@ -113,6 +114,7 @@ class SearchResults extends React.Component{
       var nextPageAvailable, prevPageAvailable;
       if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.page){ nextPageAvailable = false; }
       if(this.state.page > 1){ prevPageAvailable = true; }
+      this.state.pageLimit = (responseobject.liczba_przedmiotow/this.state.activeSearchLimit);
 
       if(undefined !== responseobject.produkty){
         var produkty = new Array(responseobject.produkty.length);
@@ -253,7 +255,7 @@ class SearchResults extends React.Component{
       var filter = event.currentTarget.id;
       if(filter.includes("g_f")){
         filter = filter.replace("g_f", "m_f");
-        var subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
+        subfilters = document.querySelectorAll("[id^='" + filter +"']"); 
         for (let i = 0; i < subfilters.length; i++) {
           document.getElementById(subfilters[i].id).checked = false;
           params.delete(subfilters[i].id);
@@ -278,12 +280,15 @@ class SearchResults extends React.Component{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
       var active;
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < this.state.pageLimit; i++) {
         if((i) === this.state.page-1)
           active = "page-item active";
         else
           active = "page-item"
-        pages.push(<li className={active} key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>)
+        pages.push(<li className={active} key={"page"+(i+1)}><a className="page-link" id={i+1} onClick={(event) => this.handlePageChange(event)}>{i+1}</a></li>);
+        if(i === 5){
+          break;
+        }
       }
 
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
@@ -425,7 +430,7 @@ class SearchResults extends React.Component{
                           </div>
                         </div>
                         <div className ="col-3">
-                          <div className="font-weight-bold text-left"><h3>{produkt.cena_brutto + " zł"}</h3></div>
+                          <div className="font-weight-bold text-left"><h3>{(produkt.cena_brutto.toFixed(2)).replace(".", ",") + " zł"}</h3></div>
                           <div className="placement-bottomAddToCart"></div>
                           <button type="button" id={"p" + produkt.id_produktu} className={"btn btn-lg btn-block mt-1 pt-1 " + (this.props.isLogged ? "btn-primary " : "btn-secondary disabled")}
                                                 disabled = {(this.state.ProductLoading[index][1] ? false : "disabled")} 
@@ -489,7 +494,6 @@ class SearchResults extends React.Component{
               </div>
               <div className="col-2"></div>
             </div>
-            <PageFooter />
           </div>
         );
         
@@ -519,9 +523,6 @@ class SearchResults extends React.Component{
                 </div>
                 <div className="col-lg-4"></div>
               </div>
-            </div>
-            <div>
-              <PageFooter />
             </div>
           </div>
         );

@@ -3,7 +3,6 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import PageFooter from "./PageFooter.jsx";
 
 class ShoppingCart extends React.Component{
   constructor(props){
@@ -266,7 +265,6 @@ class ShoppingCart extends React.Component{
             <div className ="col-lg-5 text-left"><Link className="btn btn-outline-secondary" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
             <div className ="col-lg-4"></div>
           </div>
-          <PageFooter />
         </div>
         );
       }else{
@@ -284,9 +282,6 @@ class ShoppingCart extends React.Component{
               </div>
               <div className='col-3'>
               </div>
-            </div>
-            <div>
-              <PageFooter />
             </div>
           </div>
 

@@ -170,6 +170,30 @@ function czyPobranoProducentow(zapytania, wyniki,  callback) {
 router.post('/', function(req, res, next) {
   let nazwa_produktu = req.body.nazwa_produktu;
   let kategoria = req.body.kategoria;
+  let link = req.body.link;
+
+  
+  var filterString = ``;
+
+  var LinkSplit = ((decodeURIComponent(link)).replace(/\+/g, " ")).split("&");
+  console.log(LinkSplit);
+  LinkSplit.forEach(element => {
+    if(element.includes("g_k")){
+      filterString = filterString + ` AND k.id_kategorii LIKE \'` + element.substring(element.indexOf('g_k')+3, element.indexOf('=')) + `\'`;
+    }
+    else if(element.includes("g_p")){
+      filterString = filterString + ` AND pp.id_producenta LIKE \'` + element.substring(element.indexOf('g_p')+3, element.indexOf('=')) + `\'`;
+    }
+    else if(element.includes("w_f")){
+      filterString = filterString + ` AND a.atrybut LIKE \'` + element.substring(element.indexOf('m_f')+3, element.indexOf('_w_f')) + `\' AND a.wartosc LIKE \'` + element.substring(element.indexOf('w_f')+3, element.indexOf('=')) + `\'`;
+    }
+    else if(element.includes("g_f")){
+      filterString = filterString + ` AND a.atrybut LIKE \'` + element.substring(element.indexOf('g_f')+3, element.indexOf('=')) + `\'`;
+    }
+    console.log(filterString);
+  });
+  console.log(filterString);
+
 
   if(kategoria == "Wszędzie")
     kategoria = "";
@@ -196,22 +220,22 @@ router.post('/', function(req, res, next) {
       querysort = "";
   }
 
+
   if (nazwa_produktu && strona && limit) {
     let offset = (limit*strona)-limit;
-    console.log(limit);
-    console.log(strona);
-    console.log(offset);
     var zapytania = [];
     zapytania[0] = `
-    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.wartosc 
+    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.wartosc, pp.id_producenta
     FROM produkty p
     INNER JOIN ceny c ON p.id_produktu=c.id_produktu
     INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
     INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
+    INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
     WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
     AND k.nazwa_kategorii like \'%` + kategoria + `%\'
     and a.typ = 2 `
     + querysort + `
+    ` + filterString + `
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
     console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
