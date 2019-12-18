@@ -62,3 +62,9 @@
 - po każdej zmianie w source control dodajemy plusem pliki do wysłania, wpisujemy komentarz i commitujemy (ctrl+enter) lub alternatywnie w konsoli wpisujemy `git commit -m "Your comment"`
 - następnie w konsoli wpisujemy
   - `git push origin master`
+
+### Praca z gitem
+
+- zapoznać się z linkiem
+  - https://www.freecodecamp.org/forum/t/push-a-new-local-branch-to-a-remote-git-repository-and-track-it-too/13222?fbclid=IwAR2SQJ1WxQ-uF0Vq7OnNeEUvOX1Yrm5h2UpBfXWs0ALE94sfPBvPhZod4b0
+- commity na osobnego brancha, gdy jest się pewnym, że nic się nie psuje to można zrobić merga z masterem
