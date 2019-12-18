@@ -372,11 +372,10 @@ hr {
   padding-bottom: 10px;
 }
 
-.Footer {
-  margin-top: 100px;
+footer {
   background: rgba(0, 0, 0, 0);
-  height: 350px;
   padding: 15px;
+  height: 260px;
   border-top: 3px solid;
   border-image: linear-gradient(
     90deg,
