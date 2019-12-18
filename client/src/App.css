@@ -361,6 +361,10 @@ hr {
   margin: 0px !important;
 }
 
+.oftenBoughtRow {
+  margin-top: 10px;
+}
+
 .testheader {
   text-align: center;
   font-weight: bold;
