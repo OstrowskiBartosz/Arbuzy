@@ -7,13 +7,7 @@ import Baner3 from "../images/baner3.png";
 import Baner4 from "../images/baner4.png";
 import "../css/mainPage.css";
 
-import PageFooter from "./PageFooter.jsx";
-
 class MainPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   render() {
     return (
       <div className="container mainpage">
