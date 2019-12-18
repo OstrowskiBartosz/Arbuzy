@@ -6,7 +6,7 @@ class PageFooter extends React.Component {
   // }
   render() {
     return (
-      <div className="Footer">
+      <footer>
         <div className="footer-element">
           <b className="footer-element-header">Sklep komputerowy Arbuzy.com</b>
           <br />
@@ -55,7 +55,7 @@ class PageFooter extends React.Component {
             Copyright © 2019 Arbuzy.com
           </span>
         </div>
-      </div>
+      </footer>
     );
   }
 }

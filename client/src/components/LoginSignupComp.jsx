@@ -166,7 +166,7 @@ class LoginSignupComp extends React.Component {
             </div>
             <div
               className={
-                "card-body " + (this.state.activeSignup ? "" : "hidden")
+                "card-body " + (this.state.activeSignup ? "" : "d-none")
               }
             >
               <div className="p-3 text-left">
@@ -255,11 +255,11 @@ class LoginSignupComp extends React.Component {
                     ></input>
                   </div>
 
-                  <div className={"" + (this.state.czyfirma ? "" : "hidden")}>
+                  <div className={"" + (this.state.czyfirma ? "" : "d-none")}>
                     Dane firmy
                   </div>
                   <div
-                    className={"row " + (this.state.czyfirma ? "" : "hidden")}
+                    className={"row " + (this.state.czyfirma ? "" : "d-none")}
                   >
                     <div className="col-lg-6 signupinput">
                       <input
@@ -281,7 +281,7 @@ class LoginSignupComp extends React.Component {
                     </div>
                   </div>
 
-                  <div className={"" + (this.state.czyfirma ? "hidden" : "")}>
+                  <div className={"" + (this.state.czyfirma ? "d-none" : "")}>
                     Dane zamieszkania
                   </div>
                   <div className="row">
@@ -322,7 +322,7 @@ class LoginSignupComp extends React.Component {
 
                   <div
                     className={
-                      "error " + (this.state.errorSignup ? "" : "hidden")
+                      "error " + (this.state.errorSignup ? "" : "d-none")
                     }
                   >
                     <div className="errorWarning">
@@ -345,7 +345,7 @@ class LoginSignupComp extends React.Component {
 
             <div
               className={
-                "card-body " + (this.state.activeLogin ? "" : "hidden")
+                "card-body " + (this.state.activeLogin ? "" : "d-none")
               }
             >
               <div className="p-3 text-left">
@@ -379,7 +379,7 @@ class LoginSignupComp extends React.Component {
                   </div>
                   <div
                     className={
-                      "error " + (this.state.errorLogin ? "" : "hidden")
+                      "error " + (this.state.errorLogin ? "" : "d-none")
                     }
                   >
                     <div className="errorWarning">
