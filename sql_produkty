@@ -202,7 +202,7 @@ INSERT INTO atrybuty VALUES(141, 20, "Format dysku", "2.5\"", 1);
 INSERT INTO atrybuty VALUES(142, 20, "Pojemność dysku [GB]", "250", 1);
 INSERT INTO atrybuty VALUES(143, 20, "Interfejs", "SATA III", 0);
 INSERT INTO atrybuty VALUES(144, 20, "Rodzaj kości pamięci", "TLC", 0);
-INSERT INTO atrybuty VALUES(145, 20, "Szybkość zapisu [MB/s]", "560", 0);
+INSERT INTO atrybuty VALUES(145, 20, "Szybkość odczytu [MB/s]", "560", 0);
 INSERT INTO atrybuty VALUES(146, 20, "Szybkość zapisu [MB/s]", "530", 0);
 INSERT INTO atrybuty VALUES(147, 20, "Zdjęcie", "https://images.morele.net/i1064/5939179_4_i1064.jpg", 2);
 INSERT INTO atrybuty VALUES(148, 20, "Zdjęcie", "https://images.morele.net/i1064/5939179_0_i1064.jpg", 3);

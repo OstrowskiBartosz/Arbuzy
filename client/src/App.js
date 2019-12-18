@@ -442,7 +442,7 @@ class Navbar extends React.Component {
                 (this.state.showAlert ? "fade-out-alert" : "hide-alert")
               }
             >
-<<<<<<< HEAD
+            <button>
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 className="alert-heading text-left ">
@@ -454,7 +454,7 @@ class Navbar extends React.Component {
         </nav>
         <Switch>
           <Route exact path="/">
-            {/*<MainPage /> */}
+            {/*<MainPage />*/}
           </Route>
           <Route path="/zaloguj">
             <LoginSignupComp
@@ -472,7 +472,7 @@ class Navbar extends React.Component {
             />
           </Route>
           <Route path="/profil">
-            {/*<Profile /> */}
+            {/*<Profile />*/}
           </Route>
           <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
             <SearchResults
@@ -492,65 +492,8 @@ class Navbar extends React.Component {
             />
           </Route>
         </Switch>
-=======
-              <button
-                type="button"
-                className="close"
-                onClick={() => this.setState({ showAlert: false })}
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 className="alert-heading text-left ">
-                {this.state.alertHeading}
-              </h4>
-              <hr className="mb-3 mt-3" />
-              {this.state.alertText}
-            </div>
-          </nav>
-          <Switch>
-            <Route exact path="/">
-              <MainPage />
-            </Route>
-            <Route path="/zaloguj">
-              <LoginSignupComp
-                redirect={window.location.pathname + window.location.search}
-                hasExpired={this.props.hasExpired}
-                sendLoggedUser={this.getLoggedUser}
-                sendAlertMessage={this.getAlertMessage}
-              />
-            </Route>
-            <Route path="/wyloguj">
-              <Logout
-                isLogged={this.state.isLogged}
-                sendLoggedUser={this.getLoggedUser}
-                sendAlertMessage={this.getAlertMessage}
-              />
-            </Route>
-            <Route path="/profil">
-              <Profile />
-            </Route>
-            <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
-              <SearchResults
-                isLogged={this.state.isLogged}
-                searchValue={this.state.searchValueToSend}
-                searchCategory={this.state.searchCategoryToSend}
-                sendUpdatedCartItems={this.getUpdatedCartItems}
-                sendAlertMessage={this.getAlertMessage}
-                history={history}
-              />
-            </Route>
-            <Route path="/koszyk">
-              <ShoppingCart
-                sendUpdatedCartItems={this.getUpdatedCartItems}
-                sendAlertMessage={this.getAlertMessage}
-                isLogged={this.state.isLogged}
-              />
-            </Route>
-          </Switch>
-        </div>
->>>>>>> 62233f829b57bad00c906305565cbef9c5f65876
         <PageFooter />
+        </div>
       </Router>
     );
   }
