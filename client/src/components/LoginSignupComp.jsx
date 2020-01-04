@@ -8,12 +8,20 @@ class LoginSignupComp extends React.Component {
       czyfirma: false,
       activeLogin: true,
       activeSignup: false,
-      logged: false,
+      isLogged: false,
       errorLogin: false,
       errorMessageLogin: "",
       errorSignup: false,
       errorMessageSignup: ""
     };
+  }
+
+  componentDidUpdate(prevState, prevProps) {
+    if( prevState.isLogged !== this.props.isLogged ){
+      this.setState({
+        isLogged: this.props.isLogged,
+      });
+    }
   }
 
   handleSignupSubmit(event) {
@@ -44,9 +52,9 @@ class LoginSignupComp extends React.Component {
           });
         } else {
           this.setState({
-            logged: true
+            isLogged: true
           });
-          this.props.sendLoggedUser(this.state.logged);
+          this.props.sendLoggedUser(this.state.isLogged);
           this.props.sendAlertMessage(
             "primary",
             "Zarejestrowano i zalogowano!",
@@ -94,9 +102,9 @@ class LoginSignupComp extends React.Component {
         } else {
           console.log(response);
           this.setState({
-            logged: true
+            isLogged: true
           });
-          this.props.sendLoggedUser(this.state.logged);
+          this.props.sendLoggedUser(this.state.isLogged);
           this.props.sendAlertMessage(
             "primary",
             "Zalogowano!",
@@ -131,7 +139,7 @@ class LoginSignupComp extends React.Component {
   }
 
   render() {
-    if (this.state.logged === true) {
+    if (this.state.isLogged === true) {
       if (this.props.redirect === "/zaloguj") {
         return <Redirect to="/" />;
       }

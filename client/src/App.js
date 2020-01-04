@@ -458,6 +458,7 @@ class Navbar extends React.Component {
           </Route>
           <Route path="/zaloguj">
             <LoginSignupComp
+              isLogged={this.state.isLogged}
               redirect={window.location.pathname + window.location.search}
               hasExpired={this.props.hasExpired}
               sendLoggedUser={this.getLoggedUser}

@@ -208,16 +208,16 @@ router.post('/', function(req, res, next) {
 
   switch (sort){
     case 'cena malejąco':
-      querysort = "ORDER BY c.cena_brutto DESC";
+      querysort = "ORDER BY cena_brutto DESC";
       break;
     case 'cena rosnąco':
-      querysort = "ORDER BY c.cena_brutto ASC";
+      querysort = "ORDER BY cena_brutto ASC";
       break;
     case 'nazwa produktu A-Z':
-      querysort = "ORDER BY p.nazwa_produktu ASC";
+      querysort = "ORDER BY nazwa_produktu ASC";
       break;
     case 'nazwa produktu Z-A':
-      querysort = "ORDER BY p.nazwa_produktu DESC";
+      querysort = "ORDER BY nazwa_produktu DESC";
       break;
     default:
       querysort = "";
@@ -258,10 +258,10 @@ router.post('/', function(req, res, next) {
       INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
       LEFT JOIN atrybuty a ON p.id_produktu=a.id_produktu
       WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
-      AND k.nazwa_kategorii like \'%` + kategoria + `%\'`
-      + querysort + `
+      AND k.nazwa_kategorii like \'%` + kategoria + `%\'
       ` + filterString + `) AS x
-    LIMIT ` + limit + ` OFFSET ` + offset + `;`
+    ${querysort} 
+     LIMIT ` + limit + ` OFFSET ` + offset + `;`
     console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {

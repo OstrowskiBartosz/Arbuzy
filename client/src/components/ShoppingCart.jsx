@@ -8,14 +8,27 @@ class ShoppingCart extends React.Component{
   constructor(props){
     super(props)
     this.state = ({
+      isLogged: false,
       isLoading: true,
       fullPrice: 0,
       isEmpty: false,
+      logInInfoReceived: false,
     });
   }
+
+  componentDidUpdate(prevState, prevProps) {
+    if( prevState.isLogged !== this.props.isLogged ){
+      this.setState({
+        isLogged: this.props.isLogged,
+        logInInfoReceived: true,
+      });
+    }
+  }
+
   componentDidMount(){
     this.fetchCartData();
   }
+  
 
   fetchCartData(){
     let url = "http://localhost:9000/cart";
@@ -151,7 +164,7 @@ class ShoppingCart extends React.Component{
   }
 
   render(){
-    if (this.props.isLogged === false) {
+    if (this.props.isLogged === false && this.state.logInInfoReceived === true) {
       return <Redirect to="/zaloguj" />;
     }
     else if (this.state.isLoading) {

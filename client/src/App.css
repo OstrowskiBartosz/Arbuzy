@@ -393,6 +393,41 @@ footer {
   width: 0px;
 }
 
+.center-price{
+
+}
+.center-product-name{
+  text-align: left;
+}
+
+@media (max-width: 1079px) {
+  .center-price{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: inline-block !important;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+  .center-product-name{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+
+  .placement-bottomAddToCart {
+    display: inline-block;
+    height: 20%;
+    vertical-align: bottom;
+    width: 0px;
+  }
+  .placement-bottomAtributes {
+    display: inline-block;
+    height: 0%;
+    vertical-align: bottom;
+    width: 0px;
+  }
+}
+
 .image-container {
   height: 200px;
   width: 100px;
@@ -410,9 +445,24 @@ footer {
 .FilterButton {
   position: -webkit-sticky;
   position: sticky;
-  bottom: 30px;
+  bottom: 15px;
 }
-
+.HideFiltersButton {
+  display: none;
+}
+@media (max-width: 1079px) {
+  .HideFiltersButton {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 15px;
+    display: block;
+  }
+  .FilterButton {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 65px;
+  }
+}
 /* */
 /* Customize the label (the container) */
 .container {
@@ -486,6 +536,7 @@ footer {
   cursor: not-allowed;
 }
 .idProduktu {
+  text-align: left;
   font-size: 13px;
   color: grey;
 }
@@ -533,4 +584,43 @@ footer {
 
 .navbar-padding {
   margin-top: 64px;
+}
+
+/* SEARCH PAGE-SORT BAR */
+
+.sortelement{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.numberofresultselement{
+  float: left !important;
+}
+
+.pagelement{
+  float: right !important;
+}
+
+@media (max-width: 1079px) {
+  .sortelement{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: inline-block !important;
+    padding-bottom: 30px !important;
+  }
+  
+  .numberofresultselement{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: inline-block !important;
+    padding-bottom: 15px !important;
+    float: none !important;
+  }
+  
+  .pagelement{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: inline-block !important;
+    float: none !important;
+  }
 }
