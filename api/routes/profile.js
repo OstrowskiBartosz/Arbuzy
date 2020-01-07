@@ -4,6 +4,6 @@ var con = require('./database_connection');
 router.use(express.json())
 
 router.post('/', function(req, res, next) {
-    let user_id = req.body.user_id;
+    let user_id = req.session.user_id;
     var sql = "SELECT * FROM faktury WHERE id_uzytkownika = \'" + user_id + "\';";
 });
