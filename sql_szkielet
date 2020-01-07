@@ -1,4 +1,3 @@
-
 SET NAMES utf8;
 drop database mydb;
 
@@ -63,19 +62,40 @@ CREATE TABLE ceny(
   FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
 );
 
-  CREATE TABLE produkty_w_koszykach(
-    id_produktu_w_koszyku MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_uzytkownika MEDIUMINT NOT NULL,
-    id_produktu MEDIUMINT NOT NULL, 
-    ilosc TINYINT NOT NULL,
-    FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id_uzytkownika),
-    FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
-  );
+CREATE TABLE produkty_w_koszykach(
+  id_produktu_w_koszyku MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_uzytkownika MEDIUMINT NOT NULL,
+  id_produktu MEDIUMINT NOT NULL, 
+  ilosc TINYINT NOT NULL,
+  FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id_uzytkownika),
+  FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
+);
+
+CREATE TABLE faktury(
+  id_faktury MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_uzytkownika MEDIUMINT NOT NULL,
+  data DATETIME NOT NULL,
+  wartosc_netto FLOAT(7,2) NOT NULL,
+  wortosc_brutto FLOAT(7,2) NOT NULL,
+  wartosc_vat FLOAT(7,2) NOT NULL,
+  FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id_uzytkownika)
+);
+
+CREATE TABLE pozycje_faktur(
+  id_pozycji_faktury MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_faktury MEDIUMINT NOT NULL,
+  id_produktu MEDIUMINT NOT NULL,
+  cena_netto FLOAT(7,2) NOT NULL,
+  cena_brutto FLOAT(7,2) NOT NULL,
+  procent_vat TINYINT NOT NULL,
+  FOREIGN KEY (id_faktury) REFERENCES faktury(id_faktury),
+  FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
+);
  
- ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
- ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
- ALTER TABLE produkty_w_koszykach CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
- ALTER TABLE kategorie CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE produkty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE atrybuty CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE produkty_w_koszykach CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE kategorie CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 INSERT INTO uzytkownicy VALUES("1", "Admin", "Adminny", "admin", "$2b$10$k7/mE9.uPGbxjlM6oDK0LOGncMD3iQdz.XT4cqAT9t.aqrJwQ2JFG", "Adminowo", "Adminna 123/4", "12-345", 0, "admin@admin.pl", "123456789", "", "4578963214", "Admini sp. z o.o.");
 
