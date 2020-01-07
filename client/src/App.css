@@ -154,12 +154,12 @@
   transition: visibility 5s, opacity 5s linear;
 }
 
-@media (max-width: 1423px) {
+@media (max-width: 1588px) {
   #searchBar #searchBarDropdown {
     display: none;
   }
 }
-@media (max-width: 1271px) {
+@media (max-width: 1398px) {
   #searchBar input {
     font-size: 15px;
     width: 350px;
@@ -181,7 +181,7 @@
     bottom: 3px;
   }
 }
-@media (max-width: 1071px) {
+@media (max-width: 1240px) {
   #searchBar input {
     width: 250px;
   }
@@ -196,7 +196,7 @@
     bottom: 3px;
   }
 }
-@media (max-width: 991px) {
+@media (max-width: 1130px) {
   #searchBar input {
     width: 180px;
     height: 40px;
