@@ -52,7 +52,7 @@ class PageFooter extends React.Component {
         </div>
         <div className="footer-element-copyright">
           <span className="footer-element-copyright-text">
-            Copyright © 2019 Arbuzy.com
+            Copyright © 2019-2020 Arbuzy.com
           </span>
         </div>
       </footer>
