@@ -19,6 +19,16 @@ class Profile extends React.Component {
     switch (event.currentTarget.id) {
       case "orders-btn":
         this.setState({ activeTab: 1 });
+        let url = "http://localhost:9000/profileOrders";
+        fetch(url, {
+          method: "post",
+          credentials: "include"
+        })
+          .then(response => response.text())
+          .then(response => {
+            console.log(response);
+          })
+          .catch(err => err);
         break;
       case "products-btn":
         this.setState({ activeTab: 2 });
