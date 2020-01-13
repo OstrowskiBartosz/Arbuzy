@@ -81,7 +81,7 @@ INSERT INTO atrybuty VALUES(53, 9, "Pojemność dysku [GB]", "500", 1);
 INSERT INTO atrybuty VALUES(54, 9, "Prędkość obrotowa [obr./min.]", "7200", 0);
 INSERT INTO atrybuty VALUES(55, 9, "Interfejs", "SATA III", 0);
 INSERT INTO atrybuty VALUES(56, 9, "Pamięć podręczna", "16", 0);
-INSERT INTO atrybuty VALUES(57, 9, "Zdjęcie", "https://images.morele.net/i1064/353686_0_i1064.jpg", 2);
+INSERT INTO atrybuty VALUES(57, 9, "Zdjęcie", "https://images.morele.net/i1064/353686_2_i1064.jpg", 2);
 INSERT INTO atrybuty VALUES(58, 9, "Zdjęcie", "https://images.morele.net/i1064/353686_1_i1064.jpg", 3);
 INSERT INTO ceny VALUES (9, 9, 97.94, 120.47, 23, STR_TO_DATE('01/12/2019 00:00','%d/%m/%Y %H:%i'), STR_TO_DATE('20/08/2020 21:00','%d/%m/%Y %H:%i'));
 
