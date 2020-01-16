@@ -11,14 +11,30 @@ class Profile extends React.Component {
       errorMessageLogin: "",
       errorSignup: false,
       errorMessageSignup: "",
-      activeTab: 1
+      activeTab: 1,
+      isLoading: true
     };
+  }
+
+  componentDidMount(){
+    let url = "http://localhost:9000/profileOrders";
+        fetch(url, {
+          method: "post",
+          credentials: "include"
+        })
+          .then(response => response.text())
+          .then(response => {
+            console.log(response);
+            var responseObject = JSON.parse(response);
+            this.setState({ activeTab: 1, response: responseObject, isLoading: false });
+          })
+          .catch(err => err);
   }
 
   handleTabChange(event) {
     switch (event.currentTarget.id) {
       case "orders-btn":
-        this.setState({ activeTab: 1 });
+      default:
         let url = "http://localhost:9000/profileOrders";
         fetch(url, {
           method: "post",
@@ -27,6 +43,8 @@ class Profile extends React.Component {
           .then(response => response.text())
           .then(response => {
             console.log(response);
+            var responseObject = JSON.parse(response);
+            this.setState({ activeTab: 1, response: responseObject });
           })
           .catch(err => err);
         break;
@@ -49,7 +67,10 @@ class Profile extends React.Component {
       }
       return <Redirect to={this.props.redirect} />;
     }
-    return (
+    if (this.state.isLoading) {
+        return (<div className="loading"></div>);
+        }else{
+          return(
       <div className="container options shadow-sm bg-white rounded">
         <div className="d-flex flex-wrap">
           <div className="col">
@@ -97,6 +118,19 @@ class Profile extends React.Component {
           <div className="row">
             <div className="col">
               <h1>Twoje zamówienia</h1>
+              <table className="table">
+                <thead className="thead-light">
+                  <th scope="col">#</th>
+                  
+                </thead>
+                <tbody>
+                  {this.state.response.map((faktura, index) => (
+                    <tr>
+                      <td>{faktura.id_faktury}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="row">
@@ -179,7 +213,7 @@ class Profile extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )};
   }
 }
 
