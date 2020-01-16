@@ -60,6 +60,10 @@ class Profile extends React.Component {
     }
   }
 
+  handleRowClick(event){
+    console.log("test" + event.currentTarget.id);
+  }
+
   render() {
     if (this.state.logged === true) {
       if (this.props.redirect === "/profil") {
@@ -118,15 +122,26 @@ class Profile extends React.Component {
           <div className="row">
             <div className="col">
               <h1>Twoje zamówienia</h1>
-              <table className="table">
+              <table className="table table-hover pointer">
                 <thead className="thead-light">
                   <th scope="col">#</th>
-                  
+                  <th scope="col">Data</th>
+                  <th scope="col">Wartość netto</th>
+                  <th scope="col">Wartość brutto</th>
                 </thead>
-                <tbody>
+                <tbody className="table-striped">
                   {this.state.response.map((faktura, index) => (
-                    <tr>
+                    <tr key={faktura.id_faktury} id={faktura.id_faktury} onClick={event => this.handleRowClick(event)}>
                       <td>{faktura.id_faktury}</td>
+                      <td>{new Intl.DateTimeFormat("pl-PL", {
+                            year: "numeric",
+                            month: "long",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }).format(new Date(faktura.data))}</td>
+                      <td>{faktura.wartosc_netto.toLocaleString("pl-PL", { minimumFractionDigits: 0 })} zł</td>
+                      <td>{faktura.wortosc_brutto.toLocaleString("pl-PL", { minimumFractionDigits: 0 })} zł</td>
                     </tr>
                   ))}
                 </tbody>

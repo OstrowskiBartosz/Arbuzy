@@ -19,3 +19,7 @@
 .left {
   text-align: left;
 }
+
+.pointer {
+  cursor: pointer;
+}
