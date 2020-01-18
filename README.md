@@ -59,9 +59,6 @@
     - `source C:\Users\robin\Documents\React\arbuzy\sql_szkielet`
     - `source C:\Users\robin\Documents\React\arbuzy\sql_produkty`
     - `source C:\Users\robin\Documents\React\arbuzy\sql_przyklad`
-- Aby wyłączyć bazę w celu podmiany plików wpisujemy w MySclClient
-  - `SHUTDOWN;`
-- Aby włączyć bazę wpisujemy w terminalu z uprawnieniami administratora -`net start mysql`
 
 ### Praca z projektem
 
