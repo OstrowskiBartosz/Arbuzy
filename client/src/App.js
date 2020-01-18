@@ -11,6 +11,7 @@ import LoginSignupComp from "./components/LoginSignupComp.jsx";
 import PageFooter from "./components/PageFooter.jsx";
 import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
+import Invoice from "./components/Invoice.jsx";
 
 import history from "./components/history";
 
@@ -442,58 +443,69 @@ class Navbar extends React.Component {
                 (this.state.showAlert ? "fade-out-alert" : "hide-alert")
               }
             >
-            <button>
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 className="alert-heading text-left ">
-              {this.state.alertHeading}
-            </h4>
-            <hr className="mb-3 mt-3" />
-            {this.state.alertText}
-          </div>
-        </nav>
-        <Switch>
-          <Route exact path="/">
-            {<MainPage />}
-          </Route>
-          <Route path="/zaloguj">
-            <LoginSignupComp
-              isLogged={this.state.isLogged}
-              redirect={window.location.pathname + window.location.search}
-              hasExpired={this.props.hasExpired}
-              sendLoggedUser={this.getLoggedUser}
-              sendAlertMessage={this.getAlertMessage}
-            />
-          </Route>
-          <Route path="/wyloguj">
-            <Logout
-              isLogged={this.state.isLogged}
-              sendLoggedUser={this.getLoggedUser}
-              sendAlertMessage={this.getAlertMessage}
-            />
-          </Route>
-          <Route path="/profil">
-            {<Profile />}
-          </Route>
-          <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
-            <SearchResults
-              isLogged={this.state.isLogged}
-              searchValue={this.state.searchValueToSend}
-              searchCategory={this.state.searchCategoryToSend}
-              sendUpdatedCartItems={this.getUpdatedCartItems}
-              sendAlertMessage={this.getAlertMessage}
-              history={history}
-            />
-          </Route>
-          <Route path="/koszyk">
-            <ShoppingCart
-              sendUpdatedCartItems={this.getUpdatedCartItems}
-              sendAlertMessage={this.getAlertMessage}
-              isLogged={this.state.isLogged}
-            />
-          </Route>
-        </Switch>
-        <PageFooter />
+              <button>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 className="alert-heading text-left ">
+                {this.state.alertHeading}
+              </h4>
+              <hr className="mb-3 mt-3" />
+              {this.state.alertText}
+            </div>
+          </nav>
+          <Switch>
+            <Route exact path="/">
+              {<MainPage />}
+            </Route>
+            <Route path="/zaloguj">
+              <LoginSignupComp
+                isLogged={this.state.isLogged}
+                redirect={window.location.pathname + window.location.search}
+                hasExpired={this.props.hasExpired}
+                sendLoggedUser={this.getLoggedUser}
+                sendAlertMessage={this.getAlertMessage}
+              />
+            </Route>
+            <Route path="/wyloguj">
+              <Logout
+                isLogged={this.state.isLogged}
+                sendLoggedUser={this.getLoggedUser}
+                sendAlertMessage={this.getAlertMessage}
+              />
+            </Route>
+            <Route path="/profil">
+              <Profile
+                isLogged={this.state.isLogged}
+                sendLoggedUser={this.getLoggedUser}
+                sendAlertMessage={this.getAlertMessage}
+              />
+            </Route>
+            <Route path="/invoice">
+              <Invoice
+                isLogged={this.state.isLogged}
+                sendLoggedUser={this.getLoggedUser}
+                sendAlertMessage={this.getAlertMessage}
+              />
+            </Route>
+            <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
+              <SearchResults
+                isLogged={this.state.isLogged}
+                searchValue={this.state.searchValueToSend}
+                searchCategory={this.state.searchCategoryToSend}
+                sendUpdatedCartItems={this.getUpdatedCartItems}
+                sendAlertMessage={this.getAlertMessage}
+                history={history}
+              />
+            </Route>
+            <Route path="/koszyk">
+              <ShoppingCart
+                sendUpdatedCartItems={this.getUpdatedCartItems}
+                sendAlertMessage={this.getAlertMessage}
+                isLogged={this.state.isLogged}
+              />
+            </Route>
+          </Switch>
+          <PageFooter />
         </div>
       </Router>
     );

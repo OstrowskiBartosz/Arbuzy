@@ -16,6 +16,7 @@ var addToCartRouter = require("./routes/addtocart");
 var CartRouter = require("./routes/cart");
 var cartQuantity = require("./routes/cartQuantity");
 var profileOrders = require("./routes/profileOrders");
+var invoice = require("./routes/invoice");
 
 var app = express();
 
@@ -69,6 +70,7 @@ app.use("/addtocart", addToCartRouter);
 app.use("/cart", CartRouter);
 app.use("/cartQuantity", cartQuantity);
 app.use("/profileOrders", profileOrders);
+app.use("/invoice", invoice);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
