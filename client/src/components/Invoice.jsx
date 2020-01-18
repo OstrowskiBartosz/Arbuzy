@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "../css/profil.css";
 
 class Profile extends React.Component {
@@ -47,7 +47,7 @@ class Profile extends React.Component {
     if (this.state.isLoading) {
       return <div className="loading"></div>;
     } else {
-      if (this.state.response.length === 0) {
+      if (this.state.response.error) {
         return <Redirect to="/profil" />;
       } else {
         return (

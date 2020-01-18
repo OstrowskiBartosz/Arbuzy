@@ -480,7 +480,7 @@ class Navbar extends React.Component {
                 sendAlertMessage={this.getAlertMessage}
               />
             </Route>
-            <Route path="/invoice:id?" component={Invoice}>
+            <Route path="/invoice:id?">
               <Invoice
                 isLogged={this.state.isLogged}
                 sendLoggedUser={this.getLoggedUser}
