@@ -12,7 +12,7 @@ router.post("/", function(req, res, next) {
   con.query(sql, function(err, result) {
     userID = result[0].id_uzytkownika;
     var sql =
-      "SELECT data, wartosc_netto, wortosc_brutto FROM faktury WHERE id_uzytkownika = " +
+      "SELECT data, wartosc_netto, wortosc_brutto, ulica, miasto, kod_pocztowy, numer_nip, nazwa_firmy FROM faktury WHERE id_uzytkownika = " +
       userID +
       " AND id_faktury = " +
       invoiceID +
@@ -25,10 +25,15 @@ router.post("/", function(req, res, next) {
           invoiceID: req.body.invoiceID,
           invoiceDate: result[0].data,
           invoiceNetto: result[0].wartosc_netto,
-          invoiceBrutto: result[0].wortosc_brutto
+          invoiceBrutto: result[0].wortosc_brutto,
+          invoiceUlica: result[0].ulica,
+          invoiceMiasto: result[0].miasto,
+          invoiceKod: result[0].kod_pocztowy,
+          invoiceNIP: result[0].numer_nip,
+          invoiceFirma: result[0].nazwa_firmy
         };
         var sql =
-          "SELECT id_produktu, cena_netto, cena_brutto, procent_vat FROM pozycje_faktur WHERE id_faktury = " +
+          "SELECT id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc FROM pozycje_faktur WHERE id_faktury = " +
           invoiceID;
         con.query(sql, function(err, result) {
           invoiceData = {
