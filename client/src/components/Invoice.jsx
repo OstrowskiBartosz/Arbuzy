@@ -5,6 +5,7 @@ import "../css/profil.css";
 class Profile extends React.Component {
   constructor(props) {
     super(props);
+    const params = new URLSearchParams(window.location.search);
     this.state = {
       logged: false,
       errorLogin: false,
@@ -12,7 +13,8 @@ class Profile extends React.Component {
       errorSignup: false,
       errorMessageSignup: "",
       activeTab: 1,
-      isLoading: true
+      isLoading: true,
+      invoiceID: params.get("id")
     };
   }
 
@@ -20,11 +22,14 @@ class Profile extends React.Component {
     let url = "http://localhost:9000/invoice";
     fetch(url, {
       method: "post",
-      credentials: "include"
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "invoiceID=" + this.state.invoiceID
     })
       .then(response => response.text())
       .then(response => {
-        console.log(response);
         var responseObject = JSON.parse(response);
         this.setState({ response: responseObject, isLoading: false });
       })
@@ -32,6 +37,7 @@ class Profile extends React.Component {
   }
 
   render() {
+    console.log(this.state.response);
     if (this.state.logged === true) {
       if (this.props.redirect === "/invoice") {
         return <Redirect to="/" />;
@@ -41,9 +47,15 @@ class Profile extends React.Component {
     if (this.state.isLoading) {
       return <div className="loading"></div>;
     } else {
-      return (
-        <div className="container options shadow-sm bg-white rounded">TEST</div>
-      );
+      if (this.state.response.length === 0) {
+        return <Redirect to="/profil" />;
+      } else {
+        return (
+          <div className="container options shadow-sm bg-white rounded">
+            TEST
+          </div>
+        );
+      }
     }
   }
 }
