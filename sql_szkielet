@@ -78,6 +78,11 @@ CREATE TABLE faktury(
   wartosc_netto FLOAT(7,2) NOT NULL,
   wortosc_brutto FLOAT(7,2) NOT NULL,
   wartosc_vat FLOAT(7,2) NOT NULL,
+  ulica VARCHAR(50) NOT NULL,
+  miasto VARCHAR(50) NOT NULL,
+  kod_pocztowy VARCHAR(6) NOT NULL,
+  numer_nip VARCHAR(20),
+  nazwa_firmy VARCHAR(100),
   FOREIGN KEY (id_uzytkownika) REFERENCES uzytkownicy(id_uzytkownika)
 );
 
@@ -85,10 +90,14 @@ CREATE TABLE pozycje_faktur(
   id_pozycji_faktury MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_faktury MEDIUMINT NOT NULL,
   id_produktu MEDIUMINT NOT NULL,
+  id_producenta MEDIUMINT NOT NULL,
+  nazwa_produktu VARCHAR(150) NOT NULL,
   cena_netto FLOAT(7,2) NOT NULL,
   cena_brutto FLOAT(7,2) NOT NULL,
   procent_vat TINYINT NOT NULL,
+  ilosc TINYINT NOT NULL,
   FOREIGN KEY (id_faktury) REFERENCES faktury(id_faktury),
+  FOREIGN KEY (id_producenta) REFERENCES producenci(id_producenta),
   FOREIGN KEY (id_produktu) REFERENCES produkty(id_produktu)
 );
  
