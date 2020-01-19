@@ -78,6 +78,7 @@ CREATE TABLE faktury(
   wartosc_netto FLOAT(7,2) NOT NULL,
   wortosc_brutto FLOAT(7,2) NOT NULL,
   wartosc_vat FLOAT(7,2) NOT NULL,
+  nazwa VARCHAR(50),
   ulica VARCHAR(50) NOT NULL,
   miasto VARCHAR(50) NOT NULL,
   kod_pocztowy VARCHAR(6) NOT NULL,
