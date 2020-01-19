@@ -12,6 +12,7 @@ import PageFooter from "./components/PageFooter.jsx";
 import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
 import Invoice from "./components/Invoice.jsx";
+import Product from "./components/Product.jsx";
 
 import history from "./components/history";
 
@@ -482,6 +483,13 @@ class Navbar extends React.Component {
             </Route>
             <Route path="/invoice:id?">
               <Invoice
+                isLogged={this.state.isLogged}
+                sendLoggedUser={this.getLoggedUser}
+                sendAlertMessage={this.getAlertMessage}
+              />
+            </Route>
+            <Route path="/product:id?">
+              <Product
                 isLogged={this.state.isLogged}
                 sendLoggedUser={this.getLoggedUser}
                 sendAlertMessage={this.getAlertMessage}

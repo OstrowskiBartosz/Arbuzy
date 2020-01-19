@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import "../css/profil.css";
 
-class Profile extends React.Component {
+class Invoice extends React.Component {
   constructor(props) {
     super(props);
     const params = new URLSearchParams(window.location.search);
@@ -181,4 +181,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default Invoice;

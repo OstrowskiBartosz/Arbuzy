@@ -17,6 +17,7 @@ var CartRouter = require("./routes/cart");
 var cartQuantity = require("./routes/cartQuantity");
 var profileOrders = require("./routes/profileOrders");
 var invoice = require("./routes/invoice");
+var product = require("./routes/product");
 
 var app = express();
 
@@ -71,6 +72,7 @@ app.use("/cart", CartRouter);
 app.use("/cartQuantity", cartQuantity);
 app.use("/profileOrders", profileOrders);
 app.use("/invoice", invoice);
+app.use("/product", product);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
