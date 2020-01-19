@@ -91,6 +91,7 @@ CREATE TABLE pozycje_faktur(
   id_pozycji_faktury MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_faktury MEDIUMINT NOT NULL,
   id_produktu MEDIUMINT NOT NULL,
+  id_kategorii MEDIUMINT NOT NULL,
   id_producenta MEDIUMINT NOT NULL,
   nazwa_produktu VARCHAR(150) NOT NULL,
   cena_netto FLOAT(7,2) NOT NULL,

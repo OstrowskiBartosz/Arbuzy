@@ -3,11 +3,11 @@ SET NAMES utf8;
 INSERT INTO uzytkownicy (id_uzytkownika, imie, nazwisko, login, haslo, miasto_zamieszkania, ulica_zamieszkania, kod_pocztowy, typ_uzytkownika, adres_email, telefon) VALUES("2", "Krzysztof", "Ibisz", "krzys123", "$2b$10$Dkp/PD/rfidAe7DHD6U7M.fgp6BleFBi1W9l4b9Y6qAJETiPYIwu.", "Opole", "Ozimska 215/55", "45-256", 1, "k.ibisz@gmail.com", "658874452");
 
 INSERT INTO faktury (id_uzytkownika, data, wartosc_netto, wortosc_brutto, wartosc_vat, ulica, miasto, kod_pocztowy, numer_nip, nazwa_firmy) VALUES (2, STR_TO_DATE('02/01/2020 17:25','%d/%m/%Y %H:%i'), 270.61, 332.85, 23, 'Horoszkiewicza 22/4', 'Opole', '45-258', '459-259-25-25', 'Spoldzielnia Aligator');
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (1, 7, 5, 'Testowy obiekt innego rodzaju', 125.08, 153.85, 23, 2);
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (1, 23, 7, 'Testowy obiekt numer 1', 145.53, 179.00, 23, 1);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (1, 7, 1, 5, 'Testowy obiekt innego rodzaju', 125.08, 153.85, 23, 2);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (1, 23, 2, 7, 'Testowy obiekt numer 1', 145.53, 179.00, 23, 1);
 
 INSERT INTO faktury (id_uzytkownika, data, wartosc_netto, wortosc_brutto, wartosc_vat, nazwa, ulica, miasto, kod_pocztowy) VALUES (2, STR_TO_DATE('10/01/2020 10:53','%d/%m/%Y %H:%i'), 1255.15, 1543.83, 23, 'Krzysztof Ibisz', 'Koralowa 16b/123', 'Wroclaw', '65-852');
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 2, 2, 'Produkt najlepszej jakosci', 209.75, 257.99, 23, 1);
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 4, 5, 'Produkt tez dobrej jakosci', 142.15, 174.84, 23, 2);
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 12, 8, 'Produkt tak dobry ze hej', 688.29, 846.60, 23, 1);
-INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 13, 9, 'Produkt jako taki ale tez nadajacy sie do czegokolwiek', 214.96, 264.40, 23, 5);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 2, 1, 2, 'Produkt najlepszej jakosci', 209.75, 257.99, 23, 1);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 4, 1, 5, 'Produkt tez dobrej jakosci', 142.15, 174.84, 23, 2);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 12, 2, 8, 'Produkt tak dobry ze hej', 688.29, 846.60, 23, 1);
+INSERT INTO pozycje_faktur (id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc) VALUES (2, 13, 2, 9, 'Produkt jako taki ale tez nadajacy sie do czegokolwiek', 214.96, 264.40, 23, 5);
