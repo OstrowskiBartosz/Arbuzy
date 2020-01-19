@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "../css/profil.css";
 
 class Profile extends React.Component {
@@ -120,21 +120,56 @@ class Profile extends React.Component {
                     <tr>
                       <th scope="col">Nazwa produktu</th>
                       <th scope="col">Ilość</th>
-                      <th scope="col">Wartość netto</th>
-                      <th scope="col">Wartość brutto</th>
+                      <th scope="col">Cena</th>
+                      <th scope="col">Wartość</th>
                       <th scope="col">VAT</th>
                     </tr>
                   </thead>
                   <tbody className="table-striped">
                     {this.state.response.produkty.map((produkt, index) => (
                       <tr key={index}>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
+                        <td>
+                          <Link to={"/product?id=" + produkt.id_produktu}>
+                            {produkt.nazwa_kategorii} {produkt.nazwa_producenta}{" "}
+                            {produkt.nazwa_produktu}
+                          </Link>
+                        </td>
+                        <td>{produkt.ilosc}</td>
+                        <td>
+                          {produkt.cena_brutto.toLocaleString("pl-PL", {
+                            minimumFractionDigits: 2
+                          })}{" "}
+                          zł
+                        </td>
+                        <td>
+                          {(produkt.cena_brutto * produkt.ilosc).toLocaleString(
+                            "pl-PL",
+                            {
+                              minimumFractionDigits: 2
+                            }
+                          )}{" "}
+                          zł
+                        </td>
+                        <td>{produkt.procent_vat}%</td>
                       </tr>
                     ))}
+                    <tr>
+                      <td>
+                        <strong>Całkowita wartość faktury:</strong>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        {this.state.response.invoiceBrutto.toLocaleString(
+                          "pl-PL",
+                          {
+                            minimumFractionDigits: 2
+                          }
+                        )}{" "}
+                        zł
+                      </td>
+                      <td></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

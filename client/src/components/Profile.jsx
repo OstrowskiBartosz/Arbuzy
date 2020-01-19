@@ -147,13 +147,13 @@ class Profile extends React.Component {
                         </td>
                         <td>
                           {faktura.wartosc_netto.toLocaleString("pl-PL", {
-                            minimumFractionDigits: 0
+                            minimumFractionDigits: 2
                           })}{" "}
                           zł
                         </td>
                         <td>
                           {faktura.wortosc_brutto.toLocaleString("pl-PL", {
-                            minimumFractionDigits: 0
+                            minimumFractionDigits: 2
                           })}{" "}
                           zł
                         </td>
