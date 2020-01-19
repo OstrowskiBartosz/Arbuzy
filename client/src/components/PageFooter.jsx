@@ -11,7 +11,7 @@ class PageFooter extends React.Component {
           <b className="footer-element-header">Sklep komputerowy Arbuzy.com</b>
           <br />
           <span className="footer-element-text">
-            Morele.net to jeden z największych i najpopularniejszych sklepów
+            Arbuzy.com to jeden z największych i najpopularniejszych sklepów
             komputerowych w Polsce. W szerokiej ofercie sklepu można znaleźć
             wysokiej klasy laptopy, komputery na każdą kieszeń, wydajne
             podzespoły komputerowe oraz urządzenia peryferyjne. Szeroka oferta
