@@ -34,9 +34,10 @@ router.post("/", function(req, res, next) {
           invoiceFirma: result[0].nazwa_firmy
         };
         var sql =
-          "SELECT pf.id_produktu, p.nazwa_producenta, pf.nazwa_produktu, pf.cena_netto, pf.cena_brutto, pf.procent_vat, pf.ilosc " +
-          "FROM pozycje_faktur pf " +
-          "INNER JOIN producenci p ON pf.id_producenta = p.id_producenta " +
+          "SELECT pf.id_produktu, p.nazwa_producenta, k.nazwa_kategorii, pf.nazwa_produktu, pf.cena_netto, pf.cena_brutto, pf.procent_vat, pf.ilosc " +
+          "FROM ((pozycje_faktur pf " +
+          "INNER JOIN producenci p ON pf.id_producenta = p.id_producenta) " +
+          "INNER JOIN kategorie k ON pf.id_kategorii = k.id_kategorii) " +
           "WHERE pf.id_faktury = " +
           invoiceID;
         con.query(sql, function(err, result) {
