@@ -23,3 +23,13 @@
 .pointer {
   cursor: pointer;
 }
+
+.align-left {
+  text-align: left;
+}
+
+.bordered {
+  border: 1px solid gray;
+  border-radius: 0.25rem !important;
+  margin: 5px;
+}

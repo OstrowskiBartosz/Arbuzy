@@ -52,7 +52,65 @@ class Profile extends React.Component {
       } else {
         return (
           <div className="container options shadow-sm bg-white rounded">
-            TEST
+            <h1>Faktura numer {this.state.response.invoiceID}</h1>
+            <div className="row align-left bordered">
+              <div className="col">
+                <div>
+                  <strong>Szczegóły:</strong>
+                </div>
+                <div>
+                  Status zamówienia: <strong>Zrealizowane</strong>
+                </div>
+                <div>
+                  Data wystawienia:{" "}
+                  <strong>
+                    {new Intl.DateTimeFormat("pl-PL", {
+                      year: "numeric",
+                      month: "long",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit"
+                    }).format(new Date(this.state.response.invoiceDate))}
+                  </strong>
+                </div>
+                <div>
+                  Typ rachunku: <strong>Faktura</strong>
+                </div>
+              </div>
+            </div>
+            <div className="row align-left bordered">
+              <div className="col">
+                <div>
+                  <strong>Nabywca:</strong>
+                </div>
+                <div
+                  className={
+                    this.state.response.invoiceFirma == null ? "" : "d-none"
+                  }
+                >
+                  {this.state.response.invoiceNazwa}
+                </div>
+                <div
+                  className={
+                    this.state.response.invoiceFirma == null ? "d-none" : ""
+                  }
+                >
+                  {this.state.response.invoiceFirma}
+                </div>
+                <div>
+                  {this.state.response.invoiceKod}{" "}
+                  {this.state.response.invoiceMiasto}
+                </div>
+                <div>{this.state.response.invoiceUlica}</div>
+                <div
+                  className={
+                    this.state.response.invoiceNIP == null ? "d-none" : ""
+                  }
+                >
+                  NIP: {this.state.response.invoiceNIP}
+                </div>
+              </div>
+            </div>
           </div>
         );
       }
