@@ -57,9 +57,10 @@ class Profile extends React.Component {
               <div className="col">
                 <div>
                   <strong>Szczegóły:</strong>
+                  <hr></hr>
                 </div>
                 <div>
-                  Status zamówienia: <strong>Zrealizowane</strong>
+                  Status: <strong>Zrealizowane</strong>
                 </div>
                 <div>
                   Data wystawienia:{" "}
@@ -82,6 +83,7 @@ class Profile extends React.Component {
               <div className="col">
                 <div>
                   <strong>Nabywca:</strong>
+                  <hr></hr>
                 </div>
                 <div
                   className={
@@ -109,6 +111,32 @@ class Profile extends React.Component {
                 >
                   NIP: {this.state.response.invoiceNIP}
                 </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col margin-5">
+                <table className="table table-hover">
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Nazwa produktu</th>
+                      <th scope="col">Ilość</th>
+                      <th scope="col">Wartość netto</th>
+                      <th scope="col">Wartość brutto</th>
+                      <th scope="col">VAT</th>
+                    </tr>
+                  </thead>
+                  <tbody className="table-striped">
+                    {this.state.response.produkty.map((produkt, index) => (
+                      <tr key={index}>
+                        <td>test</td>
+                        <td>test</td>
+                        <td>test</td>
+                        <td>test</td>
+                        <td>test</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
