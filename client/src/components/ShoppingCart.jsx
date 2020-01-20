@@ -2,16 +2,12 @@ import React from 'react';
 import {
   Link,
   Redirect,
-  BrowserRouter as Router, 
-  Route, 
-  Switch,
 } from 'react-router-dom';
-import Purchase from './Purchase';
+
 
 class ShoppingCart extends React.Component{
   constructor(props){
     super(props)
-    console.log(this.props.history.location.key)
     this.state = ({
       isLogged: false,
       isLoading: true,
@@ -27,21 +23,6 @@ class ShoppingCart extends React.Component{
       this.setState({
         isLogged: this.props.isLogged,
         logInInfoReceived: true,
-      });
-    }
-    // console.log("prev", prevState.purchase);
-    // console.log("props", this.props.purchase);
-    // if( prevState.purchase !== this.props.purchase ){
-    //   this.setState({
-    //     purchase: this.props.purchase,
-    //   });
-    // }
-    console.log("vsad", prevProps);
-    console.log("vsadavsd", this.props.history);
-    console.log("vsadavsdsdav", prevProps.history);
-    if (prevState.history.location.key !== this.props.history.location.key) {
-      this.setState({
-        purchase: this.props.purchase,
       });
     }
   }
@@ -198,7 +179,6 @@ class ShoppingCart extends React.Component{
     }else{
       if(this.state.isEmpty === false && this.state.purchase === false){
         return(
-          <Router>
             <div className="container-fluid">
             <div className='row navbar-padding'>
               <div className='col-sm-3'>
@@ -291,7 +271,9 @@ class ShoppingCart extends React.Component{
                     </div>
                     <div className="row">
                       <div className="col-12">
-                      <Link className="nostyle" to="/kup"><button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary" onClick={(event) => this.handlePurchaseClick()}>Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button></Link>
+                        <Link className="btn btn-lg btn-block mt-1 pt-1 btn-primary" to={"/kup"}>
+                            Przejdz do płatności <i className="fas fa-sign-out-alt"></i>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -300,25 +282,16 @@ class ShoppingCart extends React.Component{
               <div className='col-sm-3'>
               </div>
             </div>
-            <div className="row pt-4">
+            <div className="row pt-4 pb-5 mb-5">
               <div className="col-lg-3"></div>
               <div className="col-lg-5 text-left">
                 <Link className="btn btn-outline-secondary" to="/">
-                  {" "}
                   <i className="fas fa-chevron-left"></i> Wróć do strony głównej
                 </Link>
               </div>
               <div className="col-lg-4"></div>
             </div>
           </div>
-          <Switch>
-            <Route exact path="/kup">
-              <Purchase 
-                  isLogged={this.state.isLogged}
-              />
-            </Route>
-          </Switch>
-        </Router>
         );
       }else{
         return(
@@ -337,7 +310,6 @@ class ShoppingCart extends React.Component{
               </div>
             </div>
           </div>
-
         )
       }
     }

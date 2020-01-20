@@ -285,7 +285,7 @@ class SearchResults extends React.Component{
       let ApiResponse = JSON.parse(this.state.ApiResponse);
       const pages = []
       var active;
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < this.state.pageLimit; i++) {
         if((i) === this.state.page-1)
           active = "page-item active";
         else

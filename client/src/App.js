@@ -13,6 +13,7 @@ import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
 import Invoice from "./components/Invoice.jsx";
 import Product from "./components/Product.jsx";
+import Purchase from './components/Purchase.jsx';
 
 
 import history from "./components/history";
@@ -517,6 +518,11 @@ class Navbar extends React.Component {
                 sendAlertMessage={this.getAlertMessage}
                 isLogged={this.state.isLogged}
                 history={history}
+              />
+            </Route>
+            <Route exact path="/kup">
+              <Purchase 
+                  isLogged={this.state.isLogged}
               />
             </Route>
           </Switch>

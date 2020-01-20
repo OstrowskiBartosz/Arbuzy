@@ -636,3 +636,7 @@ a.nostyle:visited {
   color: inherit;
   cursor: pointer;
 }
+
+.clear{
+  clear: left;
+}
