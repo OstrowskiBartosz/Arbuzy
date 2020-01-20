@@ -35,8 +35,7 @@ class SearchResults extends React.Component{
 
   componentDidUpdate(prevState, prevProps) {
     window.onpopstate  = (e) => {
-      this.setStateWithParams();
-      
+      this.setStateWithParams();     
     }
 
     if( prevState.searchValue !== this.props.searchValue || prevState.searchCategory !==  this.props.searchCategory){
@@ -133,16 +132,18 @@ class SearchResults extends React.Component{
         nextPageAvailable: nextPageAvailable,
         prevPageAvailable: prevPageAvailable,
         ProductLoading: produkty,
-        LastPage: window.location.search+window.location.search,
         pageLimit: (responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
       });
+      window.scrollTo(0, 0);
     })
     .catch(err => err);
   }
 
   handlePageChange(event){
+    console.log("kek", window.location.search);
     this.setState({
       page: event.target.id,
+      LastPage: window.location.search,
     }, () => {
       this.fetchSearchData();
       const params = new URLSearchParams(window.location.search);
@@ -297,7 +298,7 @@ class SearchResults extends React.Component{
 
       if(undefined !== ApiResponse && undefined !== ApiResponse.produkty && ApiResponse.produkty.length){
         return(
-          <div className="container-fluid">
+          <div className="container-fluid pb-5 mb-5">
             <div className="row navbar-padding p-relative">
               <div className="col-1"></div>
               <div className="col-10 pt-5 text-left">
@@ -428,7 +429,7 @@ class SearchResults extends React.Component{
                         </div>
                         <div className ="col-xl-7">
                           <div className="font-weight-bold center-product-name">
-                            <h4><Link to={"/product?id=" + produkt.id_produktu}>{produkt.nazwa_produktu}</Link></h4>
+                            <h4><Link to={"/product?id=" + produkt.id_produktu}>{produkt.producent + " " + produkt.nazwa_produktu}</Link></h4>
                           </div>
                           <div className="idProduktu d-block">
                             <span>id produktu: {produkt.id_produktu}</span>
@@ -486,7 +487,7 @@ class SearchResults extends React.Component{
                               {this.state.activeSearchSorting}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a className="dropdown-item" id="domyślne2" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
                               <div className="dropdown-divider"></div>
                               <a className="dropdown-item" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
                               <a className="dropdown-item" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
@@ -538,6 +539,7 @@ class SearchResults extends React.Component{
                 <div className="col-lg-3"></div>
                 <div className="col-lg-5 text-left">
                   <Link className="btn btn-outline-secondary" to={this.state.LastPage}>
+                  {" "}
                     <i className="fas fa-chevron-left"></i> Cofnij do poprzedniej strony
                   </Link>
                 </div>

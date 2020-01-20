@@ -14,6 +14,7 @@ import Profile from "./components/Profile.jsx";
 import Invoice from "./components/Invoice.jsx";
 import Product from "./components/Product.jsx";
 
+
 import history from "./components/history";
 
 class App extends React.Component {
@@ -159,6 +160,11 @@ class Navbar extends React.Component {
   handleSearchSubmit(event) {
     if (this.state.searchValue.length === 0) {
       event.preventDefault();
+      this.getAlertMessage(
+        "danger",
+        "Wpisz coś!",
+        "Wpisz przynajmniej jeden znak."
+      );
     } else {
       this.setState({
         searchValueToSend: this.state.searchValue,
@@ -495,7 +501,7 @@ class Navbar extends React.Component {
                 sendAlertMessage={this.getAlertMessage}
               />
             </Route>
-            <Route path="/wyszukaj:q?:w?:s?:p?:l?" component={SearchResults}>
+            <Route path="/wyszukaj:q?:w?:s?:p?:l?">
               <SearchResults
                 isLogged={this.state.isLogged}
                 searchValue={this.state.searchValueToSend}
@@ -510,6 +516,7 @@ class Navbar extends React.Component {
                 sendUpdatedCartItems={this.getUpdatedCartItems}
                 sendAlertMessage={this.getAlertMessage}
                 isLogged={this.state.isLogged}
+                history={history}
               />
             </Route>
           </Switch>

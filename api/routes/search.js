@@ -35,7 +35,7 @@ function czyPobraneDane(result, callback) {
   async.forEachOf(result, (value, key, callback) => {
     czyPobranoAtrybuty(value.id_produktu, function(err, resultAtrybuty){
     wynikiAtrybuty = resultAtrybuty;
-    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, id_produktu: value.id_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, opis_produktu: value.opis_produktu, zdjecie: value.wartosc, atrybuty: wynikiAtrybuty});
+    wynikiParametry.push({nazwa_produktu: value.nazwa_produktu, id_produktu: value.id_produktu, nazwa_kategorii: value.nazwa_kategorii, cena_brutto: value.cena_brutto, producent: value.nazwa_producenta, opis_produktu: value.opis_produktu, zdjecie: value.wartosc, atrybuty: wynikiAtrybuty});
    });
    wyniki.produkty = wynikiParametry;
    callback();
@@ -245,8 +245,8 @@ router.post('/', function(req, res, next) {
     let offset = (limit*strona)-limit;
     var zapytania = [];
     zapytania[0] = `
-    SELECT DISTINCT nazwa_produktu, id_produktu, nazwa_kategorii, cena_brutto, wartosc from (
-      SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto,
+    SELECT DISTINCT nazwa_produktu, id_produktu, nazwa_kategorii, cena_brutto, nazwa_producenta, wartosc from (
+      SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, pp.nazwa_producenta, 
       (SELECT at.wartosc 
         FROM atrybuty at
         WHERE at.typ = 2

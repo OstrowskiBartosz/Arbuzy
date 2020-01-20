@@ -2,17 +2,23 @@ import React from 'react';
 import {
   Link,
   Redirect,
+  BrowserRouter as Router, 
+  Route, 
+  Switch,
 } from 'react-router-dom';
+import Purchase from './Purchase';
 
 class ShoppingCart extends React.Component{
   constructor(props){
     super(props)
+    console.log(this.props.history.location.key)
     this.state = ({
       isLogged: false,
       isLoading: true,
       fullPrice: 0,
       isEmpty: false,
       logInInfoReceived: false,
+      purchase: false,
     });
   }
 
@@ -21,6 +27,21 @@ class ShoppingCart extends React.Component{
       this.setState({
         isLogged: this.props.isLogged,
         logInInfoReceived: true,
+      });
+    }
+    // console.log("prev", prevState.purchase);
+    // console.log("props", this.props.purchase);
+    // if( prevState.purchase !== this.props.purchase ){
+    //   this.setState({
+    //     purchase: this.props.purchase,
+    //   });
+    // }
+    console.log("vsad", prevProps);
+    console.log("vsadavsd", this.props.history);
+    console.log("vsadavsdsdav", prevProps.history);
+    if (prevState.history.location.key !== this.props.history.location.key) {
+      this.setState({
+        purchase: this.props.purchase,
       });
     }
   }
@@ -162,6 +183,11 @@ class ShoppingCart extends React.Component{
       disableEverything: false,
     })
   }
+  handlePurchaseClick(event){
+    this.setState({
+      purchase: true,
+    });
+  }
 
   render(){
     if (this.props.isLogged === false && this.state.logInInfoReceived === true) {
@@ -170,115 +196,129 @@ class ShoppingCart extends React.Component{
     else if (this.state.isLoading) {
       return (<div>Loading...</div>);
     }else{
-      if(this.state.isEmpty === false){
+      if(this.state.isEmpty === false && this.state.purchase === false){
         return(
-          <div className="container-fluid">
-          <div className='row navbar-padding'>
-            <div className='col-sm-3'>
-            </div>
-            <div className= "col-sm-6">
-              <div className="row">
-                <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-                  <div className = "row">
-                    <div className="col-11">
-                      <div className="font-weight-bold text-left">
-                        <h3>Twój Koszyk</h3>
+          <Router>
+            <div className="container-fluid">
+            <div className='row navbar-padding'>
+              <div className='col-sm-3'>
+              </div>
+              <div className= "col-sm-6">
+                <div className="row">
+                  <div className="col-12 mt-5 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                    <div className = "row">
+                      <div className="col-11">
+                        <div className="font-weight-bold text-left">
+                          <h3>Twój Koszyk</h3>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-1 align-text-center">
+                      <div className="col-1 align-text-center">
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row hide-l">
-                <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
-                  <div className="row CartBorder pb-2">
-                      <div className ="col-2 p-0">
-                      </div>
-                      <div className ="col-5 align-text-center">
-                        <div className="text-left">
-                          Nazwa
-                        </div>
-                      </div>
-                      <div className ="col-2 align-text-center">
-                        <div className="text-left">
-                          Cena
-                        </div>
-                      </div>
-                      <div className ="col-2 align-text-center">
-                        <div className=" align-left" >
-                          Ilość
-                        </div>
-                      </div>
-                      <div className ="col-1 align-text-center">
-                        
-                      </div>
-                    </div>
-                </div>
-              </div>
-              {this.state.cartArray.map(produkt => (
-                <div className="row" key={produkt[0]}>
+                <div className="row hide-l">
                   <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
-                    <div className="row">
-                      <div className ="col-xl-2 p-0 mb-3">
-                        <div className="image-container2">
-                          <img alt="obraz produktu" className=" center-Element-vertical feature_image2" src={produkt[4]}></img>
-                        </div>                       
-                      </div>
-                      <div className ="col-xl-5 align-text-center font-size-bigger mb-5">
-                        <div className="text-left">
-                          {produkt[3]}
+                    <div className="row CartBorder pb-2">
+                        <div className ="col-2 p-0">
                         </div>
-                      </div>
-                        <div className ="col-xl-2 align-text-center font-size-bigger mb-5">
+                        <div className ="col-5 align-text-center">
                           <div className="text-left">
-                            {produkt[6] + " zł"}
+                            Nazwa
                           </div>
-                          <div className="placement-bottomAddToCart"></div>
                         </div>
-                        <div className ="col-xl-2 align-text-center mb-5">
-                          <i className={"fas fa-minus cursor-pointer " + (this.state.disableEverything ? "disabled" : "")} onClick={(event) => this.handleQuantityClick(event, produkt[0], "-")} 
-                                  disabled={ this.state.disableEverything ? "disabled" : false}></i>
-                          <div className="text-left pl-2 pr-2">
-                            <input className="text-center" size="1" value={produkt[1]} readOnly></input>
+                        <div className ="col-2 align-text-center">
+                          <div className="text-left">
+                            Cena
                           </div>
-                          <i className={"fas fa-plus cursor-pointer " + (this.state.disableEverything ? "disabled" : "")} onClick={(event) => this.handleQuantityClick(event, produkt[0], "+")} 
-                                  disabled={ this.state.disableEverything ? "disabled" : false}></i>
                         </div>
-                        <div className ="col-xl-1 align-text-center mb-5">
-                          <span><i className="fas fa-trash-alt cursor-pointer" onClick={() => this.handleTrashClick(produkt[0], produkt[5])} disabled={ this.state.disableEverything ? false : "disabled"}></i></span>
+                        <div className ="col-2 align-text-center">
+                          <div className=" align-left" >
+                            Ilość
+                          </div>
+                        </div>
+                        <div className ="col-1 align-text-center">
+                          
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                {this.state.cartArray.map(produkt => (
+                  <div className="row" key={produkt[0]}>
+                    <div className="col-12 componentBackgroundColor shadow-sm p-3 bg-white rounded">
+                      <div className="row">
+                        <div className ="col-xl-2 p-0 mb-3">
+                          <div className="image-container2">
+                            <img alt="obraz produktu" className=" center-Element-vertical feature_image2" src={produkt[4]}></img>
+                          </div>                       
+                        </div>
+                        <div className ="col-xl-5 align-text-center font-size-bigger mb-5">
+                          <div className="text-left">
+                            {produkt[3]}
+                          </div>
+                        </div>
+                          <div className ="col-xl-2 align-text-center font-size-bigger mb-5">
+                            <div className="text-left">
+                              {produkt[6] + " zł"}
+                            </div>
+                            <div className="placement-bottomAddToCart"></div>
+                          </div>
+                          <div className ="col-xl-2 align-text-center mb-5">
+                            <i className={"fas fa-minus cursor-pointer " + (this.state.disableEverything ? "disabled" : "")} onClick={(event) => this.handleQuantityClick(event, produkt[0], "-")} 
+                                    disabled={ this.state.disableEverything ? "disabled" : false}></i>
+                            <div className="text-left pl-2 pr-2">
+                              <input className="text-center" size="1" value={produkt[1]} readOnly></input>
+                            </div>
+                            <i className={"fas fa-plus cursor-pointer " + (this.state.disableEverything ? "disabled" : "")} onClick={(event) => this.handleQuantityClick(event, produkt[0], "+")} 
+                                    disabled={ this.state.disableEverything ? "disabled" : false}></i>
+                          </div>
+                          <div className ="col-xl-1 align-text-center mb-5">
+                            <span><i className="fas fa-trash-alt cursor-pointer" onClick={() => this.handleTrashClick(produkt[0], produkt[5])} disabled={ this.state.disableEverything ? false : "disabled"}></i></span>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  ))}
+                <div className="row">
+                  <div className="col-xl-6">
                   </div>
-                ))}
-              <div className="row">
-                <div className="col-xl-6">
-                </div>
-                <div className="col-xl-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
-                  <div className="row pb-2">
-                    <div className="col-md-12">
-                      <span className="d-inline float-left pl-3">łącznie do zapłaty</span>
-                      <span className="float-right font-weight-bold font-size-bigger pr-3">{(this.state.fullPrice.toFixed(2)).replace(".", ",")} zł</span>
+                  <div className="col-xl-6 mt-2 componentBackgroundColor mt-3 mb-3 shadow-sm p-3 bg-white rounded">
+                    <div className="row pb-2">
+                      <div className="col-md-12">
+                        <span className="d-inline float-left pl-3">łącznie do zapłaty</span>
+                        <span className="float-right font-weight-bold font-size-bigger pr-3">{(this.state.fullPrice.toFixed(2)).replace(".", ",")} zł</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-12">
+                      <Link className="nostyle" to="/kup"><button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary" onClick={(event) => this.handlePurchaseClick()}>Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button></Link>
                       </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12">
-                      <button type="button" className="btn btn-lg btn-block mt-1 pt-1 btn-primary">Przejdz do płatności <i className="fas fa-sign-out-alt"></i></button>
                     </div>
                   </div>
                 </div>
               </div>
+              <div className='col-sm-3'>
+              </div>
             </div>
-            <div className='col-sm-3'>
+            <div className="row pt-4">
+              <div className="col-lg-3"></div>
+              <div className="col-lg-5 text-left">
+                <Link className="btn btn-outline-secondary" to="/">
+                  {" "}
+                  <i className="fas fa-chevron-left"></i> Wróć do strony głównej
+                </Link>
+              </div>
+              <div className="col-lg-4"></div>
             </div>
           </div>
-          <div className ="row pt-4">
-            <div className ="col-lg-3"></div>
-            <div className ="col-lg-5 text-left"><Link className="btn btn-outline-secondary" to="/"> <i className ="fas fa-chevron-left"></i> Cofnij do strony głównej</Link></div>
-            <div className ="col-lg-4"></div>
-          </div>
-        </div>
+          <Switch>
+            <Route exact path="/kup">
+              <Purchase 
+                  isLogged={this.state.isLogged}
+              />
+            </Route>
+          </Switch>
+        </Router>
         );
       }else{
         return(
