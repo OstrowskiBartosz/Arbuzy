@@ -32,14 +32,50 @@ router.post("/", function(req, res, next) {
         "FROM atrybuty " +
         "WHERE id_produktu = " +
         productID +
-        ";";
+        " AND (typ = 2 OR typ = 3);";
       con.query(sql, function(err, result) {
         productData = {
           ...productData,
-          atrybuty: result
+          zdjecia: result
         };
-        res.send(JSON.stringify(productData));
-        res.end();
+        var sql =
+          "SELECT atrybut, wartosc, typ " +
+          "FROM atrybuty " +
+          "WHERE id_produktu = " +
+          productID +
+          " AND (typ = 1);";
+        con.query(sql, function(err, result) {
+          productData = {
+            ...productData,
+            atrybutMain: result
+          };
+          var sql =
+            "SELECT atrybut, wartosc, typ " +
+            "FROM atrybuty " +
+            "WHERE id_produktu = " +
+            productID +
+            " AND (typ = 0);";
+          con.query(sql, function(err, result) {
+            productData = {
+              ...productData,
+              atrybutSub: result
+            };
+            var sql =
+              "SELECT cena_netto, cena_brutto, procentvat, od, do " +
+              "FROM ceny " +
+              "WHERE id_produktu = " +
+              productID +
+              ";";
+            con.query(sql, function(err, result) {
+              productData = {
+                ...productData,
+                ceny: result
+              };
+              res.send(JSON.stringify(productData));
+              res.end();
+            });
+          });
+        });
       });
     } else {
       res.send(JSON.stringify(productData));

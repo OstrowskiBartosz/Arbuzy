@@ -49,7 +49,9 @@ class Product extends React.Component {
       } else {
         return (
           <div className="container options shadow-sm bg-white rounded">
-            TESTTTTTTT PRODUKTUUUUU
+            <div className="row">
+              <div className="col"></div>
+            </div>
           </div>
         );
       }
