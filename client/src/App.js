@@ -451,7 +451,7 @@ class Navbar extends React.Component {
                 (this.state.showAlert ? "fade-out-alert" : "hide-alert")
               }
             >
-              <div className="alert-x float-right">
+              <div className="float-right">
                 <span aria-hidden="true">&times;</span>
               </div>
               <h4 className="alert-heading text-left ">
