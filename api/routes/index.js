@@ -20,8 +20,22 @@ router.post("/", function(req, res, next) {
       error: false,
       polecane: result
     };
-    res.send(JSON.stringify(produkty));
-    res.end();
+    var sql = "SELECT p.nazwa_produktu, c.cena_brutto, a.wartosc, sum(pf.ilosc) as sprzedanych " +
+    "FROM (((pozycje_faktur pf " +
+    "INNER JOIN produkty p ON pf.id_produktu = p.id_produktu) " +
+    "INNER JOIN ceny c ON pf.id_produktu = c.id_produktu) " +
+    "INNER JOIN atrybuty a ON pf.id_produktu = a.id_produktu AND typ = 2) " +
+    "GROUP BY pf.id_produktu " +
+    "ORDER BY sum(pf.ilosc) DESC " +
+    "LIMIT 6;";
+    con.query(sql, function(err, result) {
+      produkty = {
+        ...produkty,
+        kupowane: result
+      };
+      res.send(JSON.stringify(produkty));
+      res.end();
+    });
   });
 });
 
