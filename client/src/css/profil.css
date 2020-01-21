@@ -50,11 +50,21 @@
 }
 
 .price-tag {
+  margin-top: 10px;
   font-size: 2rem;
 }
 
 .product-tree {
   text-align: left;
+}
+
+.product-name {
+  text-align: left;
+}
+
+.product-id {
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .product-divider {
@@ -89,4 +99,16 @@
 .col-thumbnail {
   max-width: 110px;
   margin: auto;
+}
+
+.col-left {
+  text-align: right;
+}
+
+.col-right {
+  text-align: left;
+}
+
+.m-bot-10 {
+  margin-bottom: 10px;
 }

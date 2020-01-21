@@ -72,7 +72,7 @@ class Product extends React.Component {
               </div>
             </div>
             <hr className="product-divider"></hr>
-            <div className="row">
+            <div className="row m-bot-10">
               <div className="col col-thumbnail">
                 {this.state.response.zdjecia.map((zdjecie, index) => (
                   <div className="image-thumbnail" key={index}>
@@ -86,7 +86,7 @@ class Product extends React.Component {
                   </div>
                 ))}
               </div>
-              <div className="col">
+              <div className="col-md-auto">
                 <div className="main-image">
                   <img
                     className="img-thumbnail"
@@ -97,11 +97,16 @@ class Product extends React.Component {
               </div>
               <div className="col">
                 <div className="product-name">
-                  {this.state.response.productNazwa}
+                  <h2>{this.state.response.productNazwa}</h2>
                 </div>
                 <div className="product-id">
-                  Id produktu: {this.state.response.productID}
+                  <small>Id produktu: {this.state.response.productID}</small>
                 </div>
+                {this.state.response.atrybutMain.map((atrybut, index) => (
+                  <div className="left" key={index}>
+                    {atrybut.atrybut}: <strong>{atrybut.wartosc}</strong>
+                  </div>
+                ))}
                 <div className="price-tag">
                   {this.state.response.ceny[0].cena_brutto.toLocaleString(
                     "pl-PL",
@@ -113,7 +118,7 @@ class Product extends React.Component {
                 </div>
                 <div>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-lg btn-block"
                     id={this.state.response.productID}
                   >
                     Dodaj do koszyka
@@ -123,25 +128,35 @@ class Product extends React.Component {
             </div>
             <hr className="product-divider"></hr>
             <h1>Opis produktu</h1>
-            <div className="row">
+            <div className="row m-bot-10">
               <div className="col">
                 {this.state.opis.map((part, index) => (
-                  <div key={index}>{part}</div>
+                  <div className="m-bot-10" key={index}>
+                    {part}
+                  </div>
                 ))}
               </div>
             </div>
             <hr className="product-divider"></hr>
             <h1>Pełna specyfikacja</h1>
-            <div className="row">
-              <div className="col">
+            <div className="row m-bot-10">
+              <div className="col col-left">
+                {this.state.response.atrybutMain.map((atrybut, index) => (
+                  <div key={index}>{atrybut.atrybut}</div>
+                ))}
+                {this.state.response.atrybutSub.map((atrybut, index) => (
+                  <div key={index}>{atrybut.atrybut}</div>
+                ))}
+              </div>
+              <div className="col col-right">
                 {this.state.response.atrybutMain.map((atrybut, index) => (
                   <div key={index}>
-                    {atrybut.atrybut}: <strong>{atrybut.wartosc}</strong>
+                    <strong>{atrybut.wartosc}</strong>
                   </div>
                 ))}
                 {this.state.response.atrybutSub.map((atrybut, index) => (
                   <div key={index}>
-                    {atrybut.atrybut}: <strong>{atrybut.wartosc}</strong>
+                    <strong>{atrybut.wartosc}</strong>
                   </div>
                 ))}
               </div>
