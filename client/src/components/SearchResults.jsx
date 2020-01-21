@@ -429,7 +429,7 @@ class SearchResults extends React.Component{
                         </div>
                         <div className ="col-xl-7">
                           <div className="font-weight-bold center-product-name">
-                            <h4><Link to={"/product?id=" + produkt.id_produktu}>{produkt.producent + " " + produkt.nazwa_produktu}</Link></h4>
+                            <h4><Link className="clear-link" to={"/product?id=" + produkt.id_produktu}>{produkt.producent + " " + produkt.nazwa_produktu}</Link></h4>
                           </div>
                           <div className="idProduktu d-block">
                             <span>id produktu: {produkt.id_produktu}</span>
