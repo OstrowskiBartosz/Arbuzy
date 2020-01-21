@@ -79,6 +79,21 @@ class Product extends React.Component {
                 </div>
               </div>
             </div>
+            <hr></hr>
+            <div className="row">
+              <div className="col">
+                {this.state.response.atrybutMain.map((atrybut, index) => (
+                  <div key={index}>
+                    {atrybut.atrybut}: <strong>{atrybut.wartosc}</strong>
+                  </div>
+                ))}
+                {this.state.response.atrybutSub.map((atrybut, index) => (
+                  <div key={index}>
+                    {atrybut.atrybut}: <strong>{atrybut.wartosc}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         );
       }
