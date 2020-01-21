@@ -34,6 +34,10 @@ class MainPage extends React.Component {
   }
 
   render() {
+    console.log(
+      "path",
+      window.location.origin + "/images/produkty/1/1042371_4_i1064.jpg"
+    );
     console.log(this.state.response);
     if (this.state.isLoading) {
       return <div className="loading"></div>;
