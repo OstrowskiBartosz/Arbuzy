@@ -31,10 +31,19 @@ class Product extends React.Component {
       .then(response => response.text())
       .then(response => {
         var responseObject = JSON.parse(response);
+        var splitted_opis = responseObject.productOpis.split("|");
+        splitted_opis.forEach((part, index) => {
+          if (index % 2 !== 0) {
+            splitted_opis[index] = (
+              <img className="img-fluid" src={part} alt="Opis produktu" />
+            );
+          }
+        });
         this.setState({
           response: responseObject,
           isLoading: false,
-          currentImage: responseObject.zdjecia[0].wartosc
+          currentImage: responseObject.zdjecia[0].wartosc,
+          opis: splitted_opis
         });
       })
       .catch(err => err);
@@ -42,7 +51,6 @@ class Product extends React.Component {
 
   imageClick(image) {
     this.setState({ currentImage: image });
-    console.log(image);
   }
 
   render() {
@@ -55,6 +63,16 @@ class Product extends React.Component {
       } else {
         return (
           <div className="container options shadow-sm bg-white rounded">
+            <div className="row">
+              <div className="col product-tree">
+                {this.state.response.productNazwaKategorii}{" "}
+                <i class="fas fa-long-arrow-alt-right"></i>{" "}
+                {this.state.response.productNazwaProducenta}{" "}
+                <i class="fas fa-long-arrow-alt-right"></i>{" "}
+                {this.state.response.productNazwa}
+              </div>
+            </div>
+            <hr className="product-divider"></hr>
             <div className="row">
               <div className="col">
                 {this.state.response.zdjecia.map((zdjecie, index) => (
@@ -78,8 +96,41 @@ class Product extends React.Component {
                   />
                 </div>
               </div>
+              <div className="col">
+                <div className="product-name">
+                  {this.state.response.productNazwa}
+                </div>
+                <div className="product-id">
+                  Id produktu: {this.state.response.productID}
+                </div>
+                <div className="price-tag">
+                  {this.state.response.ceny[0].cena_brutto.toLocaleString(
+                    "pl-PL",
+                    {
+                      minimumFractionDigits: 2
+                    }
+                  )}{" "}
+                  zł
+                </div>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    id={this.state.response.productID}
+                  >
+                    Dodaj do koszyka
+                  </button>
+                </div>
+              </div>
             </div>
-            <hr></hr>
+            <hr className="product-divider"></hr>
+            <div className="row">
+              <div className="col">
+                {this.state.opis.map((part, index) => (
+                  <div key={index}>{part}</div>
+                ))}
+              </div>
+            </div>
+            <hr className="product-divider"></hr>
             <div className="row">
               <div className="col">
                 {this.state.response.atrybutMain.map((atrybut, index) => (

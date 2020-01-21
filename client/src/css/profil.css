@@ -46,3 +46,16 @@
 .main-image {
   width: 300px;
 }
+
+.price-tag {
+  font-size: 2rem;
+}
+
+.product-tree {
+  text-align: left;
+}
+
+.product-divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
