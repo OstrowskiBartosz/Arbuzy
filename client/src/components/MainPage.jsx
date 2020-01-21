@@ -8,7 +8,32 @@ import Baner4 from "../images/baner4.png";
 import "../css/mainPage.css";
 
 class MainPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+    };
+  }
+
+  componentDidMount() {
+    let url = "http://localhost:9000/";
+    fetch(url, {
+      method: "post",
+      credentials: "include"
+    })
+      .then(response => response.text())
+      .then(response => {
+        var responseObject = JSON.parse(response);
+        this.setState({
+          response: responseObject,
+          isLoading: false
+        });
+      })
+      .catch(err => err);
+  }
+
   render() {
+    console.log(this.state.response);
     return (
       <div className="container mainpage">
         <div className="container categoryGallery">
@@ -28,6 +53,9 @@ class OftenBought extends React.Component {
   render() {
     return (
       <div className="container shadow-sm bg-white rounded">
+        {this.state.response.produkty.polecane.map((produkt, index) => (
+          <div></div>
+        ))};
         <div className="row">
           <div className="col categoryHeader">
             Najczęściej kupowane produkty
