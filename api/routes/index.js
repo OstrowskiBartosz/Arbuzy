@@ -17,6 +17,7 @@ router.post("/", function(req, res, next) {
   con.query(sql, function(err, result) {
     produkty = {
       ...produkty,
+      error: false,
       polecane: result
     };
     res.send(JSON.stringify(produkty));

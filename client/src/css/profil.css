@@ -59,3 +59,27 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.clear-link {
+  color: black;
+  text-decoration: none;
+}
+
+.clear-link:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.imageLink:hover {
+  color: green;
+  text-decoration: none;
+}
+
+.clear-link:hover {
+  color: green;
+  text-decoration: none;
+}
+
+.imageDescription:hover {
+  color: green;
+}

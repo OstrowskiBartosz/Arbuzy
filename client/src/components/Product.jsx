@@ -54,7 +54,6 @@ class Product extends React.Component {
   }
 
   render() {
-    console.log(this.state.response);
     if (this.state.isLoading) {
       return <div className="loading"></div>;
     } else {
@@ -66,9 +65,9 @@ class Product extends React.Component {
             <div className="row">
               <div className="col product-tree">
                 {this.state.response.productNazwaKategorii}{" "}
-                <i class="fas fa-long-arrow-alt-right"></i>{" "}
+                <i className="fas fa-long-arrow-alt-right"></i>{" "}
                 {this.state.response.productNazwaProducenta}{" "}
-                <i class="fas fa-long-arrow-alt-right"></i>{" "}
+                <i className="fas fa-long-arrow-alt-right"></i>{" "}
                 {this.state.response.productNazwa}
               </div>
             </div>
