@@ -650,3 +650,7 @@ a.nostyle:visited {
   color: green;
   text-decoration: none;
 }
+
+.pointer {
+  cursor: pointer;
+}

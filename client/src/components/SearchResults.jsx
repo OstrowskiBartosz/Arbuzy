@@ -392,12 +392,12 @@ class SearchResults extends React.Component{
                               {this.state.activeSearchSorting}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <a className="dropdown-item pointer" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
                               <div className="dropdown-divider"></div>
-                              <a className="dropdown-item" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
-                              <a className="dropdown-item" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
-                              <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
-                              <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                              <a className="dropdown-item pointer" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
+                              <a className="dropdown-item pointer" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
+                              <a className="dropdown-item pointer" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                              <a className="dropdown-item pointer" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
                             </div>
                           </div>
                         </div>
@@ -487,12 +487,12 @@ class SearchResults extends React.Component{
                               {this.state.activeSearchSorting}
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a className="dropdown-item" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
+                              <a className="dropdown-item pointer" id="domyślne" onClick={(event) => this.handleSortChange(event)}>domyślne</a>
                               <div className="dropdown-divider"></div>
-                              <a className="dropdown-item" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
-                              <a className="dropdown-item" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
-                              <a className="dropdown-item" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
-                              <a className="dropdown-item" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
+                              <a className="dropdown-item pointer" id="cena malejąco" onClick={(event) => this.handleSortChange(event)}>cena malejąco</a>
+                              <a className="dropdown-item pointer" id="cena rosnąco" onClick={(event) => this.handleSortChange(event)}>cena rosnąco</a>
+                              <a className="dropdown-item pointer" id="nazwa produktu A-Z" onClick={(event) => this.handleSortChange(event)}>nazwa produktu A-Z</a>
+                              <a className="dropdown-item pointer" id="nazwa produktu Z-A" onClick={(event) => this.handleSortChange(event)}>nazwa produktu Z-A</a>
                             </div>
                           </div>
                         </div>
