@@ -105,3 +105,14 @@ footer {
 .all {
   margin-top: 86px;
 }
+
+.clear-link,
+.clear-link:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.clear-link:hover {
+  color: green;
+  text-decoration: none;
+}

@@ -47,31 +47,61 @@ class MainPage extends React.Component {
                 <hr />
                 <ul className="categoryBar">
                   <li id="3" className="categoryLink">
-                    Karty graficzne
+                    <Link
+                      className="clear-link"
+                      to={"/wyszukaj?w=Karty%20graficzne"}
+                    >
+                      Karty graficzne
+                    </Link>
                   </li>
                   <li id="8" className="categoryLink">
-                    Procesory
+                    <Link className="clear-link" to={"/wyszukaj?w=Procesory"}>
+                      Procesory
+                    </Link>
                   </li>
                   <li id="7" className="categoryLink">
-                    Płyty główne
+                    <Link
+                      className="clear-link"
+                      to={"/wyszukaj?w=Płyty%20główne"}
+                    >
+                      Płyty główne
+                    </Link>
                   </li>
                   <li id="6" className="categoryLink">
-                    Pamięci RAM
+                    <Link
+                      className="clear-link"
+                      to={"/wyszukaj?w=Pamięci%20RAM"}
+                    >
+                      Pamięci RAM
+                    </Link>
                   </li>
                   <li id="1" className="categoryLink">
-                    Dyski HDD
+                    <Link className="clear-link" to={"/wyszukaj?w=Dyski%20HDD"}>
+                      Dyski HDD
+                    </Link>
                   </li>
                   <li id="2" className="categoryLink">
-                    Dyski SSD
+                    <Link className="clear-link" to={"/wyszukaj?w=Dyski%20SSD"}>
+                      Dyski SSD
+                    </Link>
                   </li>
                   <li id="5" className="categoryLink">
-                    Obudowy
+                    <Link className="clear-link" to={"/wyszukaj?w=Obudowy"}>
+                      Obudowy
+                    </Link>
                   </li>
                   <li id="9" className="categoryLink">
-                    Zasilacze
+                    <Link className="clear-link" to={"/wyszukaj?w=Zasilacze"}>
+                      Zasilacze
+                    </Link>
                   </li>
                   <li id="4" className="categoryLink">
-                    Napędy optyczne
+                    <Link
+                      className="clear-link"
+                      to={"/wyszukaj?w=Napędy%20optyczne"}
+                    >
+                      Napędy optyczne
+                    </Link>
                   </li>
                 </ul>
               </div>
