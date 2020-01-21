@@ -198,7 +198,13 @@ router.post('/', function(req, res, next) {
     filterString = filterString.replace(" OR ", "");
   }
 
-  if(kategoria == "Wszędzie")
+
+  console.log("kek", kategoria);
+  console.log("geg", req.body.kategoria);
+  if(nazwa_produktu.length === 0)
+  nazwa_produktu = " ";
+
+  if(kategoria === "Wszędzie")
     kategoria = "";
 
   let strona = req.body.strona;
@@ -222,26 +228,9 @@ router.post('/', function(req, res, next) {
     default:
       querysort = "";
   }
-  /*
-    SELECT p.nazwa_produktu, p.id_produktu, k.nazwa_kategorii, c.cena_brutto, a.atrybut,
-    (SELECT at.wartosc
-      FROM atrybuty at
-      WHERE at.typ = '2'
-      AND at.id_produktu = p.id_produktu
-    ) as wartosc
-    FROM produkty p
-    INNER JOIN ceny c ON p.id_produktu=c.id_produktu
-    INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-    INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
-    LEFT JOIN atrybuty a ON p.id_produktu=a.id_produktu 
-      AND id_atrybutu = (SELECT min(a1.id_produktu) 
-                         FROM atrybuty AS a1
-                         WHERE p.id_produktu=a1.id_produktu)
-    WHERE nazwa_produktu like '%Barracuda%'
-    AND k.nazwa_kategorii like '%%';
-  */
 
   if (nazwa_produktu && strona && limit) {
+    console.log("sadvvadsvsadfssdf");
     let offset = (limit*strona)-limit;
     var zapytania = [];
     zapytania[0] = `
@@ -270,7 +259,8 @@ router.post('/', function(req, res, next) {
         FROM produkty p
         INNER JOIN ceny c ON p.id_produktu=c.id_produktu
         INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
-        WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\';`;
+        WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+        AND k.nazwa_kategorii like \'%` + kategoria + `%\';`;
         czyPobranoLiczbeProduktow(zapytania, wyniki, function (err, wyniki) {
           zapytania[0] = `
           SELECT a.id_atrybutu, a.atrybut, a.wartosc, a.typ, count(a.wartosc) as liczba

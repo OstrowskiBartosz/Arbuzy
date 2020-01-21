@@ -8,8 +8,8 @@ class SearchResults extends React.Component{
 
     const params = new URLSearchParams(window.location.search);
     this.state = ({
-      searchValue: this.props.searchValue,
-      searchCategory: this.props.searchCategory,
+      searchValue: params.has('q') ? params.get('q') : "",
+      searchCategory: params.has('w') ? params.get('w') : "Wszędzie",
 
       prevPageAvailable: false,
       nextPageAvailable: false,
@@ -56,8 +56,8 @@ class SearchResults extends React.Component{
   setStateWithParams(){
     const params = new URLSearchParams(window.location.search);
     this.setState({
-      searchValue: this.props.searchValue,
-      searchCategory: this.props.searchCategory,
+      searchValue: params.has('q') ? params.get('q') : " ",
+      searchCategory: params.has('w') ? params.get('w') : "Wszędzie",
 
       pageLimit: 0,
       prevPageAvailable: false,
@@ -141,8 +141,11 @@ class SearchResults extends React.Component{
         nextPageAvailable: nextPageAvailable,
         prevPageAvailable: prevPageAvailable,
         ProductLoading: produkty,
-        pageLimit: (responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
+        pageLimit: Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
       });
+      console.log(responseobject.liczba_przedmiotow);
+      console.log(this.state.activeSearchLimit);
+      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit));
       window.scrollTo(0, 0);
     })
     .catch(err => err);
@@ -162,13 +165,7 @@ class SearchResults extends React.Component{
 
   handlePageChangeArrow(sign){
     if(this.state.prevPageAvailable === false && sign === "minus"){
-      console.log("savdadsvsa");
       return;
-    }else if(this.state.prevPageAvailable === true && sign === "minus"){
-      console.log("savdadsvsvsadavsdddddddddddddda");
-    }else{
-      console.log(this.state.prevPageAvailable);
-      console.log(sign);
     }
     if(this.state.nextPageAvailable === false && sign === "plus"){
       return;
