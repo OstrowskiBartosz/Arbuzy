@@ -14,8 +14,8 @@ export default class Bought extends React.Component{
   }
 
   componentDidMount(){
-    console.log(this.props);
-    setTimeout(() => {
+    let timeout;
+    timeout = setTimeout(() => {
         console.log(this.props);
         this.props.history.push("/");
       }, 5000);
