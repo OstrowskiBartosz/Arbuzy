@@ -116,7 +116,7 @@ class Profile extends React.Component {
           </div>
           <div
             className={
-              "container orders " + (this.state.activeTab == 1 ? "" : "d-none")
+              "container orders " + (this.state.activeTab === 1 ? "" : "d-none")
             }
           >
             <div className="row">
@@ -181,7 +181,7 @@ class Profile extends React.Component {
           <div
             className={
               "container products " +
-              (this.state.activeTab == 2 ? "" : "d-none")
+              (this.state.activeTab === 2 ? "" : "d-none")
             }
           >
             <div className="row">
@@ -199,7 +199,7 @@ class Profile extends React.Component {
           <div
             className={
               "container complaints " +
-              (this.state.activeTab == 3 ? "" : "d-none")
+              (this.state.activeTab === 3 ? "" : "d-none")
             }
           >
             <div className="row">
@@ -237,7 +237,7 @@ class Profile extends React.Component {
           <div
             className={
               "container settings " +
-              (this.state.activeTab == 4 ? "" : "d-none")
+              (this.state.activeTab === 4 ? "" : "d-none")
             }
           >
             <div className="row">
