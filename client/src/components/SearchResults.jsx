@@ -111,6 +111,12 @@ class SearchResults extends React.Component{
       }else{produkt = "produkt";}
 
       var nextPageAvailable, prevPageAvailable;
+      console.log("====");
+      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit));
+      console.log(responseobject.liczba_przedmiotow);
+      console.log(this.state.activeSearchLimit);
+      console.log(this.state.page);
+      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit) === this.state.page);
       if(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit) === this.state.page){ 
         nextPageAvailable = false; 
       }else{
@@ -143,9 +149,6 @@ class SearchResults extends React.Component{
         ProductLoading: produkty,
         pageLimit: Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
       });
-      console.log(responseobject.liczba_przedmiotow);
-      console.log(this.state.activeSearchLimit);
-      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit));
       window.scrollTo(0, 0);
     })
     .catch(err => err);
@@ -438,7 +441,7 @@ class SearchResults extends React.Component{
                               <div className=" float-right btn btn-secondary d-inline">strona </div>
                               <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("minus")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
                               {pages}
-                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("plus")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
+                              <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("plus")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
                             </ul>
                           </nav>
                         </div>
@@ -531,9 +534,9 @@ class SearchResults extends React.Component{
                           <nav aria-label="Page navigation">
                             <ul className="pagination float-right">
                               <div className=" float-right btn btn-secondary d-inline">strona </div>
-                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i></a></li>
+                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("minus")} disabled={ this.state.prevPageAvailable ? false : "disabled"}><a className="page-link" ><i className="fas fa-chevron-left"></i></a></li>
                               {pages}
-                              <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" > <i className="fas fa-chevron-right"></i></a></li>
+                              <li className={"page-item " + ((this.state.nextPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("plus")} disabled={ this.state.nextPageAvailable ? false : "disabled"}><a className="page-link" > <i className="fas fa-chevron-right"></i></a></li>
                             </ul>
                           </nav>
                         </div>
