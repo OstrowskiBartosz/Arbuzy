@@ -43,6 +43,7 @@ function czyPobranoProdukty(zapytania, wyniki, callback){
         ProduktObiekt.id_w_koszyku = result[row].id_produktu_w_koszyku;
         ProduktObiekt.ilosc = result[row].ilosc;
         ProduktObiekt.zdjecie = result[row].zdjecie;
+        ProduktObiekt.producent = result[row].nazwa_producenta;
         grupyProduktow.push(ProduktObiekt);
         ProduktObiekt = new Object();
       }
@@ -113,16 +114,20 @@ router.get('/', function(req, res, next) {
     if (wyniki.length > 0) {
       let id = wyniki[0].id_uzytkownika;
       zapytania[0] = `
-      SELECT p.nazwa_produktu, p.id_produktu, c.cena_brutto, pwk.id_produktu_w_koszyku, ilosc, a.wartosc as zdjecie
-      FROM produkty_w_koszykach pwk
-      INNER JOIN produkty p ON p.id_produktu = pwk.id_produktu
-      INNER JOIN ceny c ON pwk.id_produktu=c.id_produktu
-      INNER JOIN uzytkownicy u ON pwk.id_uzytkownika=u.id_uzytkownika
-      INNER JOIN atrybuty a ON pwk.id_produktu=a.id_produktu
-      WHERE pwk.id_uzytkownika = \'` + id + `\' and a.typ = 2
-      GROUP BY p.id_produktu
-      LIMIT ` + limit + ` OFFSET ` + offset + `;`;
+      SELECT x.nazwa_produktu, x.id_produktu, x.cena_brutto, x.id_produktu_w_koszyku, x.ilosc, x.zdjecie, x.id_producenta, pp.nazwa_producenta from (
+        SELECT p.nazwa_produktu, p.id_produktu, c.cena_brutto, pwk.id_produktu_w_koszyku, ilosc, a.wartosc as zdjecie, p.id_producenta
+        FROM produkty_w_koszykach pwk
+        INNER JOIN produkty p ON p.id_produktu = pwk.id_produktu
+        INNER JOIN ceny c ON pwk.id_produktu=c.id_produktu
+        INNER JOIN uzytkownicy u ON pwk.id_uzytkownika=u.id_uzytkownika
+        INNER JOIN atrybuty a ON pwk.id_produktu=a.id_produktu
+        WHERE pwk.id_uzytkownika = \'` + id + `\' and a.typ = 2
+        GROUP BY p.id_produktu
+        LIMIT ` + limit + ` OFFSET ` + offset + `
+      ) AS x
+      INNER JOIN producenci pp ON x.id_producenta=pp.id_producenta;`;
       var wyniki = new Object();
+      console.log(zapytania[0]);
       czyPobranoProdukty(zapytania, wyniki, function (err, wyniki) {
         res.send(JSON.stringify(wyniki, null, 3));
         res.end();
@@ -134,3 +139,18 @@ router.get('/', function(req, res, next) {
   });
 });
 module.exports = router;
+
+/*
+          SELECT x.nazwa_produktu, x.id_produktu, x.cena_brutto, x.id_produktu_w_koszyku, x.ilosc, x.zdjecie, x.id_producenta, pp.nazwa_producenta from (
+             SELECT p.nazwa_produktu, p.id_produktu, c.cena_brutto, pwk.id_produktu_w_koszyku, ilosc, a.wartosc as zdjecie, p.id_producenta
+             FROM produkty_w_koszykach pwk
+             INNER JOIN produkty p ON p.id_produktu = pwk.id_produktu
+             INNER JOIN ceny c ON pwk.id_produktu=c.id_produktu
+             INNER JOIN uzytkownicy u ON pwk.id_uzytkownika=u.id_uzytkownika
+             INNER JOIN atrybuty a ON pwk.id_produktu=a.id_produktu
+             WHERE pwk.id_uzytkownika = '2' and a.typ = 2
+             GROUP BY p.id_produktu
+             LIMIT 10 OFFSET 0
+          ) AS x
+          INNER JOIN producenci pp ON x.id_produktu=pp.id_producenta;
+*/

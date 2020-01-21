@@ -16,6 +16,7 @@ class Product extends React.Component {
       isLoading: true,
       productID: params.get("id")
     };
+    console.log("svadvsadsa");
   }
 
   componentDidMount() {

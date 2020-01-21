@@ -111,8 +111,17 @@ class SearchResults extends React.Component{
       }else{produkt = "produkt";}
 
       var nextPageAvailable, prevPageAvailable;
-      if(Math.ceil(responseobject.liczba_przedmiotow)/this.state.activeSearchLimit === this.state.page){ nextPageAvailable = false; }
-      if(this.state.page > 1){ prevPageAvailable = true; }
+      if(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit) === this.state.page){ 
+        nextPageAvailable = false; 
+      }else{
+        nextPageAvailable = true;
+      }
+      
+      if(this.state.page > 1){ 
+        prevPageAvailable = true; 
+      }else{
+        prevPageAvailable = false; 
+      }
 
       if(undefined !== responseobject.produkty){
         var produkty = new Array(responseobject.produkty.length);
@@ -140,9 +149,32 @@ class SearchResults extends React.Component{
   }
 
   handlePageChange(event){
-    console.log("kek", window.location.search);
     this.setState({
-      page: event.target.id,
+      page: parseInt(event.target.id),
+      LastPage: window.location.search,
+    }, () => {
+      this.fetchSearchData();
+      const params = new URLSearchParams(window.location.search);
+      params.set('p', this.state.page);
+      history.push(window.location.pathname+"?"+params);  
+    });
+  }
+
+  handlePageChangeArrow(sign){
+    if(this.state.prevPageAvailable === false && sign === "minus"){
+      console.log("savdadsvsa");
+      return;
+    }else if(this.state.prevPageAvailable === true && sign === "minus"){
+      console.log("savdadsvsvsadavsdddddddddddddda");
+    }else{
+      console.log(this.state.prevPageAvailable);
+      console.log(sign);
+    }
+    if(this.state.nextPageAvailable === false && sign === "plus"){
+      return;
+    }
+    this.setState({
+      page: sign === "plus" ? this.state.page+1 : this.state.page-1,
       LastPage: window.location.search,
     }, () => {
       this.fetchSearchData();
@@ -362,7 +394,7 @@ class SearchResults extends React.Component{
                   <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 HideFiltersButton" onClick={ () => this.switchHiddenFilters(true)}>Zwiń filtry</button>
                 </div>
               </div>
-              <div className={"col-sm-2 " + (this.state.hideFilters ? "" : "d-none")}>
+              <div className={"col-sm-2 pb-5 " + (this.state.hideFilters ? "" : "d-none")}>
                 <div className="col-12 componentBackgroundColor mt-3 shadow-sm p-3 mb-1 bg-white rounded">
                   <h3 className="pb-3">Filtry</h3>
                   <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 HideFiltersButton" onClick={ () => this.switchHiddenFilters(false)}>Rozwiń filtry</button>
@@ -375,7 +407,7 @@ class SearchResults extends React.Component{
                       <div className="col-xl-4">
                         <div className="numberofresultselement">
                           <nav aria-label="Page navigation">
-                            <ul className="pagination float-right">
+                            <ul className="pagination float-left">
                               <div className=" float-right btn btn-secondary d-inline">wyników na stronie</div>
                               <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-1" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
                               <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-1" onClick={(event) => this.handleLimitChange(event)}>20</a></li>
@@ -407,9 +439,9 @@ class SearchResults extends React.Component{
                           <nav aria-label="Page navigation">
                             <ul className="pagination float-right">
                               <div className=" float-right btn btn-secondary d-inline">strona </div>
-                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
+                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("minus")}><a className="page-link"><i className="fas fa-chevron-left"></i></a></li>
                               {pages}
-                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
+                              <li className={"page-item " + ((this.state.prevPageAvailable) ? "" : "disabled")} onClick={(event) => this.handlePageChangeArrow("plus")}><a className="page-link"><i className="fas fa-chevron-right"></i></a></li>
                             </ul>
                           </nav>
                         </div>
@@ -471,7 +503,7 @@ class SearchResults extends React.Component{
                     <div className="row">
                       <div className="col-xl-4">
                         <div className="numberofresultselement">
-                          <ul className="pagination float-right">
+                          <ul className="pagination float-left">
                             <div className=" float-right btn btn-secondary d-inline outline-primary">wyników na stronie</div>
                             <li className={"page-item " + (this.state.searchLimit10 ? "active" : "")}><a className="page-link" id="l10-2" onClick={(event) => this.handleLimitChange(event)}>10</a></li> 
                             <li className={"page-item " + (this.state.searchLimit20 ? "active" : "")}><a className="page-link" id="l20-2" onClick={(event) => this.handleLimitChange(event)}>20</a></li>

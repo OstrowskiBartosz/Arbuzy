@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import ShoppingCart from "./components/ShoppingCart.jsx";
@@ -13,8 +13,8 @@ import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
 import Invoice from "./components/Invoice.jsx";
 import Product from "./components/Product.jsx";
-import Purchase from './components/Purchase.jsx';
-
+import Summary from './components/Summary.jsx';
+import Bought from './components/Bought.jsx';
 
 import history from "./components/history";
 
@@ -193,7 +193,7 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <div id="all">
           <nav className="navbar navbar-expand-lg navbar-light bg-light Navbar-border fixed-top">
             <Link className="navbar-brand" to="/">
@@ -520,9 +520,19 @@ class Navbar extends React.Component {
                 history={history}
               />
             </Route>
-            <Route exact path="/kup">
-              <Purchase 
+            <Route exact path="/podsumowanie">
+              <Summary 
                   isLogged={this.state.isLogged}
+                  history={history}
+                  sendUpdatedCartItems={this.getUpdatedCartItems}
+              />
+            </Route>
+            <Route exact path="/kupiono">
+              <Bought 
+                  isLogged={this.state.isLogged}
+                  history={history}
+                  
+                  /*fromPurchasePage={fromPurchasePage}*/
               />
             </Route>
           </Switch>

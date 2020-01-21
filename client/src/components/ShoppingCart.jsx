@@ -48,6 +48,7 @@ class ShoppingCart extends React.Component{
           isEmpty: true,
         })
       }
+      console.log(apiOBject);
       var produktyWKoszykach = new Array(apiOBject.produkty.length);
       for (var i = 0; i < produktyWKoszykach.length; i++) { 
         produktyWKoszykach[i] = new Array(2);
@@ -60,7 +61,7 @@ class ShoppingCart extends React.Component{
         var cenastr = produktyWKoszykach[i][6].toString();
         produktyWKoszykach[i][6] = cenastr.replace(".", ",");
 
-        produktyWKoszykach[i][3] = apiOBject.produkty[i].nazwa_produktu;
+        produktyWKoszykach[i][3] = apiOBject.produkty[i].producent + " " + apiOBject.produkty[i].nazwa_produktu;
         produktyWKoszykach[i][4] = apiOBject.produkty[i].zdjecie;
         produktyWKoszykach[i][5] = apiOBject.produkty[i].id_produktu;
         cena = cena + produktyWKoszykach[i][1]*produktyWKoszykach[i][2];
@@ -234,7 +235,7 @@ class ShoppingCart extends React.Component{
                         </div>
                         <div className ="col-xl-5 align-text-center font-size-bigger mb-5">
                           <div className="text-left">
-                            {produkt[3]}
+                            <Link to={`/product?id=${produkt[5]}`}>{produkt[3]}</Link>
                           </div>
                         </div>
                           <div className ="col-xl-2 align-text-center font-size-bigger mb-5">
@@ -271,8 +272,8 @@ class ShoppingCart extends React.Component{
                     </div>
                     <div className="row">
                       <div className="col-12">
-                        <Link className="btn btn-lg btn-block mt-1 pt-1 btn-primary" to={"/kup"}>
-                            Przejdz do płatności <i className="fas fa-sign-out-alt"></i>
+                        <Link className="btn btn-lg btn-block mt-1 pt-1 btn-primary" to={"/podsumowanie"}>
+                            Przejdz do podsumowania <i className="fas fa-sign-out-alt"></i>
                         </Link>
                       </div>
                     </div>

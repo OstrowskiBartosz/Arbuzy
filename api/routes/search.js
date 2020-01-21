@@ -261,7 +261,7 @@ router.post('/', function(req, res, next) {
       AND k.nazwa_kategorii like \'%` + kategoria + `%\'
       ` + filterString + `) AS x
     ${querysort} 
-     LIMIT ` + limit + ` OFFSET ` + offset + `;`
+    LIMIT ` + limit + ` OFFSET ` + offset + `;`
     console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
