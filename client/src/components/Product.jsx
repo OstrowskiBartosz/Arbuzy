@@ -33,7 +33,7 @@ class Product extends React.Component {
         var responseObject = JSON.parse(response);
         var splitted_opis = responseObject.productOpis.split("|");
         splitted_opis.forEach((part, index) => {
-          if (index % 2 !== 0) {
+          if (part.startsWith("http")) {
             splitted_opis[index] = (
               <img className="img-fluid" src={part} alt="Opis produktu" />
             );
