@@ -33,10 +33,16 @@ class Product extends React.Component {
         var responseObject = JSON.parse(response);
         this.setState({
           response: responseObject,
-          isLoading: false
+          isLoading: false,
+          currentImage: responseObject.zdjecia[0].wartosc
         });
       })
       .catch(err => err);
+  }
+
+  imageClick(image) {
+    this.setState({ currentImage: image });
+    console.log(image);
   }
 
   render() {
@@ -50,7 +56,28 @@ class Product extends React.Component {
         return (
           <div className="container options shadow-sm bg-white rounded">
             <div className="row">
-              <div className="col"></div>
+              <div className="col">
+                {this.state.response.zdjecia.map((zdjecie, index) => (
+                  <div className="image-thumbnail" key={index}>
+                    <img
+                      className="img-thumbnail"
+                      src={zdjecie.wartosc}
+                      key={index}
+                      alt="Zdjęcie produktu"
+                      onClick={() => this.imageClick(zdjecie.wartosc)}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="col">
+                <div className="main-image">
+                  <img
+                    className="img-thumbnail"
+                    src={this.state.currentImage}
+                    alt="Zdjęcie produktu"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         );

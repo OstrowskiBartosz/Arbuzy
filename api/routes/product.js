@@ -32,7 +32,8 @@ router.post("/", function(req, res, next) {
         "FROM atrybuty " +
         "WHERE id_produktu = " +
         productID +
-        " AND (typ = 2 OR typ = 3);";
+        " AND (typ = 2 OR typ = 3) " +
+        "ORDER BY typ asc;";
       con.query(sql, function(err, result) {
         productData = {
           ...productData,
