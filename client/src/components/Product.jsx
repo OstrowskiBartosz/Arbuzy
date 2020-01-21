@@ -73,7 +73,7 @@ class Product extends React.Component {
             </div>
             <hr className="product-divider"></hr>
             <div className="row">
-              <div className="col">
+              <div className="col col-thumbnail">
                 {this.state.response.zdjecia.map((zdjecie, index) => (
                   <div className="image-thumbnail" key={index}>
                     <img
@@ -122,6 +122,7 @@ class Product extends React.Component {
               </div>
             </div>
             <hr className="product-divider"></hr>
+            <h1>Opis produktu</h1>
             <div className="row">
               <div className="col">
                 {this.state.opis.map((part, index) => (
@@ -130,6 +131,7 @@ class Product extends React.Component {
               </div>
             </div>
             <hr className="product-divider"></hr>
+            <h1>Pełna specyfikacja</h1>
             <div className="row">
               <div className="col">
                 {this.state.response.atrybutMain.map((atrybut, index) => (

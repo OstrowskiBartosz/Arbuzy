@@ -41,10 +41,12 @@
 .image-thumbnail {
   width: 100px;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .main-image {
   width: 300px;
+  margin: auto;
 }
 
 .price-tag {
@@ -82,4 +84,9 @@
 
 .imageDescription:hover {
   color: green;
+}
+
+.col-thumbnail {
+  max-width: 110px;
+  margin: auto;
 }
