@@ -159,7 +159,7 @@ class SearchResults extends React.Component{
       this.fetchSearchData();
       const params = new URLSearchParams(window.location.search);
       params.set('p', this.state.page);
-      history.push(window.location.pathname+"?"+params);  
+      this.props.history.push(window.location.pathname+"?"+params);  
     });
   }
 
