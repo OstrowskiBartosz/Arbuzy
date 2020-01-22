@@ -90,16 +90,20 @@ router.post('/', function(req, res, next) {
             SET ilosc = ilosc + 1 
             WHERE id_produktu_w_koszyku = ` + id_produktu_w_koszyku + `;`;
             czyDodanoDoKoszyka(zapytania, wyniki, function (err, wyniki) {
-              res.send('Przedmiot został dodany do koszyka.');
-              res.end();
+              if(!err){
+                res.send('Przedmiot został dodany do koszyka.');
+                res.end();
+              }
             })
           }else{
             zapytania[0] = `
             INSERT INTO produkty_w_koszykach(id_uzytkownika, id_produktu, ilosc)
             VALUES(`+ id +`, `+ id_produktu +`, `+ ilosc +`);`
             czyDodanoDoKoszyka(zapytania, wyniki, function (err, wyniki) {
-              res.send('Przedmiot został dodany do koszyka.');
-              res.end();
+              if(!err){
+                res.send('Przedmiot został dodany do koszyka.');
+                res.end();
+              }
             })
           }
         });

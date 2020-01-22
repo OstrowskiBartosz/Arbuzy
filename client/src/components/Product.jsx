@@ -54,6 +54,33 @@ class Product extends React.Component {
     this.setState({ currentImage: image });
   }
 
+  handleToCartClick(event){
+    event.preventDefault();
+    const data = {
+      id_produktu: "p" + event.currentTarget.id,
+      ilosc: 1,
+    }
+    fetch('http://localhost:9000/addtocart', {
+        method: 'post',
+        body: JSON.stringify(data),
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }     
+    })
+    .then(response=>response.text())
+    .then(response => {
+      if(response === "Przedmiot został dodany do koszyka."){
+        this.props.sendAlertMessage("primary", "Dodano produkt", "Produkt został dodany do koszyka.");
+        this.props.sendUpdatedCartItems(true);
+      }else{
+        this.props.sendAlertMessage("danger", "Wystąpił błąd.", "Wystąpił nieoczekiwany błąd.");
+        this.props.sendUpdatedCartItems(true);
+      }
+    })
+    .catch(err => err);
+  }
+
   render() {
     console.log("path", window.location.pathname);
     if (this.state.isLoading) {
@@ -122,6 +149,7 @@ class Product extends React.Component {
                   <button
                     className="btn btn-primary btn-lg btn-block"
                     id={this.state.response.productID}
+                    onClick={(event) => this.handleToCartClick(event)}
                   >
                     Dodaj do koszyka
                   </button>

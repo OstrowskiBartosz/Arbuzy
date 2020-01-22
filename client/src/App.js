@@ -499,6 +499,7 @@ class Navbar extends React.Component {
               <Product
                 isLogged={this.state.isLogged}
                 sendLoggedUser={this.getLoggedUser}
+                sendUpdatedCartItems={this.getUpdatedCartItems}
                 sendAlertMessage={this.getAlertMessage}
               />
             </Route>
