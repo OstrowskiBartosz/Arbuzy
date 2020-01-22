@@ -86,7 +86,7 @@ class Profile extends React.Component {
                 <i className="fa fa-shopping-bag"></i> Zamówienia
               </button>
             </div>
-            <div className="col">
+            <div className="col d-none">
               <button
                 id="products-btn"
                 className="btn btn-primary option"
@@ -104,7 +104,7 @@ class Profile extends React.Component {
                 <i className="fa fa-share-square"></i> Reklamacje
               </button>
             </div>
-            <div className="col">
+            <div className="col d-none">
               <button
                 id="settings-btn"
                 className="btn btn-primary option"
