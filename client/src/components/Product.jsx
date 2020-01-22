@@ -55,6 +55,7 @@ class Product extends React.Component {
   }
 
   render() {
+    console.log("path", window.location.pathname);
     if (this.state.isLoading) {
       return <div className="loading"></div>;
     } else {

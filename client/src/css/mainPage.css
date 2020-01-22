@@ -24,6 +24,13 @@ hr {
   padding: 10px;
 }
 
+@media (max-width: 392px) {
+  .container.mainpage {
+    margin-top: 121px;
+    padding: 10px;
+  }
+}
+
 @media (min-width: 992px) {
   .categoryCol {
     max-width: 250px;
