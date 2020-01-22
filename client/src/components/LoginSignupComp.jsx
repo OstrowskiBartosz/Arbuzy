@@ -212,7 +212,7 @@ class LoginSignupComp extends React.Component {
                   <div className="row">
                     <div className="col-12 signupinput">
                       <input
-                        type="text"
+                        type="email"
                         name="email"
                         className="form-control"
                         placeholder="adres e-mail"
@@ -320,7 +320,10 @@ class LoginSignupComp extends React.Component {
                         name="kod"
                         className="form-control"
                         placeholder="kod pocztowy"
+                        size="5"
+                        maxlength="5"
                         required
+                        onChange={(event) => {event.currentTarget.value=event.currentTarget.value.replace(/[^\d]/,'')}}
                       ></input>
                     </div>
                   </div>

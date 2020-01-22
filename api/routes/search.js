@@ -176,7 +176,6 @@ router.post('/', function(req, res, next) {
   var filterString = `AND (`;
 
   var LinkSplit = ((decodeURIComponent(link)).replace(/\+/g, " ")).split("&");
-  console.log(LinkSplit);
   LinkSplit.forEach(element => {
     if(element.includes("g_k")){
       filterString = filterString + ` OR k.id_kategorii LIKE \'` + element.substring(element.indexOf('g_k')+3, element.indexOf('=')) + `\'`;
@@ -198,9 +197,6 @@ router.post('/', function(req, res, next) {
     filterString = filterString.replace(" OR ", "");
   }
 
-
-  console.log("kek", kategoria);
-  console.log("geg", req.body.kategoria);
   if(nazwa_produktu.length === 0)
   nazwa_produktu = " ";
 
@@ -251,38 +247,49 @@ router.post('/', function(req, res, next) {
       ` + filterString + `) AS x
     ${querysort} 
     LIMIT ` + limit + ` OFFSET ` + offset + `;`
-    console.log(zapytania[0]);
     con.query(zapytania[0], (err, result) => {
       czyPobraneDane(result, function (err, wyniki) {
         zapytania[0]= `
-        SELECT count(p.nazwa_produktu) as liczba_przedmiotow
+        SELECT count(DISTINCT(p.id_produktu)) as liczba_przedmiotow
         FROM produkty p
+        INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
         INNER JOIN ceny c ON p.id_produktu=c.id_produktu
         INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+        INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
         WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
-        AND k.nazwa_kategorii like \'%` + kategoria + `%\';`;
+        AND k.nazwa_kategorii like \'%` + kategoria + `%\'
+        ${filterString};`;
         czyPobranoLiczbeProduktow(zapytania, wyniki, function (err, wyniki) {
           zapytania[0] = `
           SELECT a.id_atrybutu, a.atrybut, a.wartosc, a.typ, count(a.wartosc) as liczba
           FROM produkty p
           INNER JOIN atrybuty a ON p.id_produktu=a.id_produktu
-          WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\' and a.typ != 2 and a.typ != 3 
+          INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
+          INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
+          WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\' and a.typ != 2 and a.typ != 3
+          AND k.nazwa_kategorii like \'%` + kategoria + `%\'
+          ${filterString} 
           GROUP BY a.wartosc
           ORDER BY a.atrybut;`;
+          console.log(zapytania[0]);
           czyPobranoFiltry(zapytania, wyniki, function (err, wyniki) {
             zapytania[0] = `
             SELECT k.id_kategorii, k.nazwa_kategorii, count(p.nazwa_produktu) as liczba
             FROM produkty p
             INNER JOIN kategorie k ON p.id_kategorii=k.id_kategorii
             WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+            AND k.nazwa_kategorii like \'%` + kategoria + `%\'
             GROUP BY nazwa_kategorii;`;
+            console.log(zapytania[0]);
             czyPobranoKategorie(zapytania, wyniki, function (err, wyniki) {
               zapytania[0] = `
               SELECT pp.id_producenta, pp.nazwa_producenta, count(p.nazwa_produktu) as liczba
               FROM produkty p
               INNER JOIN producenci pp ON p.id_producenta=pp.id_producenta
               WHERE nazwa_produktu like \'%` + nazwa_produktu + `%\'
+              AND k.nazwa_kategorii like \'%` + kategoria + `%\'
               GROUP BY nazwa_producenta;`;
+              console.log(zapytania[0]);
               czyPobranoProducentow(zapytania, wyniki, function (err, wyniki) {
                 res.send(JSON.stringify(wyniki, null, 3));
                 res.end();

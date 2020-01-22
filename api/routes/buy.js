@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var async = require("async");
 var con = require('./database_connection');
+var SqlString = require('sqlstring');
 
 router.use(express.json());
 
@@ -10,12 +12,14 @@ router.post('/', function(req, res, next) {
   con.query(sql, function(err, result) {
     userID = result[0].id_uzytkownika;
     var sql = `
-    select x.id_produktu, x.ilosc, p.nazwa_produktu, c.cena_netto, c.cena_brutto FROM (
+    select x.id_produktu, x.ilosc, pp.id_producenta, k.id_kategorii, p.nazwa_produktu, c.cena_netto, c.cena_brutto FROM (
       SELECT id_produktu, ilosc 
       FROM produkty_w_koszykach
       WHERE id_uzytkownika = ${userID}
     ) AS X
     INNER JOIN produkty p on x.id_produktu=p.id_produktu
+    INNER JOIN producenci pp on p.id_producenta=pp.id_producenta
+    INNER JOIN kategorie k on p.id_kategorii=k.id_kategorii
     INNER JOIN ceny c on x.id_produktu=c.id_produktu;
     `;
     con.query(sql, function(err, result2) {
@@ -32,11 +36,36 @@ router.post('/', function(req, res, next) {
       VALUES("${userID}", NOW(), "${cena_netto.toFixed(2)}", "${cena_brutto.toFixed(2)}", "23.00", "${result[0].imie} ${result[0].nazwisko}", 
       "${result[0].ulica_zamieszkania}", "${result[0].miasto_zamieszkania}", "${result[0].kod_pocztowy}", ${NIP_n}, ${firma});`;
       con.query(sql, function(err, result3) {
-        var sql = ` 
-        delete from produkty_w_koszykach
-        WHERE id_uzytkownika = ${userID};`;
+        var sql = `SELECT * FROM faktury WHERE id_uzytkownika = ${userID} ORDER BY id_faktury DESC LIMIT 1;`;
         con.query(sql, function(err, result4) {
-          res.send("kupiono");
+          let iter_2 = 0;
+          async.forEachOf(result2, function (item, key, inner_callback){
+            var sql = `
+            insert into pozycje_faktur(id_faktury, id_produktu, id_kategorii, id_producenta, nazwa_produktu, cena_netto, cena_brutto, procent_vat, ilosc)`+
+            `VALUES( ${result4[0].id_faktury}, "${result2[iter_2].id_produktu}", "${result2[iter_2].id_kategorii}",`+
+                    `"${result2[iter_2].id_producenta}", ${SqlString.escape(result2[iter_2].nazwa_produktu)}, ${result2[iter_2].cena_brutto},`+
+                    `${result2[iter_2].cena_netto}, 23.00, ${result2[iter_2++].ilosc});`;
+            console.log(sql);
+            con.query(sql, inner_callback, function(err, result5) {
+              if(err){
+                inner_callback(err);
+              } else {
+                inner_callback(null);
+              }
+            });
+          }, function(err){
+            if(err){
+              console.log(err);
+              res.send(err);
+            }else{
+              var sql = ` 
+              delete from produkty_w_koszykach
+              WHERE id_uzytkownika = ${userID};`;
+              con.query(sql, function(err, result6) {
+                res.send("kupiono");
+              });
+            }
+          });
         });
       });
     });

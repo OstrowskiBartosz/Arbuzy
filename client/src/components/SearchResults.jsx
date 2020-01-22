@@ -84,6 +84,15 @@ class SearchResults extends React.Component{
 
   }
 
+  handleFilterClick(){
+    const params = new URLSearchParams(window.location.search);
+    params.set('p', 1);
+    this.setState({
+      page:1,
+    })
+    this.fetchSearchData();
+  }
+
   fetchSearchData(){
     const data = {
       nazwa_produktu: this.state.searchValue,
@@ -111,12 +120,6 @@ class SearchResults extends React.Component{
       }else{produkt = "produkt";}
 
       var nextPageAvailable, prevPageAvailable;
-      console.log("====");
-      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit));
-      console.log(responseobject.liczba_przedmiotow);
-      console.log(this.state.activeSearchLimit);
-      console.log(this.state.page);
-      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit) === this.state.page);
       if(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit) === this.state.page){ 
         nextPageAvailable = false; 
       }else{
@@ -149,6 +152,9 @@ class SearchResults extends React.Component{
         ProductLoading: produkty,
         pageLimit: Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit),
       });
+      console.log(Math.ceil(responseobject.liczba_przedmiotow/this.state.activeSearchLimit));
+      console.log(responseobject.liczba_przedmiotow);
+      console.log(this.state.activeSearchLimit);
       window.scrollTo(0, 0);
     })
     .catch(err => err);
@@ -211,11 +217,13 @@ class SearchResults extends React.Component{
       searchLimit20: false,
       searchLimit30: false,
       ["searchLimit" + searchLimit]: "true",
-      activeSearchLimit: searchLimit
+      activeSearchLimit: searchLimit,
+      page: 1,
     }, () => {
       this.fetchSearchData();
       const params = new URLSearchParams(window.location.search);
       params.set('l', this.state.activeSearchLimit);
+      params.set('p', 1);
       history.push(window.location.pathname+"?"+params);
     });
   }
@@ -390,7 +398,7 @@ class SearchResults extends React.Component{
                       ))}
                     </div>
                   </div>
-                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 FilterButton" onClick={ () => this.fetchSearchData()}>filtruj</button>
+                  <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 FilterButton" onClick={ () => this.handleFilterClick()}>filtruj</button>
                   <button type="button" className="btn btn-primary btn-lg btn-block mt-1 pt-1 HideFiltersButton" onClick={ () => this.switchHiddenFilters(true)}>Zwiń filtry</button>
                 </div>
               </div>
