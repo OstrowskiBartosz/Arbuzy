@@ -135,7 +135,7 @@
 
 .main-alert {
   top: calc(150% - 25px);
-  right: calc(50% + 25px);
+  right: calc(50% - 100px);
   margin: 0 auto;
   z-index: 100;
   visibility: visible;
