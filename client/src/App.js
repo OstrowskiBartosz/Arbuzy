@@ -13,8 +13,8 @@ import MainPage from "./components/MainPage.jsx";
 import Profile from "./components/Profile.jsx";
 import Invoice from "./components/Invoice.jsx";
 import Product from "./components/Product.jsx";
-import Summary from './components/Summary.jsx';
-import Bought from './components/Bought.jsx';
+import Summary from "./components/Summary.jsx";
+import Bought from "./components/Bought.jsx";
 
 import history from "./components/history";
 
@@ -186,12 +186,16 @@ class Navbar extends React.Component {
           alertText: alertText,
           showAlert: true
         });
+        setTimeout(() => {
+          this.setState({ showAlert: false });
+        }, 5000);
       }.bind(this),
       1
     );
   }
 
   render() {
+    console.log(alert, this.state.showAlert);
     return (
       <Router history={history}>
         <div id="all">
@@ -522,18 +526,18 @@ class Navbar extends React.Component {
               />
             </Route>
             <Route exact path="/podsumowanie">
-              <Summary 
-                  isLogged={this.state.isLogged}
-                  history={history}
-                  sendUpdatedCartItems={this.getUpdatedCartItems}
+              <Summary
+                isLogged={this.state.isLogged}
+                history={history}
+                sendUpdatedCartItems={this.getUpdatedCartItems}
               />
             </Route>
             <Route exact path="/kupiono">
-              <Bought 
-                  isLogged={this.state.isLogged}
-                  history={history}
-                  
-                  /*fromPurchasePage={fromPurchasePage}*/
+              <Bought
+                isLogged={this.state.isLogged}
+                history={history}
+
+                /*fromPurchasePage={fromPurchasePage}*/
               />
             </Route>
           </Switch>

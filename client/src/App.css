@@ -147,6 +147,8 @@
   visibility: hidden;
   opacity: 2;
   height: 0;
+  position: absolute;
+  top: -50px;
 }
 
 .fade-out-alert {
