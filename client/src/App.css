@@ -134,8 +134,8 @@
 /* ALERT */
 
 .main-alert {
-  top: 150%;
-  right: 50%;
+  top: calc(150% - 25px);
+  right: calc(50% + 25px);
   margin: 0 auto;
   z-index: 100;
   visibility: visible;
