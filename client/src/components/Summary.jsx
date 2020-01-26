@@ -135,7 +135,7 @@ export default class Summary extends React.Component{
               <div className = "row">
                 <div className="col-xl-12">
                   <div className="p-3 m-3 font-weight-bold text-left">
-                      <h4>Dane przesyłkowe</h4>
+                      <h4>Dane dostawy</h4>
                   </div>
                     <table className="table table-hover">
                       <thead className="thead-light">
