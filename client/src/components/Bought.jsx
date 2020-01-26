@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  Redirect
+  Redirect,
+  Link
 } from 'react-router-dom';
 import "../App.css";
 
@@ -14,11 +15,6 @@ export default class Bought extends React.Component{
   }
 
   componentDidMount(){
-    let timeout;
-    timeout = setTimeout(() => {
-        console.log(this.props);
-        this.props.history.push("/");
-      }, 5000);
   }
 
 
@@ -38,10 +34,14 @@ export default class Bought extends React.Component{
                 <div className = "row">
                   <div className = "col-12">
                     <div className="pb-5">
-                      <h1>Przedmioty zostały kupione! :-) </h1>
+                      <h1>Przedmioty zostały kupione!</h1>
                     </div>
-                    
-                    <h3>Za chwilę nastąpi przekierowanie na stronę główną</h3>
+                    <Link className="btn btn-primary" to="/">
+                      <h3>
+                        <i className="fas fa-chevron-left"></i> 
+                        <span> Powrót do strony głównej.</span>
+                      </h3>
+                    </Link>
                   </div>
                 </div>
               </div>
