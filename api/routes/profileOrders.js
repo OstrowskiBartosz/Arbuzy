@@ -14,24 +14,36 @@ function getUserId(user, res) {
 }
 
 router.post("/", function(req, res, next) {
+  var userData = { error: true};
   let user = req.session.user;
-  let user_id = 0;
-  getUserId(user, res)
-    .then(function(result) {
-      user_id = result;
-      var sql =
-        "SELECT * FROM faktury WHERE id_uzytkownika = '" +
-        user_id +
-        "' ORDER BY id_faktury DESC;";
-      con.query(sql, function(err, result) {
-        res.send(JSON.stringify(result));
+  var sql =
+    "SELECT id_uzytkownika, imie, nazwisko, miasto_zamieszkania, ulica_zamieszkania, kod_pocztowy, telefon, numer_nip, nazwa_firmy FROM uzytkownicy WHERE login = '" + 
+    user + "';";
+  con.query(sql, function(err, result) {
+    userID = result[0].id_uzytkownika;
+    userData = {
+      ...userData,
+      user: result
+    };
+    var sql =
+      "SELECT * FROM faktury WHERE id_uzytkownika = '" +
+      userID +
+      "' ORDER BY id_faktury DESC;";
+    con.query(sql, function(err, result) {
+      if (result.length > 0) {
+        userData = {
+          ...userData,
+          invoice: result
+        };
+        res.send(JSON.stringify(userData));
         res.end();
-      });
-    })
-    .catch(function() {
-      res.send(JSON.stringify("error"));
-      res.end();
+      }
+      else {
+        res.send(JSON.stringify(userData));
+        res.end();
+      }
     });
+  });
 });
 
 module.exports = router;

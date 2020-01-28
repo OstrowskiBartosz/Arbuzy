@@ -24,7 +24,6 @@ class Profile extends React.Component {
     })
       .then(response => response.text())
       .then(response => {
-        console.log(response);
         var responseObject = JSON.parse(response);
         this.setState({
           activeTab: 1,
@@ -46,7 +45,6 @@ class Profile extends React.Component {
         })
           .then(response => response.text())
           .then(response => {
-            console.log(response);
             var responseObject = JSON.parse(response);
             this.setState({ activeTab: 1, response: responseObject });
           })
@@ -65,6 +63,7 @@ class Profile extends React.Component {
   }
 
   render() {
+    console.log(this.state.response);
     if (this.state.logged === true) {
       if (this.props.redirect === "/profil") {
         return <Redirect to="/" />;
@@ -133,7 +132,7 @@ class Profile extends React.Component {
                     </tr>
                   </thead>
                   <tbody className="table-striped">
-                    {this.state.response.map((faktura, index) => (
+                    {this.state.response.invoice.map((faktura, index) => (
                       <tr key={faktura.id_faktury}>
                         <td>{faktura.id_faktury}</td>
                         <td>
