@@ -258,10 +258,17 @@ class Profile extends React.Component {
                     <div>{user.ulica_zamieszkania}</div>
                     <div>{user.miasto_zamieszkania} {user.kod_pocztowy}</div>
                     <div className={user.numer_nip == null ? "d-none" : ""}>{user.numer_nip}</div>
+                    <button type="button" className="btn btn-primary" onClick={() => this.editUserData()}>Edytuj dane</button>
                   </div>
                   <div className={this.state.userEdit ? "col left" : "d-none"}>
                     <form>
-                      <div className="form-row m-bot-10">
+                      <div className={user.numer_nip == null ? "d-none" : "form-row m-bot-10"}>
+                        <div className="col">
+                          <label for="firma">Nazwa firmy</label>
+                          <input name="firma" type="text" className="form-control" defaultValue={user.nazwa_firmy}></input>
+                        </div>
+                      </div>
+                      <div className={user.numer_nip == null ? "form-row m-bot-10" : "d-none"}>
                         <div className="col">
                           <label for="imie">Imie</label>
                           <input name="imie" type="text" className="form-control" defaultValue={user.imie}></input>
@@ -287,13 +294,24 @@ class Profile extends React.Component {
                           <input name="miasto" type="text" className="form-control" defaultValue={user.miasto_zamieszkania}></input>
                         </div>
                       </div>
+                      <div className={user.numer_nip == null ? "d-none" : "form-row m-bot-10"}>
+                        <div className="col">
+                          <label for="nip">Numer NIP</label>
+                          <input name="nip" type="text" className="form-control" defaultValue={user.numer_nip}></input>
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="col">
+                          <button type="button" className="btn btn-primary btn-block" onClick={() => this.editUserData()}>Zapisz zmiany</button>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
               ))}
               <div className="row">
                 <div className="col left">
-                  <button type="button" className="btn btn-primary" onClick={() => this.editUserData()}>Edytuj dane</button>
+                  
                 </div>
               </div>
           </div>
