@@ -12,7 +12,8 @@ class Profile extends React.Component {
       errorSignup: false,
       errorMessageSignup: "",
       activeTab: 1,
-      isLoading: true
+      isLoading: true,
+      userEdit: false
     };
   }
 
@@ -62,8 +63,13 @@ class Profile extends React.Component {
     }
   }
 
+  editUserData(){
+    var userEdit = !this.state.userEdit;
+    this.setState({userEdit: userEdit});
+  }
+
   render() {
-    console.log(this.state.response);
+    console.log(this.state.userEdit);
     if (this.state.logged === true) {
       if (this.props.redirect === "/profil") {
         return <Redirect to="/" />;
@@ -244,11 +250,34 @@ class Profile extends React.Component {
                 <h1>Ustawienia konta</h1>
               </div>
             </div>
-            <div className="row">
-              <div className="col left">
-                dane u\ztykownika
+              {this.state.response.user.map((user, index) => (
+                <div key={index} className="row">
+                  <div className={this.state.userEdit ? "d-none" : "col left"}>
+                    <div className={user.nazwa_firmy == null ? "d-none" : ""}>{user.nazwa_firmy}</div>
+                    <div>{user.imie} {user.nazwisko}</div>
+                    <div>{user.ulica_zamieszkania}</div>
+                    <div>{user.miasto_zamieszkania} {user.kod_pocztowy}</div>
+                    <div className={user.numer_nip == null ? "d-none" : ""}>{user.numer_nip}</div>
+                  </div>
+                  <div className={this.state.userEdit ? "col left" : "d-none"}>
+                    <form>
+                      <div className="form-row">
+                        <div className="form-group col-md-6">
+                          <input type="text" className="form-control" placeholder="Imie" defaultValue={user.imie}></input>
+                        </div>
+                        <div className="form-group col-md-6">
+                          <input type="text" className="form-control" placeholder="Nazwisko" defaultValue={user.nazwisko}></input>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              ))}
+              <div className="row">
+                <div className="col left">
+                  <button type="button" className="btn btn-primary" onClick={() => this.editUserData()}>Edytuj dane</button>
+                </div>
               </div>
-            </div>
           </div>
         </div>
       );
