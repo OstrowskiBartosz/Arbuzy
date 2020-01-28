@@ -112,3 +112,11 @@
 .m-bot-10 {
   margin-bottom: 10px;
 }
+
+.container input {
+  position: relative;
+  opacity: 1;
+  cursor: auto;
+  height: auto;
+  width: 100%;
+}

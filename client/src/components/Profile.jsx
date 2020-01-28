@@ -261,12 +261,30 @@ class Profile extends React.Component {
                   </div>
                   <div className={this.state.userEdit ? "col left" : "d-none"}>
                     <form>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <input type="text" className="form-control" placeholder="Imie" defaultValue={user.imie}></input>
+                      <div className="form-row m-bot-10">
+                        <div className="col">
+                          <label for="imie">Imie</label>
+                          <input name="imie" type="text" className="form-control" defaultValue={user.imie}></input>
                         </div>
-                        <div className="form-group col-md-6">
-                          <input type="text" className="form-control" placeholder="Nazwisko" defaultValue={user.nazwisko}></input>
+                        <div className="col">
+                          <label for="nazwisko">Nazwisko</label>
+                          <input name="nazwisko" type="text" className="form-control" defaultValue={user.nazwisko}></input>
+                        </div>
+                      </div>
+                      <div className="form-row m-bot-10">
+                        <div className="col">
+                          <label for="ulica">Ulica, numer domu/mieszkania</label>
+                          <input name="ulica" type="text" className="form-control" defaultValue={user.ulica_zamieszkania}></input>
+                        </div>
+                      </div>
+                      <div className="form-row m-bot-10">
+                        <div className="col">
+                          <label for="kod">Kod pocztowy</label>
+                          <input name="kod" type="text" className="form-control" defaultValue={user.kod_pocztowy}></input>
+                        </div>
+                        <div className="col">
+                          <label for="miasto">Miasto</label>
+                          <input name="miasto" type="text" className="form-control" defaultValue={user.miasto_zamieszkania}></input>
                         </div>
                       </div>
                     </form>
