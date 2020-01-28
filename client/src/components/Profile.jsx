@@ -14,7 +14,8 @@ class Profile extends React.Component {
       activeTab: 1,
       isLoading: true,
       userEdit: false,
-      userDelete: false
+      userDelete: false,
+      logout: false
     };
   }
 
@@ -71,7 +72,19 @@ class Profile extends React.Component {
 
   deleteUser() {
     if (this.state.userDelete) {
-      console.log("deleted");
+      let url = "http://localhost:9000/deleteUser";
+      fetch(url, {
+        method: "post",
+        credentials: "include"
+      })
+        .then(response => response.text())
+        .then(response => {
+          this.setState({
+            isLoading: false,
+            logout: true
+          });
+        })
+        .catch(err => err);
     } else {
       var userDelete = !this.state.userDelete;
       this.setState({ userDelete: userDelete });
@@ -79,7 +92,10 @@ class Profile extends React.Component {
   }
 
   render() {
-    console.log(this.state.userEdit);
+    console.log("logout", this.state.logout);
+    if (this.state.logout === true) {
+      return <Redirect to="/" />;
+    }
     if (this.state.logged === true) {
       if (this.props.redirect === "/profil") {
         return <Redirect to="/" />;
@@ -264,6 +280,7 @@ class Profile extends React.Component {
               <div key={index} className="row">
                 <div className={this.state.userEdit ? "d-none" : "col left"}>
                   <h3>Dane użytkownika</h3>
+                  <hr className="m-bot-10"></hr>
                   <strong className={user.nazwa_firmy == null ? "d-none" : ""}>
                     Nazwa firmy
                   </strong>
@@ -306,6 +323,7 @@ class Profile extends React.Component {
                 </div>
                 <div className={this.state.userEdit ? "col left" : "d-none"}>
                   <h3>Dane użytkownika</h3>
+                  <hr className="m-bot-10"></hr>
                   <form>
                     <div
                       className={
@@ -412,6 +430,7 @@ class Profile extends React.Component {
             <div className="row m-top-10">
               <div className="col left">
                 <h3>Usuwanie konta</h3>
+                <hr className="m-bot-10"></hr>
                 <button
                   type="button"
                   className={

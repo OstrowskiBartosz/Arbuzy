@@ -20,6 +20,7 @@ var invoice = require("./routes/invoice");
 var product = require("./routes/product");
 var buy = require("./routes/buy");
 var summary = require("./routes/summary");
+var deleteUser = require("./routes/deleteUser");
 
 var app = express();
 
@@ -77,6 +78,7 @@ app.use("/invoice", invoice);
 app.use("/product", product);
 app.use("/buy", buy);
 app.use("/summary", summary);
+app.use("/deleteUser", deleteUser);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

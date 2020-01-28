@@ -10,10 +10,13 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(cookieParser());
 
-router.get("/", (req, res, next) => {
+router.post("/", (req, res, next) => {
   if (req.session.user && req.cookies.user_sid) {
+    let user = req.session.user;
     res.clearCookie("user_sid");
     req.session.destroy();
+    var sql = "DELETE FROM uzytkownicy WHERE login = '" + user + "';";
+    con.query(sql, function(err, result) {});
     res.send("loggedout");
     res.end();
   } else {
