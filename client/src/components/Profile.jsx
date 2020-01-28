@@ -104,7 +104,7 @@ class Profile extends React.Component {
                 <i className="fa fa-share-square"></i> Reklamacje
               </button>
             </div>
-            <div className="col d-none">
+            <div className="col">
               <button
                 id="settings-btn"
                 className="btn btn-primary option"
@@ -246,10 +246,9 @@ class Profile extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col"></div>
-            </div>
-            <div className="row">
-              <div className="col"></div>
+              <div className="col left">
+                dane u\ztykownika
+              </div>
             </div>
           </div>
         </div>
