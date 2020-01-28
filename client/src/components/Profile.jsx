@@ -13,7 +13,8 @@ class Profile extends React.Component {
       errorMessageSignup: "",
       activeTab: 1,
       isLoading: true,
-      userEdit: false
+      userEdit: false,
+      userDelete: false
     };
   }
 
@@ -63,9 +64,18 @@ class Profile extends React.Component {
     }
   }
 
-  editUserData(){
+  editUserData() {
     var userEdit = !this.state.userEdit;
-    this.setState({userEdit: userEdit});
+    this.setState({ userEdit: userEdit });
+  }
+
+  deleteUser() {
+    if (this.state.userDelete) {
+      console.log("deleted");
+    } else {
+      var userDelete = !this.state.userDelete;
+      this.setState({ userDelete: userDelete });
+    }
   }
 
   render() {
@@ -250,70 +260,181 @@ class Profile extends React.Component {
                 <h1>Ustawienia konta</h1>
               </div>
             </div>
-              {this.state.response.user.map((user, index) => (
-                <div key={index} className="row">
-                  <div className={this.state.userEdit ? "d-none" : "col left"}>
-                    <div className={user.nazwa_firmy == null ? "d-none" : ""}>{user.nazwa_firmy}</div>
-                    <div>{user.imie} {user.nazwisko}</div>
-                    <div>{user.ulica_zamieszkania}</div>
-                    <div>{user.miasto_zamieszkania} {user.kod_pocztowy}</div>
-                    <div className={user.numer_nip == null ? "d-none" : ""}>{user.numer_nip}</div>
-                    <button type="button" className="btn btn-primary" onClick={() => this.editUserData()}>Edytuj dane</button>
+            {this.state.response.user.map((user, index) => (
+              <div key={index} className="row">
+                <div className={this.state.userEdit ? "d-none" : "col left"}>
+                  <h3>Dane użytkownika</h3>
+                  <strong className={user.nazwa_firmy == null ? "d-none" : ""}>
+                    Nazwa firmy
+                  </strong>
+                  <div
+                    className={
+                      user.nazwa_firmy == null ? "d-none" : "m-left-10"
+                    }
+                  >
+                    {user.nazwa_firmy}
                   </div>
-                  <div className={this.state.userEdit ? "col left" : "d-none"}>
-                    <form>
-                      <div className={user.numer_nip == null ? "d-none" : "form-row m-bot-10"}>
-                        <div className="col">
-                          <label for="firma">Nazwa firmy</label>
-                          <input name="firma" type="text" className="form-control" defaultValue={user.nazwa_firmy}></input>
-                        </div>
-                      </div>
-                      <div className={user.numer_nip == null ? "form-row m-bot-10" : "d-none"}>
-                        <div className="col">
-                          <label for="imie">Imie</label>
-                          <input name="imie" type="text" className="form-control" defaultValue={user.imie}></input>
-                        </div>
-                        <div className="col">
-                          <label for="nazwisko">Nazwisko</label>
-                          <input name="nazwisko" type="text" className="form-control" defaultValue={user.nazwisko}></input>
-                        </div>
-                      </div>
-                      <div className="form-row m-bot-10">
-                        <div className="col">
-                          <label for="ulica">Ulica, numer domu/mieszkania</label>
-                          <input name="ulica" type="text" className="form-control" defaultValue={user.ulica_zamieszkania}></input>
-                        </div>
-                      </div>
-                      <div className="form-row m-bot-10">
-                        <div className="col">
-                          <label for="kod">Kod pocztowy</label>
-                          <input name="kod" type="text" className="form-control" defaultValue={user.kod_pocztowy}></input>
-                        </div>
-                        <div className="col">
-                          <label for="miasto">Miasto</label>
-                          <input name="miasto" type="text" className="form-control" defaultValue={user.miasto_zamieszkania}></input>
-                        </div>
-                      </div>
-                      <div className={user.numer_nip == null ? "d-none" : "form-row m-bot-10"}>
-                        <div className="col">
-                          <label for="nip">Numer NIP</label>
-                          <input name="nip" type="text" className="form-control" defaultValue={user.numer_nip}></input>
-                        </div>
-                      </div>
-                      <div className="form-row">
-                        <div className="col">
-                          <button type="button" className="btn btn-primary btn-block" onClick={() => this.editUserData()}>Zapisz zmiany</button>
-                        </div>
-                      </div>
-                    </form>
+                  <strong className={user.nazwa_firmy == null ? "" : "d-none"}>
+                    Imię i nazwisko
+                  </strong>
+                  <div
+                    className={user.numer_nip == null ? "m-left-10" : "d-none"}
+                  >
+                    {user.imie} {user.nazwisko}
                   </div>
+                  <strong>Ulica, numer domu/mieszkania</strong>
+                  <div className="m-left-10">{user.ulica_zamieszkania}</div>
+                  <strong>Miasto, kod pocztowy</strong>
+                  <div className="m-left-10">
+                    {user.miasto_zamieszkania} {user.kod_pocztowy}
+                  </div>
+                  <strong className={user.numer_nip == null ? "d-none" : ""}>
+                    Miasto, kod pocztowy
+                  </strong>
+                  <div
+                    className={user.numer_nip == null ? "d-none" : "m-left-10"}
+                  >
+                    {user.numer_nip}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary m-top-10"
+                    onClick={() => this.editUserData()}
+                  >
+                    Edytuj dane
+                  </button>
                 </div>
-              ))}
-              <div className="row">
-                <div className="col left">
-                  
+                <div className={this.state.userEdit ? "col left" : "d-none"}>
+                  <h3>Dane użytkownika</h3>
+                  <form>
+                    <div
+                      className={
+                        user.numer_nip == null ? "d-none" : "form-row m-bot-10"
+                      }
+                    >
+                      <div className="col">
+                        <label htmlFor="firma">Nazwa firmy</label>
+                        <input
+                          name="firma"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.nazwa_firmy}
+                        ></input>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        user.numer_nip == null ? "form-row m-bot-10" : "d-none"
+                      }
+                    >
+                      <div className="col">
+                        <label htmlFor="imie">Imię</label>
+                        <input
+                          name="imie"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.imie}
+                        ></input>
+                      </div>
+                      <div className="col">
+                        <label htmlFor="nazwisko">Nazwisko</label>
+                        <input
+                          name="nazwisko"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.nazwisko}
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="form-row m-bot-10">
+                      <div className="col">
+                        <label htmlFor="ulica">
+                          Ulica, numer domu/mieszkania
+                        </label>
+                        <input
+                          name="ulica"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.ulica_zamieszkania}
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="form-row m-bot-10">
+                      <div className="col">
+                        <label htmlFor="kod">Kod pocztowy</label>
+                        <input
+                          name="kod"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.kod_pocztowy}
+                        ></input>
+                      </div>
+                      <div className="col">
+                        <label htmlFor="miasto">Miasto</label>
+                        <input
+                          name="miasto"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.miasto_zamieszkania}
+                        ></input>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        user.numer_nip == null ? "d-none" : "form-row m-bot-10"
+                      }
+                    >
+                      <div className="col">
+                        <label htmlFor="nip">Numer NIP</label>
+                        <input
+                          name="nip"
+                          type="text"
+                          className="form-control"
+                          defaultValue={user.numer_nip}
+                        ></input>
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="col">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-block"
+                          onClick={() => this.editUserData()}
+                        >
+                          Zapisz zmiany
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
+            ))}
+            <div className="row m-top-10">
+              <div className="col left">
+                <h3>Usuwanie konta</h3>
+                <button
+                  type="button"
+                  className={
+                    this.state.userDelete ? "d-none" : "btn btn-primary"
+                  }
+                  onClick={() => this.deleteUser()}
+                >
+                  Usuń konto
+                </button>
+                <button
+                  type="button"
+                  className={
+                    this.state.userDelete ? "btn btn-danger" : "d-none"
+                  }
+                  onClick={() => this.deleteUser()}
+                >
+                  Na pewno?
+                </button>
+                <div className={this.state.userDelete ? "red" : "d-none"}>
+                  UWAGA!!! Tej akcji nie można cofnąć!
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );

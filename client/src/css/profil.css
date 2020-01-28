@@ -113,10 +113,22 @@
   margin-bottom: 10px;
 }
 
+.m-top-10 {
+  margin-top: 10px;
+}
+
 .container input {
   position: relative;
   opacity: 1;
   cursor: auto;
   height: auto;
   width: 100%;
+}
+
+.m-left-10 {
+  margin-left: 10px;
+}
+
+.red {
+  color: red;
 }
