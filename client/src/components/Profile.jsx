@@ -81,7 +81,8 @@ class Profile extends React.Component {
         .then(response => {
           this.setState({
             isLoading: false,
-            logout: true
+            logout: true,
+            isLogged: false
           });
         })
         .catch(err => err);
