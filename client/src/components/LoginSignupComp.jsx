@@ -17,9 +17,9 @@ class LoginSignupComp extends React.Component {
   }
 
   componentDidUpdate(prevState, prevProps) {
-    if( prevState.isLogged !== this.props.isLogged ){
+    if (prevState.isLogged !== this.props.isLogged) {
       this.setState({
-        isLogged: this.props.isLogged,
+        isLogged: this.props.isLogged
       });
     }
   }
@@ -323,7 +323,12 @@ class LoginSignupComp extends React.Component {
                         size="5"
                         maxlength="5"
                         required
-                        onChange={(event) => {event.currentTarget.value=event.currentTarget.value.replace(/[^\d]/,'')}}
+                        onChange={event => {
+                          event.currentTarget.value = event.currentTarget.value.replace(
+                            /[^\d]/,
+                            ""
+                          );
+                        }}
                       ></input>
                     </div>
                   </div>

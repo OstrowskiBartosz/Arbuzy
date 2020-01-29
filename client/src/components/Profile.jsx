@@ -66,8 +66,32 @@ class Profile extends React.Component {
   }
 
   editUserData() {
-    var userEdit = !this.state.userEdit;
-    this.setState({ userEdit: userEdit });
+    if (this.state.userEdit === false) {
+      var userEdit = !this.state.userEdit;
+      this.setState({ userEdit: userEdit });
+    } else {
+      let url = "http://localhost:9000/updateUser";
+      let myForm = document.getElementById("updateForm");
+      let formData = new FormData(myForm);
+      var object = {};
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      console.log(object);
+      fetch(url, {
+        body: JSON.stringify(object),
+        method: "post",
+        credentials: "include",
+        headers: new Headers({ "content-type": "application/json" })
+      })
+        .then(response => response.text())
+        .then(response => {
+          console.log("odpowiedz", response);
+          var userEdit = !this.state.userEdit;
+          this.setState({ userEdit: userEdit });
+        })
+        .catch(err => err);
+    }
   }
 
   deleteUser() {
@@ -325,7 +349,7 @@ class Profile extends React.Component {
                 <div className={this.state.userEdit ? "col left" : "d-none"}>
                   <h3>Dane użytkownika</h3>
                   <hr className="m-bot-10"></hr>
-                  <form>
+                  <form id="updateForm">
                     <div
                       className={
                         user.numer_nip == null ? "d-none" : "form-row m-bot-10"
@@ -335,6 +359,7 @@ class Profile extends React.Component {
                         <label htmlFor="firma">Nazwa firmy</label>
                         <input
                           name="firma"
+                          id="firma"
                           type="text"
                           className="form-control"
                           maxLength="100"
@@ -351,6 +376,7 @@ class Profile extends React.Component {
                         <label htmlFor="imie">Imię</label>
                         <input
                           name="imie"
+                          id="imie"
                           type="text"
                           className="form-control"
                           maxLength="20"
@@ -361,6 +387,7 @@ class Profile extends React.Component {
                         <label htmlFor="nazwisko">Nazwisko</label>
                         <input
                           name="nazwisko"
+                          id="nazwisko"
                           type="text"
                           className="form-control"
                           maxLength="30"
@@ -375,6 +402,7 @@ class Profile extends React.Component {
                         </label>
                         <input
                           name="ulica"
+                          id="ulica"
                           type="text"
                           className="form-control"
                           maxLength="50"
@@ -387,6 +415,7 @@ class Profile extends React.Component {
                         <label htmlFor="kod">Kod pocztowy</label>
                         <input
                           name="kod"
+                          id="kod"
                           type="text"
                           className="form-control"
                           maxLength="6"
@@ -397,6 +426,7 @@ class Profile extends React.Component {
                         <label htmlFor="miasto">Miasto</label>
                         <input
                           name="miasto"
+                          id="miasto"
                           type="text"
                           className="form-control"
                           maxLength="50"
@@ -413,6 +443,7 @@ class Profile extends React.Component {
                         <label htmlFor="nip">Numer NIP</label>
                         <input
                           name="nip"
+                          id="nip"
                           type="text"
                           className="form-control"
                           maxLength="10"
