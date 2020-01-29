@@ -657,3 +657,11 @@ a.nostyle:visited {
 .pointer {
   cursor: pointer;
 }
+
+.m-bot-10 {
+  margin-bottom: 10px;
+}
+
+.w-200 {
+  width: 500px;
+}

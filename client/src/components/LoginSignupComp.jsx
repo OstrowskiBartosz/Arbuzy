@@ -191,6 +191,7 @@ class LoginSignupComp extends React.Component {
                       <input
                         type="text"
                         name="login"
+                        maxLength="30"
                         className="form-control"
                         placeholder="login"
                         autoComplete="username"
@@ -203,6 +204,7 @@ class LoginSignupComp extends React.Component {
                         name="haslo"
                         className="form-control"
                         placeholder="hasło"
+                        maxLength="60"
                         autoComplete="current-password"
                         required
                       ></input>
@@ -214,6 +216,7 @@ class LoginSignupComp extends React.Component {
                       <input
                         type="email"
                         name="email"
+                        maxLength="70"
                         className="form-control"
                         placeholder="adres e-mail"
                         required
@@ -227,6 +230,7 @@ class LoginSignupComp extends React.Component {
                       <input
                         type="text"
                         name="imie"
+                        maxLength="20"
                         className="form-control"
                         placeholder="imię"
                         required
@@ -236,6 +240,7 @@ class LoginSignupComp extends React.Component {
                       <input
                         type="text"
                         name="nazwisko"
+                        maxLength="30"
                         className="form-control"
                         placeholder="nazwisko"
                         required
@@ -250,6 +255,7 @@ class LoginSignupComp extends React.Component {
                         name="telefon_o"
                         className="form-control"
                         placeholder="numer telefonu"
+                        maxLength="9"
                         required
                       ></input>
                     </div>
@@ -275,6 +281,7 @@ class LoginSignupComp extends React.Component {
                         name="nazwa_firmy"
                         className="form-control"
                         placeholder="nazwa firmy"
+                        maxLength="100"
                         required={this.state.czyfirma ? " required" : ""}
                       ></input>
                     </div>
@@ -282,6 +289,7 @@ class LoginSignupComp extends React.Component {
                       <input
                         type="text"
                         name="nip"
+                        maxLength="10"
                         className="form-control"
                         placeholder="numer nip"
                         required={this.state.czyfirma ? " required" : ""}
@@ -299,6 +307,7 @@ class LoginSignupComp extends React.Component {
                         name="ulica"
                         className="form-control"
                         placeholder="ulica, numer domu i mieszkania"
+                        maxLength="50"
                         required
                       ></input>
                     </div>
@@ -311,6 +320,7 @@ class LoginSignupComp extends React.Component {
                         name="miasto"
                         className="form-control"
                         placeholder="miasto"
+                        maxLength="50"
                         required
                       ></input>
                     </div>
@@ -321,7 +331,7 @@ class LoginSignupComp extends React.Component {
                         className="form-control"
                         placeholder="kod pocztowy"
                         size="5"
-                        maxlength="5"
+                        maxLength="5"
                         required
                         onChange={event => {
                           event.currentTarget.value = event.currentTarget.value.replace(
@@ -379,6 +389,7 @@ class LoginSignupComp extends React.Component {
                       name="login"
                       className="form-control"
                       placeholder="login"
+                      maxLength="30"
                       autoComplete="username"
                       required
                     ></input>
@@ -387,6 +398,7 @@ class LoginSignupComp extends React.Component {
                     <input
                       type="password"
                       name="haslo"
+                      maxLength="60"
                       className="form-control"
                       placeholder="hasło"
                       autoComplete="current-password"
@@ -419,14 +431,12 @@ class LoginSignupComp extends React.Component {
           <div className="col-xl-4"></div>
         </div>
         <div className="row pt-4">
-          <div className="col-lg-3"></div>
-          <div className="col-lg-5 text-left">
-            <Link className="btn btn-outline-secondary" to="/">
+          <div className="col">
+            <Link className="btn btn-outline-secondary m-bot-10 w-200" to="/">
               {" "}
               <i className="fas fa-chevron-left"></i> Wróć do strony głównej
             </Link>
           </div>
-          <div className="col-lg-4"></div>
         </div>
       </div>
     );
