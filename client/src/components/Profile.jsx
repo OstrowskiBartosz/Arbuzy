@@ -89,6 +89,7 @@ class Profile extends React.Component {
           console.log("odpowiedz", response);
           var userEdit = !this.state.userEdit;
           this.setState({ userEdit: userEdit });
+          window.location.reload();
         })
         .catch(err => err);
     }
