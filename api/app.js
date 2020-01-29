@@ -21,6 +21,7 @@ var product = require("./routes/product");
 var buy = require("./routes/buy");
 var summary = require("./routes/summary");
 var deleteUser = require("./routes/deleteUser");
+var updateUser = require("./routes/updateUser");
 
 var app = express();
 
@@ -79,6 +80,7 @@ app.use("/product", product);
 app.use("/buy", buy);
 app.use("/summary", summary);
 app.use("/deleteUser", deleteUser);
+app.use("/updateUser", updateUser);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
