@@ -337,6 +337,7 @@ class Profile extends React.Component {
                           name="firma"
                           type="text"
                           className="form-control"
+                          maxLength="100"
                           defaultValue={user.nazwa_firmy}
                         ></input>
                       </div>
@@ -352,6 +353,7 @@ class Profile extends React.Component {
                           name="imie"
                           type="text"
                           className="form-control"
+                          maxLength="20"
                           defaultValue={user.imie}
                         ></input>
                       </div>
@@ -361,6 +363,7 @@ class Profile extends React.Component {
                           name="nazwisko"
                           type="text"
                           className="form-control"
+                          maxLength="30"
                           defaultValue={user.nazwisko}
                         ></input>
                       </div>
@@ -374,6 +377,7 @@ class Profile extends React.Component {
                           name="ulica"
                           type="text"
                           className="form-control"
+                          maxLength="50"
                           defaultValue={user.ulica_zamieszkania}
                         ></input>
                       </div>
@@ -385,6 +389,7 @@ class Profile extends React.Component {
                           name="kod"
                           type="text"
                           className="form-control"
+                          maxLength="6"
                           defaultValue={user.kod_pocztowy}
                         ></input>
                       </div>
@@ -394,6 +399,7 @@ class Profile extends React.Component {
                           name="miasto"
                           type="text"
                           className="form-control"
+                          maxLength="50"
                           defaultValue={user.miasto_zamieszkania}
                         ></input>
                       </div>
@@ -409,6 +415,7 @@ class Profile extends React.Component {
                           name="nip"
                           type="text"
                           className="form-control"
+                          maxLength="10"
                           defaultValue={user.numer_nip}
                         ></input>
                       </div>
